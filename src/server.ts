@@ -7,6 +7,7 @@ import authRoutes from './routes/auth';
 
 const app = express();
 
+app.use(express.json());
 app.use(morgan('dev'));
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello');
