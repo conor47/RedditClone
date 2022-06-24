@@ -4,11 +4,13 @@ import express, { Request, Response } from 'express';
 import morgan from 'morgan';
 
 import authRoutes from './routes/auth';
+import trim from './Middleware/trim';
 
 const app = express();
 
 app.use(express.json());
 app.use(morgan('dev'));
+app.use(trim);
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello');
 });
