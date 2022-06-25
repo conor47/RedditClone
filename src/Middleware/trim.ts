@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 
-export default (req: Request, res: Response, next: NextFunction) => {
-  const exceptions = ['password'];
+// middleware which for trimming string property values in the request body
+export default (req: Request, res: Response, next: NextFunction): void => {
+  const exceptions: string[] = ['password'];
 
   Object.keys(req.body).forEach((key) => {
     if (!exceptions.includes(key) && typeof req.body[key] === 'string') {
