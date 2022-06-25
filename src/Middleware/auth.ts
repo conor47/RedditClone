@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { User } from '../entity/User';
+import User from '../entity/User';
 
+// middleware for extracting token cookie and performing user Authentication.
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.cookies.token;

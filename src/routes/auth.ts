@@ -5,8 +5,9 @@ import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 
 import auth from '../Middleware/auth';
-import { User } from '../entity/User';
+import User from '../entity/User';
 
+// route handler for handling user registration.
 const register = async (req: Request, res: Response) => {
   console.log(req.body);
 
@@ -43,6 +44,7 @@ const register = async (req: Request, res: Response) => {
   }
 };
 
+// route handler for handling user login
 const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   console.log(username, password);
@@ -83,10 +85,12 @@ const login = async (req: Request, res: Response) => {
   }
 };
 
+// route for returning the currently logged in user
 const me = async (req: Request, res: Response) => {
   return res.json(res.locals.user);
 };
 
+// router handler for handling user logout
 const logout = async (req: Request, res: Response) => {
   res.set(
     'Set-Cookie',

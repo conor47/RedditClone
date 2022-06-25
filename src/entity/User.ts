@@ -1,26 +1,16 @@
 import { IsEmail, MinLength } from 'class-validator';
 import { Exclude, instanceToPlain } from 'class-transformer';
 import bcrypt from 'bcrypt';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  BaseEntity,
-  CreateDateColumn,
-  UpdateDateColumn,
-  BeforeInsert,
-} from 'typeorm';
+import { Entity as ToEntity, Column } from 'typeorm';
 
-@Entity('users')
-export class User extends BaseEntity {
+import Entity from './Entity';
+
+@ToEntity('users')
+export default class User extends Entity {
   constructor(user: Partial<User>) {
     super();
     Object.assign(this, user);
   }
-
-  @Exclude()
-  @PrimaryGeneratedColumn()
-  id: number;
 
   @Column({ unique: true })
   @IsEmail()
@@ -34,17 +24,6 @@ export class User extends BaseEntity {
   @Column()
   @MinLength(6, { message: 'Password must be at least 6 characaters long' })
   password: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updateAt: Date;
-
-  @BeforeInsert()
-  async hashPassword() {
-    this.password = await bcrypt.hash(this.password, 6);
-  }
 
   toJSON() {
     return instanceToPlain(this);
