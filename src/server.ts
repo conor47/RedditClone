@@ -1,12 +1,11 @@
 import 'reflect-metadata';
-import { createConnection } from 'typeorm';
 import express, { Request, Response } from 'express';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import cookieparser from 'cookie-parser';
 
 import authRoutes from './routes/auth';
-import postRoutes from './routes/posts';
+import postRoutes from './routes/post';
 import trim from './Middleware/trim';
 
 dotenv.config();
@@ -22,12 +21,4 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 
-app.listen(process.env.PORT, async () => {
-  console.log(`Server running at http://localhost:5000`);
-  try {
-    await createConnection();
-    console.log('database connected');
-  } catch (error) {
-    console.log(error);
-  }
-});
+export default app;
