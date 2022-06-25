@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import cookieparser from 'cookie-parser';
 
 import authRoutes from './routes/auth';
+import postRoutes from './routes/posts';
 import trim from './Middleware/trim';
 
 dotenv.config();
@@ -19,6 +20,7 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello');
 });
 app.use('/api/auth', authRoutes);
+app.use('/api/posts', postRoutes);
 
 app.listen(process.env.PORT, async () => {
   console.log(`Server running at http://localhost:5000`);

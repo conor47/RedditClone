@@ -1,9 +1,16 @@
 import { IsEmail, MinLength } from 'class-validator';
 import { Exclude, instanceToPlain } from 'class-transformer';
 import bcrypt from 'bcrypt';
-import { Entity as ToEntity, Column } from 'typeorm';
+import {
+  Entity as ToEntity,
+  Column,
+  BeforeRemove,
+  BeforeInsert,
+  OneToMany,
+} from 'typeorm';
 
 import Entity from './Entity';
+import Post from './Post';
 
 @ToEntity('users')
 export default class User extends Entity {
@@ -25,7 +32,11 @@ export default class User extends Entity {
   @MinLength(6, { message: 'Password must be at least 6 characaters long' })
   password: string;
 
-  toJSON() {
-    return instanceToPlain(this);
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
+
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 6);
   }
 }

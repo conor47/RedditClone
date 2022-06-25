@@ -9,9 +9,12 @@ import {
   BeforeInsert,
   Column,
   Index,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
 import Entity from './Entity';
+import User from './User';
 
 @ToEntity('posts')
 export default class Post extends Entity {
@@ -32,8 +35,12 @@ export default class Post extends Entity {
   slug: string;
 
   @Column({ nullable: true, type: 'text' })
-  bodu: string;
+  body: string;
 
   @Column()
   subName: string;
+
+  @ManyToOne(() => User, (user) => user.posts)
+  @JoinColumn({ name: 'username', referencedColumnName: 'username' })
+  user: User;
 }
