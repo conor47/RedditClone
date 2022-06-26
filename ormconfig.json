@@ -26,6 +26,7 @@
     "username": "conorladrigan",
     "password": "root",
     "database": "reddit_test",
+    "dropSchema": true,
     "synchronize": true,
     "logging": false,
     "entities": ["src/entity/**/*.ts"],
