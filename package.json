@@ -34,8 +34,10 @@
     "typeorm": "0.2.37"
   },
   "scripts": {
-    "start": "ts-node src",
-    "dev": "nodemon --exec ts-node src",
-    "test": "jest"
+    "start": "NODE_ENV=development ts-node src",
+    "dev": "NODE_ENV=development nodemon --exec ts-node src",
+    "test-server": "NODE_ENV=test ts-node src",
+    "test": "NODE_ENV=test jest",
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js"
   }
 }
