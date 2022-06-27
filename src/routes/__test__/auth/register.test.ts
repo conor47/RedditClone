@@ -5,14 +5,14 @@ import User from '../../../entity/User';
 import app from '../../../server';
 import { createTypeormConnection } from '../../../Utils/createTypeormConnection';
 
-beforeAll(async () => {
-  await createTypeormConnection();
-});
+// beforeAll(async () => {
+//   await createTypeormConnection();
+// });
 
-afterAll(async () => {
-  await getConnection().dropDatabase();
-  await getConnection().close();
-});
+// afterAll(async () => {
+//   await getConnection().dropDatabase();
+//   await getConnection().close();
+// });
 
 it('responds with an HTTP 400 with invalid data', async () => {
   const response = await request(app)
@@ -26,7 +26,6 @@ it('creates a user with valid information', async () => {
     .post('/api/auth/register')
     .send({ username: 'conor', email: 'conor@mail.com', password: '123456' })
     .expect(200);
-  console.log(response.info);
 
   const users = await User.find({ email: 'conor@mail.com' });
   expect(users).toHaveLength(1);

@@ -5,4 +5,5 @@ module.exports = {
     '^.+\\.ts?$': 'ts-jest',
   },
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
+  setupFilesAfterEnv: ['./src/test/setup.ts'],
 };

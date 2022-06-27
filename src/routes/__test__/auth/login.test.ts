@@ -6,14 +6,14 @@ import User from '../../../entity/User';
 import app from '../../../server';
 import { createTypeormConnection } from '../../../Utils/createTypeormConnection';
 
-beforeAll(async () => {
-  await createTypeormConnection();
-});
+// beforeAll(async () => {
+//   await createTypeormConnection();
+// });
 
-afterAll(async () => {
-  await getConnection().dropDatabase();
-  await getConnection().close();
-});
+// afterAll(async () => {
+//   await getConnection().dropDatabase();
+//   await getConnection().close();
+// });
 
 it('responds with an HTTP 400 with invalid data', async () => {
   const response = await request(app)
@@ -22,7 +22,7 @@ it('responds with an HTTP 400 with invalid data', async () => {
     .expect(400);
 });
 
-it('logins in a user with correct credentials after valid register', async () => {
+it('succeeds with correct credentials after valid register', async () => {
   await request(app)
     .post('/api/auth/register')
     .send({ username: 'bob', email: 'bob@mail.com', password: '123456' })
@@ -34,7 +34,7 @@ it('logins in a user with correct credentials after valid register', async () =>
     .expect(200);
 });
 
-it('fails logins with incorrect credentials after valid register', async () => {
+it('fails logins with incorrect credentials after valid a register', async () => {
   await request(app)
     .post('/api/auth/register')
     .send({ username: 'jane', email: 'jane@mail.com', password: '123456' })
