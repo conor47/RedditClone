@@ -1,15 +1,16 @@
 import request from 'supertest';
 import { getConnection } from 'typeorm';
 
-import User from '../../entity/User';
-import app from '../../server';
-import { createTypeormConnection } from '../../Utils/createTypeormConnection';
+import User from '../../../entity/User';
+import app from '../../../server';
+import { createTypeormConnection } from '../../../Utils/createTypeormConnection';
 
 beforeAll(async () => {
   await createTypeormConnection();
 });
 
 afterAll(async () => {
+  await getConnection().dropDatabase();
   await getConnection().close();
 });
 
@@ -26,7 +27,6 @@ it('creates a user with valid information', async () => {
     .send({ username: 'conor', email: 'conor@mail.com', password: '123456' })
     .expect(200);
 
-  const con = await getConnection();
   const users = await User.find({ email: 'conor@mail.com' });
   expect(users).toHaveLength(1);
   const user = users[0];
