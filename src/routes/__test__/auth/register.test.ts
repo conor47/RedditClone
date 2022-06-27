@@ -26,6 +26,7 @@ it('creates a user with valid information', async () => {
     .post('/api/auth/register')
     .send({ username: 'conor', email: 'conor@mail.com', password: '123456' })
     .expect(200);
+  console.log(response.info);
 
   const users = await User.find({ email: 'conor@mail.com' });
   expect(users).toHaveLength(1);

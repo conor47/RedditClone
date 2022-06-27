@@ -6,11 +6,10 @@ import cookie from 'cookie';
 
 import auth from '../Middleware/auth';
 import User from '../entity/User';
+import { getConnection } from 'typeorm';
 
 // route handler for handling user registration.
 const register = async (req: Request, res: Response) => {
-  console.log(req.body);
-
   const { email, username, password } = req.body;
 
   try {
@@ -47,7 +46,6 @@ const register = async (req: Request, res: Response) => {
 // route handler for handling user login
 const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
-  console.log(username, password);
 
   try {
     const errors: { [key: string]: string } = {};
@@ -67,7 +65,7 @@ const login = async (req: Request, res: Response) => {
       return res.status(401).json({ password: 'Password is invalid' });
     }
 
-    const token = jwt.sign({ username }, process.env.JWT_SECRET);
+    const token = jwt.sign({ username }, process.env.JWT_SECRET!);
 
     res.set(
       'Set-Cookie',
