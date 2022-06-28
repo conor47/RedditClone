@@ -1,11 +1,5 @@
-import { Exclude, instanceToPlain } from 'class-transformer';
-import bcrypt from 'bcrypt';
 import {
   Entity as ToEntity,
-  PrimaryGeneratedColumn,
-  BaseEntity,
-  CreateDateColumn,
-  UpdateDateColumn,
   BeforeInsert,
   Column,
   Index,
@@ -16,6 +10,7 @@ import {
 import Entity from './Entity';
 import User from './User';
 import { makeId, slugify } from '../Utils/helpers';
+import Sub from './Sub';
 
 @ToEntity('posts')
 export default class Post extends Entity {
@@ -44,6 +39,10 @@ export default class Post extends Entity {
   @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn({ name: 'username', referencedColumnName: 'username' })
   user: User;
+
+  @ManyToOne(() => Sub, (sub) => sub.posts)
+  @JoinColumn({ name: 'subName', referencedColumnName: 'name' })
+  sub: Sub;
 
   @BeforeInsert()
   makeIdAndSlug() {
