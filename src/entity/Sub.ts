@@ -3,51 +3,47 @@ import bcrypt from 'bcrypt';
 import {
   Entity as ToEntity,
   PrimaryGeneratedColumn,
-  BaseEntity,
-  CreateDateColumn,
-  UpdateDateColumn,
-  BeforeInsert,
   Column,
   Index,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 import Entity from './Entity';
 import User from './User';
 import { makeId, slugify } from '../Utils/helpers';
+import Post from './Post';
 
-@ToEntity('posts')
-export default class Post extends Entity {
-  constructor(post: Partial<Post>) {
+@ToEntity('subs')
+export default class Sub extends Entity {
+  constructor(post: Partial<Sub>) {
     super();
     Object.assign(this, post);
   }
 
   @Index()
-  @Column()
-  identifier: string;
+  @Column({ unique: true })
+  name: string;
 
-  @Column()
+  @Index()
+  @Column({ type: 'text' })
   title: string;
 
   @Index()
-  @Column()
-  slug: string;
-
   @Column({ nullable: true, type: 'text' })
-  body: string;
+  description: string;
 
-  @Column()
-  subName: string;
+  @Column({ nullable: true })
+  imageUrn: string;
 
-  @ManyToOne(() => User, (user) => user.posts)
+  @Column({ nullable: true })
+  bannerUrn: string;
+
+  @ManyToOne(() => User)
   @JoinColumn({ name: 'username', referencedColumnName: 'username' })
   user: User;
 
-  @BeforeInsert()
-  makeIdAndSlug() {
-    this.identifier = makeId(7);
-    this.slug = slugify(this.title);
-  }
+  @OneToMany(() => Post, (post) => post.sub)
+  posts: Post[];
 }
