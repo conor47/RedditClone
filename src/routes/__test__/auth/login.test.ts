@@ -1,19 +1,6 @@
-import { send } from 'process';
 import request from 'supertest';
-import { getConnection } from 'typeorm';
 
-import User from '../../../entity/User';
 import app from '../../../server';
-import { createTypeormConnection } from '../../../Utils/createTypeormConnection';
-
-// beforeAll(async () => {
-//   await createTypeormConnection();
-// });
-
-// afterAll(async () => {
-//   await getConnection().dropDatabase();
-//   await getConnection().close();
-// });
 
 it('responds with an HTTP 400 with invalid data', async () => {
   const response = await request(app)
