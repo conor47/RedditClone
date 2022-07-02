@@ -8,6 +8,9 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.token;
     if (!token) throw new Error('Unauthenticated');
 
+    if (!process.env.JWT_SECRET) {
+      throw new Error('JWT SECRET environment variable must be defined');
+    }
     const { username }: any = jwt.verify(token, process.env.JWT_SECRET);
 
     const user = await User.findOne({ username });

@@ -6,7 +6,6 @@ import cookie from 'cookie';
 
 import auth from '../Middleware/auth';
 import User from '../entity/User';
-import { getConnection } from 'typeorm';
 
 // route handler for handling user registration.
 const register = async (req: Request, res: Response) => {
@@ -36,7 +35,7 @@ const register = async (req: Request, res: Response) => {
     }
     await user.save();
 
-    res.status(200).send(user);
+    return res.status(200).send(user);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
@@ -80,16 +79,17 @@ const login = async (req: Request, res: Response) => {
     return res.json({ user });
   } catch (error) {
     console.log(error);
+    return res.status(400).json(error);
   }
 };
 
 // route for returning the currently logged in user
-const me = async (req: Request, res: Response) => {
+const me = async (_: Request, res: Response) => {
   return res.json(res.locals.user);
 };
 
 // router handler for handling user logout
-const logout = async (req: Request, res: Response) => {
+const logout = async (_: Request, res: Response) => {
   res.set(
     'Set-Cookie',
     cookie.serialize('token', '', {

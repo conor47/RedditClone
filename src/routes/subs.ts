@@ -1,7 +1,6 @@
 import { isEmpty } from 'class-validator';
 import { Request, Response, Router } from 'express';
 import { getRepository } from 'typeorm';
-import { PlainObjectToNewEntityTransformer } from 'typeorm/query-builder/transformer/PlainObjectToNewEntityTransformer';
 import Sub from '../entity/Sub';
 
 import User from '../entity/User';
@@ -33,7 +32,7 @@ const createSub = async (req: Request, res: Response) => {
   }
 
   try {
-    const sub = await new Sub({ name, description, title, user });
+    const sub = new Sub({ name, description, title, user });
     await sub.save();
     return res.json(sub);
   } catch (error) {
