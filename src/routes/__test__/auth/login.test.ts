@@ -15,7 +15,7 @@ it('succeeds with correct credentials after valid register', async () => {
     .send({ username: 'bob', email: 'bob@mail.com', password: '123456' })
     .expect(200);
 
-  const response = await request(app)
+  await request(app)
     .post('/api/auth/login')
     .send({ username: 'bob', password: '123456' })
     .expect(200);

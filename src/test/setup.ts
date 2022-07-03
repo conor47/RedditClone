@@ -4,7 +4,7 @@ import request from 'supertest';
 import { createTypeormConnection } from '../Utils/createTypeormConnection';
 
 beforeAll(async () => {
-  const dbConnection = await createTypeormConnection();
+  await createTypeormConnection();
 });
 
 beforeEach(async () => {});

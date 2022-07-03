@@ -1,8 +1,4 @@
-export {};
+export interface global {}
 declare global {
-  namespace NodeJS {
-    interface Global {
-      signin: () => Promise<string[]>;
-    }
-  }
+  var signin: () => Promise<string[]>;
 }

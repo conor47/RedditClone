@@ -2,9 +2,11 @@ import {
   BeforeInsert,
   Column,
   Entity as TOEntity,
+  Index,
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
+
 import { makeId } from '../Utils/helpers';
 import Entity from './Entity';
 import Post from './Post';
@@ -17,6 +19,7 @@ export default class Comment extends Entity {
     Object.assign(this, comment);
   }
 
+  @Index()
   @Column()
   identifier: string;
 
@@ -30,7 +33,7 @@ export default class Comment extends Entity {
   @JoinColumn({ name: 'username', referencedColumnName: 'username' })
   user: User;
 
-  @ManyToOne(() => Post, (post) => post.comments)
+  @ManyToOne(() => Post, (post) => post.comments, { nullable: false })
   post: Post;
 
   @BeforeInsert()
