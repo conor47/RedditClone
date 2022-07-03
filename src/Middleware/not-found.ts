@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-const notFoundMiddleware = (req: Request, res: Response) => {
+const notFoundMiddleware = (_: Request, res: Response) => {
   res.status(404).send('Route does not exist');
 };
 

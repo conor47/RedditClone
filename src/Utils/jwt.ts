@@ -4,9 +4,7 @@ import { Response } from 'express';
 import cookie from 'cookie';
 
 const createJwt = ({ payload }: { payload: User }) => {
-  const token = jwt.sign(payload.username, process.env.JWT_SECRET!, {
-    expiresIn: process.env.JWT_LIFETIME!,
-  });
+  const token = jwt.sign(payload.username, process.env.JWT_SECRET!, {});
   return token;
 };
 

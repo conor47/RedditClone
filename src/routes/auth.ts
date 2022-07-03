@@ -1,46 +1,47 @@
 import { Request, Response, Router } from 'express';
 import { validate, isEmpty } from 'class-validator';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 
 import { attachCookiesToResponse } from '../Utils/jwt';
 import auth from '../Middleware/auth';
 import User from '../entity/User';
+import { BadRequestError } from '../errors';
+import { StatusCodes } from 'http-status-codes';
 
 // route handler for handling user registration.
 const register = async (req: Request, res: Response) => {
   const { email, username, password } = req.body;
 
-  try {
-    const emailUser = await User.findOne({ email });
-    const usernameUser = await User.findOne({ username });
-    let errors: { [key: string]: string } = {};
+  // try {
+  const emailUser = await User.findOne({ email });
+  const usernameUser = await User.findOne({ username });
+  let errors: { [key: string]: string } = {};
 
-    if (emailUser) {
-      errors.email = 'Email already taken';
-    }
-    if (usernameUser) {
-      errors.username = 'Username already taken';
-    }
-    if (Object.keys(errors).length > 0) {
-      return res.status(400).json(errors);
-    }
-
-    const user = new User({ username, email, password });
-    const validationErrors = await validate(user);
-    if (validationErrors.length > 0) {
-      console.log(errors);
-
-      return res.status(400).json(errors);
-    }
-    await user.save();
-
-    return res.status(200).send(user);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json(error);
+  if (emailUser) {
+    throw new BadRequestError('email already taken');
+    // errors.email = 'Email already taken';
   }
+  if (usernameUser) {
+    throw new BadRequestError('username already taken');
+    // errors.username = 'Username already taken';
+  }
+  if (Object.keys(errors).length > 0) {
+    return res.status(StatusCodes.BAD_REQUEST).json(errors);
+  }
+
+  const user = new User({ username, email, password });
+  const validationErrors = await validate(user);
+  if (validationErrors.length > 0) {
+    return res.status(StatusCodes.BAD_REQUEST).json(validationErrors);
+  }
+  await user.save();
+
+  return res.status(StatusCodes.OK).send(user);
+  // } catch (error) {
+  //   console.log(error);
+  //   return res.status(500).json(error);
+  // }
 };
 
 // route handler for handling user login
