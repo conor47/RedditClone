@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+require('express-async-errors');
 import express, { Request, Response } from 'express';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
@@ -9,6 +10,7 @@ import postRoutes from './routes/post';
 import subRoutes from './routes/subs';
 import trim from './Middleware/trim';
 import notFoundMiddleware from './Middleware/not-found';
+import errorHandlerMiddleware from './Middleware/error-handler';
 
 dotenv.config();
 const app = express();
@@ -25,5 +27,6 @@ app.use('/api/posts', postRoutes);
 app.use('/api/subs', subRoutes);
 
 app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 export default app;
