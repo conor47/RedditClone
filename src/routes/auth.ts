@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 
+import { attachCookiesToResponse } from '../Utils/jwt';
 import auth from '../Middleware/auth';
 import User from '../entity/User';
 
@@ -14,7 +15,7 @@ const register = async (req: Request, res: Response) => {
   try {
     const emailUser = await User.findOne({ email });
     const usernameUser = await User.findOne({ username });
-    let errors: any = {};
+    let errors: { [key: string]: string } = {};
 
     if (emailUser) {
       errors.email = 'Email already taken';
@@ -27,8 +28,8 @@ const register = async (req: Request, res: Response) => {
     }
 
     const user = new User({ username, email, password });
-    errors = await validate(user);
-    if (errors.length > 0) {
+    const validationErrors = await validate(user);
+    if (validationErrors.length > 0) {
       console.log(errors);
 
       return res.status(400).json(errors);
@@ -64,18 +65,9 @@ const login = async (req: Request, res: Response) => {
       return res.status(401).json({ password: 'Password is invalid' });
     }
 
-    const token = jwt.sign({ username }, process.env.JWT_SECRET!);
+    // create the JWT and attach it the cookies in the response
+    attachCookiesToResponse({ res, user });
 
-    res.set(
-      'Set-Cookie',
-      cookie.serialize('token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 3600,
-        path: '/',
-      })
-    );
     return res.json({ user });
   } catch (error) {
     console.log(error);

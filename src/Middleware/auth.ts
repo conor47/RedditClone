@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../entity/User';
+import { isTokenValid } from '../Utils/jwt';
 
 // middleware for extracting token cookie and performing user Authentication.
 export default async (req: Request, res: Response, next: NextFunction) => {
@@ -11,9 +12,12 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     if (!process.env.JWT_SECRET) {
       throw new Error('JWT SECRET environment variable must be defined');
     }
-    const { username }: any = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await User.findOne({ username });
+    const username = isTokenValid({ token });
+    let user: User | undefined;
+    if (typeof username === 'string') {
+      user = await User.findOne({ username });
+    }
 
     if (!user) throw new Error('Unauthenticated');
 

@@ -1,9 +1,9 @@
 import User from '../entity/User';
-import jwt, { JsonWebTokenError, JwtPayload } from 'jsonwebtoken';
-import { Response, response } from 'express';
+import jwt from 'jsonwebtoken';
+import { Response } from 'express';
 import cookie from 'cookie';
 
-const creatJwt = ({ payload }: { payload: User }) => {
+const createJwt = ({ payload }: { payload: User }) => {
   const token = jwt.sign(payload.username, process.env.JWT_SECRET!, {
     expiresIn: process.env.JWT_LIFETIME!,
   });
@@ -21,7 +21,7 @@ const attachCookiesToResponse = ({
   res: Response;
   user: User;
 }) => {
-  const token = creatJwt({ payload: user });
+  const token = createJwt({ payload: user });
   const oneDay = 1000 * 60 * 60 * 24;
   res.set(
     'Set-Cookie',
@@ -36,4 +36,4 @@ const attachCookiesToResponse = ({
   );
 };
 
-export { creatJwt, isTokenValid, attachCookiesToResponse };
+export { createJwt, isTokenValid, attachCookiesToResponse };
