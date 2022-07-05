@@ -21,5 +21,5 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   if (!user) throw new UnauthenticatedError('Unauthenticated');
 
   res.locals.user = user;
-  return next();
+  next();
 };

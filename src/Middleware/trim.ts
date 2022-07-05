@@ -9,5 +9,7 @@ export default (req: Request, _: Response, next: NextFunction): void => {
       req.body[key] = req.body[key].trim();
     }
   });
+  console.log('trimming');
+
   next();
 };

@@ -3,7 +3,6 @@ import { validate, isEmpty } from 'class-validator';
 import bcrypt from 'bcrypt';
 import cookie from 'cookie';
 
-import { attachCookiesToResponse } from '../Utils/jwt';
 import auth from '../Middleware/auth';
 import User from '../entity/User';
 import { BadRequestError } from '../errors';
@@ -48,31 +47,30 @@ const register = async (req: Request, res: Response) => {
 const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
 
-  try {
-    const errors: { [key: string]: string } = {};
-    if (isEmpty(username)) errors.username = 'Username must not be empty';
-    if (isEmpty(password)) errors.password = 'Password must not be empty';
+  console.log('login --------------');
 
-    if (Object.keys(errors).length > 0) {
-      return res.status(400).json(errors);
-    }
-    const user = await User.findOne({ username });
+  const errors: { [key: string]: string } = {};
+  if (isEmpty(username)) errors.username = 'Username must not be empty';
+  if (isEmpty(password)) errors.password = 'Password must not be empty';
 
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-      return res.status(401).json({ password: 'Password is invalid' });
-    }
-
-    console.log('session --------------------------', req.session);
-
-    return res.json({ user });
-  } catch (error) {
-    console.log(error);
-    return res.status(400).json(error);
+  if (Object.keys(errors).length > 0) {
+    return res.status(400).json(errors);
   }
+  const user = await User.findOne({ username });
+
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  if (!passwordMatch) {
+    return res.status(401).json({ password: 'Password is invalid' });
+  }
+
+  req.session.userId = user.id;
+  console.log(req.session);
+  console.log('here');
+
+  return res.json({ user });
 };
 
 // route for returning the currently logged in user

@@ -1,5 +1,6 @@
 import app from './server';
 import { createTypeormConnection } from './Utils/createTypeormConnection';
+import { redisClient } from './server';
 
 app.listen(process.env.PORT, async () => {
   console.log(`Server running at http://localhost:5000`);
@@ -8,6 +9,7 @@ app.listen(process.env.PORT, async () => {
 
     await createTypeormConnection();
     console.log('database connected');
+    await redisClient.connect();
   } catch (error) {
     console.log(error);
   }
