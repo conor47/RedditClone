@@ -1,7 +1,18 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { FormEvent, useState } from 'react';
 
-export default function Register() {
+export const Register: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [agreement, setAgreement] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const submitForm = async (e: FormEvent) => {
+    e.preventDefault();
+  };
+
   return (
     <div>
       <Head>
@@ -21,11 +32,13 @@ export default function Register() {
             <p className="mb-10 text-xs">
               By Continuing, you agree to our User Agreement and Privacy Policy
             </p>
-            <form>
+            <form onSubmit={submitForm}>
               <div className="mb-6">
                 <input
                   type="checkbox"
                   className="mr-1 cursor-pointer"
+                  checked={agreement}
+                  onChange={(e) => setAgreement(e.target.checked)}
                   id="agreement"
                 />
                 <label htmlFor="agreement" className="text-xs cursor-pointer">
@@ -33,16 +46,30 @@ export default function Register() {
                 </label>
               </div>
               <div className="mb-2">
-                <input type="email" className="input " placeholder="Email" />
+                <input
+                  type="email"
+                  className="input "
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
               <div className="mb-2">
-                <input type="text" className="input" placeholder="Username" />
+                <input
+                  type="text"
+                  className="input"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
               </div>
               <div className="mb-2">
                 <input
                   type="password"
                   className="input"
                   placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <button className="w-full py-2 mb-4 text-xs font-bold text-white uppercase bg-blue-500 border border-blue-500 rounded">
@@ -62,4 +89,6 @@ export default function Register() {
       </div>
     </div>
   );
-}
+};
+
+export default Register;
