@@ -4,6 +4,7 @@ import express, { Request, Response } from 'express';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import cookieparser from 'cookie-parser';
+import cors from 'cors';
 
 import authRoutes from './routes/auth';
 import postRoutes from './routes/post';
@@ -15,6 +16,7 @@ import errorHandlerMiddleware from './Middleware/error-handler';
 dotenv.config();
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(trim);

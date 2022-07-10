@@ -1,16 +1,37 @@
+import axios, { Axios, AxiosError } from 'axios';
 import Head from 'next/head';
 import Link from 'next/link';
 import { FormEvent, useState } from 'react';
+import classNames from 'classnames';
+import InputGroup from '../components/InputGroup';
+interface errorsState {
+  email?: string;
+  username?: string;
+  password?: string;
+}
 
 export const Register: React.FC = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [agreement, setAgreement] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<errorsState>({});
 
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();
+    try {
+      const res = await axios.post('auth/register', {
+        email,
+        password,
+        username,
+      });
+      console.log(res);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        setErrors(error.response.data);
+      }
+      console.log(error);
+    }
   };
 
   return (
@@ -45,33 +66,30 @@ export const Register: React.FC = () => {
                   I agree to get emails about cool stuff on Reddit
                 </label>
               </div>
-              <div className="mb-2">
-                <input
-                  type="email"
-                  className="input "
-                  placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="mb-2">
-                <input
-                  type="text"
-                  className="input"
-                  placeholder="Username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </div>
-              <div className="mb-2">
-                <input
-                  type="password"
-                  className="input"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
+              <InputGroup
+                placeholder="Email"
+                type="email"
+                value={email}
+                className="mb-2"
+                setValue={setEmail}
+                error={errors.email}
+              />
+              <InputGroup
+                placeholder="Username"
+                type="text"
+                value={username}
+                className="mb-2"
+                setValue={setUsername}
+                error={errors.username}
+              />
+              <InputGroup
+                placeholder="Password"
+                type="password"
+                value={password}
+                className="mb-2"
+                setValue={setPassword}
+                error={errors.password}
+              />
               <button className="w-full py-2 mb-4 text-xs font-bold text-white uppercase bg-blue-500 border border-blue-500 rounded">
                 Sign Up
               </button>
