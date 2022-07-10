@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
+
+.input {
+  @apply w-full px-3 py-3 transition-all border border-gray-300 rounded outline-none bg-gray-50;
+}
+
+.input:hover {
+  @apply hover:bg-white;
+}
+
+.input:focus {
+  @apply bg-white;
+}
+
 @tailwind utilities;

@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express';
 import { validate, isEmpty } from 'class-validator';
 import bcrypt from 'bcrypt';
 import cookie from 'cookie';
+import { buildValidationErrors } from '../Utils/buildValidationErrors';
 
 import { attachCookiesToResponse } from '../Utils/jwt';
 import auth from '../Middleware/auth';
@@ -19,21 +20,22 @@ const register = async (req: Request, res: Response) => {
   let errors: { [key: string]: string } = {};
 
   if (emailUser) {
-    throw new BadRequestError('email already taken');
-    // errors.email = 'Email already taken';
+    errors.email = 'Email already taken';
   }
   if (usernameUser) {
-    throw new BadRequestError('username already taken');
-    // errors.username = 'Username already taken';
+    errors.username = 'Username already taken';
   }
   if (Object.keys(errors).length > 0) {
+    let mappedErrors = {};
     return res.status(StatusCodes.BAD_REQUEST).json(errors);
   }
 
   const user = new User({ username, email, password });
   const validationErrors = await validate(user);
   if (validationErrors.length > 0) {
-    return res.status(StatusCodes.BAD_REQUEST).json(validationErrors);
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json(buildValidationErrors(validationErrors));
   }
   await user.save();
 

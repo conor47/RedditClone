@@ -33,23 +33,15 @@ export default function Register() {
                 </label>
               </div>
               <div className="mb-2">
-                <input
-                  type="email"
-                  className="w-full px-3 py-2 bg-gray-100 border border-gray-400"
-                  placeholder="Email"
-                />
+                <input type="email" className="input " placeholder="Email" />
               </div>
               <div className="mb-2">
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 bg-gray-100 border border-gray-400"
-                  placeholder="Username"
-                />
+                <input type="text" className="input" placeholder="Username" />
               </div>
               <div className="mb-2">
                 <input
                   type="password"
-                  className="w-full px-3 py-2 bg-gray-100 border border-gray-400"
+                  className="input"
                   placeholder="Password"
                 />
               </div>
