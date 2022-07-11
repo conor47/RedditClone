@@ -10,7 +10,7 @@ interface errorsState {
   password?: string;
 }
 
-export const Register: React.FC = () => {
+const Register: React.FC = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

@@ -4,6 +4,7 @@ import Axios from 'axios';
 
 // configure default base url to use for all backend requests
 Axios.defaults.baseURL = 'http://localhost:5001/api/';
+Axios.defaults.withCredentials = true;
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />;
