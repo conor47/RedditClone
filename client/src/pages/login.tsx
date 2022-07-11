@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FormEvent, useState } from 'react';
 import InputGroup from '../components/InputGroup';
 import { useRouter } from 'next/router';
+import { GetStaticProps } from 'next';
 
 interface errorsState {
   username?: string;

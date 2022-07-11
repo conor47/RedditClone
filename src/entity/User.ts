@@ -1,10 +1,17 @@
 import { IsEmail, MinLength } from 'class-validator';
 import { Exclude } from 'class-transformer';
 import bcrypt from 'bcrypt';
-import { Entity as ToEntity, Column, BeforeInsert, OneToMany } from 'typeorm';
+import {
+  Entity as ToEntity,
+  Column,
+  BeforeInsert,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
 
 import Entity from './Entity';
 import Post from './Post';
+import Vote from './Vote';
 
 @ToEntity('users')
 export default class User extends Entity {
@@ -30,6 +37,7 @@ export default class User extends Entity {
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
 
+  @ManyToOne(() => Vote)
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 6);
