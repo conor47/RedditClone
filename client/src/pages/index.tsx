@@ -8,25 +8,30 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { Post } from '../../types';
 import gravatar from '../../public/images/defaultGravatar.jpg';
+import { GetServerSideProps } from 'next';
 
 dayjs.extend(relativeTime);
 
-const Home: React.FC = () => {
-  const [posts, setPosts] = useState([]);
+interface HomeProps {
+  posts: Post[];
+}
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await axios.get('/posts');
-        console.log(res);
+const Home: React.FC<HomeProps> = ({ posts }) => {
+  // const [posts, setPosts] = useState([]);
 
-        setPosts(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const res = await axios.get('/posts');
+  //       console.log(res);
+
+  //       setPosts(res.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
 
   return (
     <div className="pt-12">
@@ -106,6 +111,19 @@ const Home: React.FC = () => {
       </div>
     </div>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  try {
+    const res = await axios.get('/posts');
+    return {
+      props: { posts: res.data }, // will be passed to the page component as props
+    };
+  } catch (error) {
+    return {
+      props: { error: 'something went wrong' },
+    };
+  }
 };
 
 export default Home;
