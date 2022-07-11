@@ -45,8 +45,12 @@ const Login: React.FC = () => {
           className="h-screen bg-center bg-cover w-36"
           style={{ backgroundImage: "url('/images/pattern.jpeg')" }}
         ></div>
-        <div className="flex flex-col justify-center pl-6">
-          <div className="w-min-70">
+        <div className="flex flex-col justify-center pl-6 ">
+          <div className="min-w-90">
+            <h1 className="mb-2 text-lg font-medium">Log In</h1>
+            <p className="mb-10 text-xs">
+              By Continuing, you agree to our User Agreement and Privacy Policy
+            </p>
             <form onSubmit={submitForm}>
               <InputGroup
                 placeholder="Username"

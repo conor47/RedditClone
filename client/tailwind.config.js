@@ -12,6 +12,8 @@ module.exports = {
     extend: {
       spacing: {
         70: '17.5rem',
+        90: '23.75rem',
+        160: '40rem',
       },
       colors: {
         blue: {
@@ -25,6 +27,9 @@ module.exports = {
           800: '#003054',
           900: '#00182a',
         },
+      },
+      minWidth: {
+        90: '23.75rem',
       },
     },
   },
