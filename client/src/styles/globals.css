@@ -1,5 +1,6 @@
 @tailwind base;
 @tailwind components;
+@tailwind utilities;
 
 .input {
   @apply w-full px-3 py-3 transition-all border border-gray-300 rounded outline-none bg-gray-50;
@@ -14,11 +15,21 @@
 }
 
 .button {
-  @apply inline-block text-xs font-bold text-center uppercase border rounded;
+  @apply inline-block text-xs font-bold text-center uppercase transition-all border rounded-3xl;
 }
 
 .button.blue {
   @apply text-white bg-blue-500 border-blue-500;
 }
 
-@tailwind utilities;
+.button.blue:hover {
+  @apply bg-blue-400 border-blue-300;
+}
+
+.button.blue.hollow {
+  @apply text-blue-500 bg-transparent border-blue-500;
+}
+
+.button.blue.hollow:hover {
+  @apply bg-blue-50;
+}
