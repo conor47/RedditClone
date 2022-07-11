@@ -9,6 +9,7 @@ import cors from 'cors';
 import authRoutes from './routes/auth';
 import postRoutes from './routes/post';
 import subRoutes from './routes/subs';
+import votingRoutes from './routes/voting';
 import trim from './Middleware/trim';
 import notFoundMiddleware from './Middleware/not-found';
 import errorHandlerMiddleware from './Middleware/error-handler';
@@ -33,6 +34,7 @@ app.get('/', (_: Request, res: Response) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/subs', subRoutes);
+app.use('/api/votes', votingRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
