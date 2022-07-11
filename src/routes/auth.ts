@@ -2,13 +2,12 @@ import { Request, Response, Router } from 'express';
 import { validate, isEmpty } from 'class-validator';
 import bcrypt from 'bcrypt';
 import cookie from 'cookie';
-import { buildValidationErrors } from '../Utils/buildValidationErrors';
 
 import { attachCookiesToResponse } from '../Utils/jwt';
 import auth from '../Middleware/auth';
 import User from '../entity/User';
-import { BadRequestError } from '../errors';
 import { StatusCodes } from 'http-status-codes';
+import buildValidationErrors from '../Utils/buildValidationErrors';
 
 // route handler for handling user registration.
 const register = async (req: Request, res: Response) => {
@@ -26,12 +25,12 @@ const register = async (req: Request, res: Response) => {
     errors.username = 'Username already taken';
   }
   if (Object.keys(errors).length > 0) {
-    let mappedErrors = {};
     return res.status(StatusCodes.BAD_REQUEST).json(errors);
   }
 
   const user = new User({ username, email, password });
   const validationErrors = await validate(user);
+
   if (validationErrors.length > 0) {
     return res
       .status(StatusCodes.BAD_REQUEST)
@@ -61,7 +60,7 @@ const login = async (req: Request, res: Response) => {
     const user = await User.findOne({ username });
 
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ username: 'User not found' });
     }
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {

@@ -8,6 +8,7 @@ const errorHandlerMiddleware = (
   __: NextFunction
 ) => {
   console.log('in error handler middleware');
+  console.log(err);
 
   let customError = {
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
