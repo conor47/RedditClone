@@ -37,6 +37,9 @@ export default class User extends Entity {
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
 
+  @OneToMany(() => Vote, (vote) => vote.user)
+  votes: Vote[];
+
   @ManyToOne(() => Vote)
   @BeforeInsert()
   async hashPassword() {

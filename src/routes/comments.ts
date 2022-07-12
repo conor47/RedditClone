@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import Comment from '../entity/Comment';
 import Post from '../entity/Post';
 import User from '../entity/User';
+import { BadRequestError } from '../errors';
 import auth from '../Middleware/auth';
 
 const commentOnPost = async (req: Request, res: Response) => {
@@ -30,9 +31,28 @@ const getAllComments = async (req: Request, res: Response) => {
   }
 };
 
+const getSingleComment = async (req: Request, res: Response) => {
+  const { identifier } = req.params;
+
+  try {
+    if (!identifier) {
+      throw new BadRequestError('Comment identifier is required');
+    }
+    const comment = await Comment.findOneOrFail(
+      { identifier },
+      { relations: ['votes'] }
+    );
+    return res.status(200).json(comment);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ err: 'Something went wrong' });
+  }
+};
+
 const router = Router();
 
 router.post('/:identifier/:slug', auth, commentOnPost);
-router.get('/', auth, getAllComments);
+router.get('/', getAllComments);
+router.get('/:identifier', getSingleComment);
 
 export default router;
