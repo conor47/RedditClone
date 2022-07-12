@@ -1,7 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import { commentOnPost } from './comments';
 import Post from '../entity/Post';
 import Sub from '../entity/Sub';
 import auth from '../Middleware/auth';
@@ -60,6 +59,5 @@ const router = Router();
 router.post('/', auth, createPost);
 router.get('/', getPosts);
 router.get('/:identifier/:slug', getPost);
-router.post('/:identifier/:slug/comments', auth, commentOnPost);
 
 export default router;
