@@ -18,8 +18,15 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
   return (
     <div key={post.identifier} className="flex mb-4 bg-white rounded">
       {/* vote section */}
-      <div className="flex items-center justify-center w-10 bg-gray-200 rounded-l">
-        <p>V</p>
+
+      <div className="flex flex-col items-center justify-start w-10 bg-gray-200 rounded-l">
+        <div className="w-6 mt-2 text-gray-400 transition-all translate-x-1 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500 hover:bg-transparent">
+          <i className="icon-arrow-up"></i>
+        </div>
+        <p>{post.voteScore}</p>
+        <div className="w-6 text-gray-400 transition-all translate-x-1 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500 hover:bg-transparent">
+          <i className="icon-arrow-down"></i>
+        </div>
       </div>
       {/* post data */}
       <div className="w-full p-2">
@@ -63,7 +70,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
             <a>
               <ActionButton>
                 <i className="mr-1 fas fa-comment-alt "></i>
-                <span className="font-bold">20 comments</span>
+                <span className="font-bold">{post.commentCount}</span>
               </ActionButton>
             </a>
           </Link>

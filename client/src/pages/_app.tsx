@@ -1,5 +1,6 @@
 import type { AppProps } from 'next/app';
 import '../styles/globals.css';
+import '../styles/icons.css';
 import Axios from 'axios';
 import { useRouter } from 'next/router';
 

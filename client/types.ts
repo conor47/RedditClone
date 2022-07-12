@@ -9,5 +9,8 @@ export interface Post {
   updatedAt: string;
 
   // virtual fields
+  voteScore?: number;
   url: string;
+  commentCount?: number;
+  userVote?: number;
 }
