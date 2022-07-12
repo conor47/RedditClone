@@ -4,6 +4,7 @@ import React from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
+import ActionButton from './ActionButton';
 import gravatar from '../../public/images/defaultGravatar.jpg';
 import { Post } from '../../types';
 
@@ -60,21 +61,21 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
         <div className="flex">
           <Link href={post.url}>
             <a>
-              <div className="px-1 py-1 mr-1 text-xs text-gray-400 rounded cursor-pointer hover:bg-gray-200">
+              <ActionButton>
                 <i className="mr-1 fas fa-comment-alt "></i>
                 <span className="font-bold">20 comments</span>
-              </div>
+              </ActionButton>
             </a>
           </Link>
 
-          <div className="px-1 py-1 mr-1 text-xs text-gray-400 rounded cursor-pointer hover:bg-gray-200">
+          <ActionButton>
             <i className="mr-1 fas fa-share"></i>
             <span className="font-bold">Share</span>
-          </div>
-          <div className="px-1 py-1 mr-1 text-xs text-gray-400 rounded cursor-pointer hover:bg-gray-200">
+          </ActionButton>
+          <ActionButton>
             <i className="mr-1 fas fa-bookmark "></i>
             <span className="font-bold">Save</span>
-          </div>
+          </ActionButton>
         </div>
       </div>
     </div>
