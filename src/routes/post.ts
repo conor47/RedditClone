@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import Post from '../entity/Post';
 import Sub from '../entity/Sub';
 import auth from '../Middleware/auth';
+import user from '../Middleware/user';
 
 const createPost = async (req: Request, res: Response) => {
   const { title, body, sub } = req.body;
@@ -57,8 +58,8 @@ const getPost = async (req: Request, res: Response) => {
 };
 
 const router = Router();
-router.post('/', auth, createPost);
-router.get('/', getPosts);
+router.post('/', user, auth, createPost);
+router.get('/', user, getPosts);
 router.get('/:identifier/:slug', getPost);
 
 export default router;

@@ -1,10 +1,12 @@
 import { Request, Response, Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
+
 import Comment from '../entity/Comment';
 import Post from '../entity/Post';
 import User from '../entity/User';
 import { BadRequestError } from '../errors';
 import auth from '../Middleware/auth';
+import user from '../Middleware/user';
 
 const commentOnPost = async (req: Request, res: Response) => {
   const { identifier, slug } = req.params;
@@ -51,7 +53,7 @@ const getSingleComment = async (req: Request, res: Response) => {
 
 const router = Router();
 
-router.post('/:identifier/:slug', auth, commentOnPost);
+router.post('/:identifier/:slug', user, auth, commentOnPost);
 router.get('/', getAllComments);
 router.get('/:identifier', getSingleComment);
 

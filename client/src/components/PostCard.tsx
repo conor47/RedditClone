@@ -7,6 +7,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import ActionButton from './ActionButton';
 import gravatar from '../../public/images/defaultGravatar.jpg';
 import { Post } from '../../types';
+import axios from 'axios';
 
 dayjs.extend(relativeTime);
 
@@ -14,24 +15,57 @@ interface PostCardProps {
   post: Post;
 }
 
-const PostCard: React.FC<PostCardProps> = ({ post }) => {
+const PostCard: React.FC<PostCardProps> = ({
+  post: {
+    identifier,
+    voteScore,
+    title,
+    body,
+    subName,
+    createdAt,
+    slug,
+    userVote,
+    username,
+    url,
+    commentCount,
+  },
+}) => {
+  const castVote = async (value: number) => {
+    try {
+      const res = await axios.post('/votes/vote', {
+        identifier: identifier,
+        slug,
+        value,
+      });
+      console.log(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <div key={post.identifier} className="flex mb-4 bg-white rounded">
+    <div key={identifier} className="flex mb-4 bg-white rounded">
       {/* vote section */}
 
       <div className="flex flex-col items-center justify-start w-10 bg-gray-200 rounded-l">
-        <div className="w-6 mt-2 text-gray-400 transition-all translate-x-1 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500 hover:bg-transparent">
+        <div
+          className="w-6 mt-2 text-gray-400 transition-all translate-x-1 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500 hover:bg-transparent"
+          onClick={() => castVote(1)}
+        >
           <i className="icon-arrow-up"></i>
         </div>
-        <p>{post.voteScore}</p>
-        <div className="w-6 text-gray-400 transition-all translate-x-1 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500 hover:bg-transparent">
+        <p className="text-xs font-bold">{voteScore}</p>
+        <div
+          className="w-6 text-gray-400 transition-all translate-x-1 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500 hover:bg-transparent"
+          onClick={() => castVote(-1)}
+        >
           <i className="icon-arrow-down"></i>
         </div>
       </div>
-      {/* post data */}
+      {/* data */}
       <div className="w-full p-2">
         <div className="flex items-center">
-          <Link href={`/r/${post.subName}`}>
+          <Link href={`/r/${subName}`}>
             <Image
               src={gravatar}
               alt="placeholder gravatar"
@@ -40,37 +74,35 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
               className="rounded-full cursor-pointer"
             />
           </Link>
-          <Link href={`/r/${post.subName}`}>
-            <a className="text-xs font-bold hover:underline">
-              /r/{post.subName}
-            </a>
+          <Link href={`/r/${subName}`}>
+            <a className="text-xs font-bold hover:underline">/r/{subName}</a>
           </Link>
           <p className="text-xs text-gray-500">
             <span className="mx-1">•</span> Posted by
             <Link href={`/u/user`}>
               <a href="" className="mx-1 hover:underline">
-                {post.username}
+                {username}
               </a>
             </Link>
-            <Link href={post.url}>
+            <Link href={url}>
               <a className="mx-1 hover:underline">
-                {dayjs(post.createdAt).fromNow()}
+                {dayjs(createdAt).fromNow()}
               </a>
             </Link>
           </p>
         </div>
-        <Link href={post.url}>
+        <Link href={url}>
           <a href="" className="my-1 text-lg font-medium">
-            {post.title}
+            {title}
           </a>
         </Link>
-        {post.body && <p className="my-1 text-sm">{post.body}</p>}
+        {body && <p className="my-1 text-sm">{body}</p>}
         <div className="flex">
-          <Link href={post.url}>
+          <Link href={url}>
             <a>
               <ActionButton>
                 <i className="mr-1 fas fa-comment-alt "></i>
-                <span className="font-bold">{post.commentCount}</span>
+                <span className="font-bold">{commentCount}</span>
               </ActionButton>
             </a>
           </Link>

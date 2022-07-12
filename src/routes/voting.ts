@@ -1,13 +1,13 @@
-import e, { Router } from 'express';
+import { Router } from 'express';
 import { Request, Response } from 'express-serve-static-core';
-import { BaseEntity } from 'typeorm';
+
 import Comment from '../entity/Comment';
 import Post from '../entity/Post';
 import User from '../entity/User';
 import Vote from '../entity/Vote';
 import { BadRequestError } from '../errors';
 import auth from '../Middleware/auth';
-import { createVotesTable1657576902658 } from '../migration/1657576902658-create-votes-table';
+import user from '../Middleware/user';
 
 const vote = async (req: Request, res: Response) => {
   const { identifier, slug, commentIdentifier, value } = req.body;
@@ -70,6 +70,6 @@ const vote = async (req: Request, res: Response) => {
 };
 const router = Router();
 
-router.post('/vote', auth, vote);
+router.post('/vote', user, auth, vote);
 
 export default router;

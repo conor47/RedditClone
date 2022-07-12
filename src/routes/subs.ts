@@ -5,6 +5,7 @@ import Sub from '../entity/Sub';
 
 import User from '../entity/User';
 import auth from '../Middleware/auth';
+import user from '../Middleware/user';
 
 const createSub = async (req: Request, res: Response) => {
   const { name, title, description } = req.body;
@@ -42,6 +43,6 @@ const createSub = async (req: Request, res: Response) => {
 };
 
 const router = Router();
-router.post('/', auth, createSub);
+router.post('/', user, auth, createSub);
 
 export default router;
