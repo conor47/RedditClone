@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import classNames from 'classnames';
 
 import ActionButton from './ActionButton';
 import gravatar from '../../public/images/defaultGravatar.jpg';
@@ -30,6 +31,8 @@ const PostCard: React.FC<PostCardProps> = ({
     commentCount,
   },
 }) => {
+  console.log('uservote ', userVote);
+
   const castVote = async (value: number) => {
     try {
       const res = await axios.post('/votes/vote', {
@@ -37,7 +40,7 @@ const PostCard: React.FC<PostCardProps> = ({
         slug,
         value,
       });
-      console.log(res.data);
+      console.log(res.data.userVote);
     } catch (error) {
       console.error(error);
     }
@@ -52,14 +55,22 @@ const PostCard: React.FC<PostCardProps> = ({
           className="w-6 mt-2 text-gray-400 transition-all translate-x-1 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500 hover:bg-transparent"
           onClick={() => castVote(1)}
         >
-          <i className="icon-arrow-up"></i>
+          <i
+            className={classNames('icon-arrow-up', {
+              'text-red-500': userVote === 1,
+            })}
+          ></i>
         </div>
         <p className="text-xs font-bold">{voteScore}</p>
         <div
           className="w-6 text-gray-400 transition-all translate-x-1 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500 hover:bg-transparent"
           onClick={() => castVote(-1)}
         >
-          <i className="icon-arrow-down"></i>
+          <i
+            className={classNames('icon-arrow-down', {
+              'text-blue-600': userVote === -1,
+            })}
+          ></i>
         </div>
       </div>
       {/* data */}
