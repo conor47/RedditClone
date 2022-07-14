@@ -82,7 +82,7 @@ const PostCard: React.FC<PostCardProps> = ({
       </div>
       {/* data */}
       <div className="w-full p-2">
-        <div className="flex items-center">
+        <div className="flex items-center ">
           <Link href={`/r/${subName}`}>
             <Image
               src={gravatar}
@@ -93,7 +93,7 @@ const PostCard: React.FC<PostCardProps> = ({
             />
           </Link>
           <Link href={`/r/${subName}`}>
-            <a className="ml-1 text-xs font-thin font-bold hover:underline">
+            <a className="ml-1 text-xs font-semibold hover:underline">
               /r/{subName}
             </a>
           </Link>

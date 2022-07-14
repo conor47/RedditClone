@@ -49,12 +49,14 @@ const Home: React.FC<HomeProps> = ({ posts }) => {
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   try {
     // we must explicitly include the cookies since this request is made on the server where cookies are not automatically passed
+
     const res = await axios.get('/posts', {
       withCredentials: true,
       headers: {
-        Cookie: req.headers.cookie,
+        Cookie: req.headers.cookie ? req.headers.cookie : '',
       },
     });
+
     return {
       props: { posts: res.data }, // will be passed to the page component as props
     };

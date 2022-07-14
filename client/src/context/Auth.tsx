@@ -1,4 +1,5 @@
-import { createContext, useContext, useReducer } from 'react';
+import axios from 'axios';
+import { createContext, useContext, useEffect, useReducer } from 'react';
 
 import { User, Actions } from '../../types';
 
@@ -45,6 +46,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     user: null,
     authenticated: false,
   });
+
+  useEffect(() => {
+    async function loadUser() {
+      try {
+        const res = await axios.get('/auth/me ');
+        dispatch({ type: Actions.login, payload: res.data });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    loadUser();
+  }, []);
 
   return (
     <DispatchContext.Provider value={dispatch}>
