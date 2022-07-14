@@ -61,7 +61,14 @@ const PostCard: React.FC<PostCardProps> = ({
             })}
           ></i>
         </div>
-        <p className="text-xs font-bold">{voteScore}</p>
+        <p
+          className={classNames('text-xs font-bold ', {
+            'text-red-500': userVote === 1,
+            'text-blue-500': userVote === -1,
+          })}
+        >
+          {voteScore}
+        </p>
         <div
           className="w-6 text-gray-400 transition-all translate-x-1 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500 hover:bg-transparent"
           onClick={() => castVote(-1)}
@@ -86,7 +93,9 @@ const PostCard: React.FC<PostCardProps> = ({
             />
           </Link>
           <Link href={`/r/${subName}`}>
-            <a className="text-xs font-bold hover:underline">/r/{subName}</a>
+            <a className="ml-1 text-xs font-thin font-bold hover:underline">
+              /r/{subName}
+            </a>
           </Link>
           <p className="text-xs text-gray-500">
             <span className="mx-1">•</span> Posted by
@@ -120,11 +129,11 @@ const PostCard: React.FC<PostCardProps> = ({
 
           <ActionButton>
             <i className="mr-1 fas fa-share"></i>
-            <span className="font-bold">Share</span>
+            <span className="font-medium">Share</span>
           </ActionButton>
           <ActionButton>
             <i className="mr-1 fas fa-bookmark "></i>
-            <span className="font-bold">Save</span>
+            <span className="font-medium">Save</span>
           </ActionButton>
         </div>
       </div>
