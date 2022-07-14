@@ -25,4 +25,5 @@ export interface User {
 export enum Actions {
   login = 'LOGIN',
   logout = 'LOGOUT',
+  stop_loading = 'STOP_LOADING',
 }

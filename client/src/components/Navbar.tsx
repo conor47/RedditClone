@@ -7,7 +7,7 @@ import axios from 'axios';
 import { Actions } from '../../types';
 
 const Navbar: React.FC = () => {
-  const { authenticated } = useAuthState();
+  const { authenticated, loading } = useAuthState();
   const dispatch = useAuthDispatch();
 
   const logout = async (): Promise<void> => {
@@ -40,31 +40,32 @@ const Navbar: React.FC = () => {
       </div>
       {/* Auth buttons */}
       <div className="flex">
-        {authenticated ? (
-          // show logout
-          <button
-            className="w-32 py-1 mr-4 leading-5 hollow button blue"
-            onClick={logout}
-          >
-            Logout
-          </button>
-        ) : (
-          <Fragment>
-            <Link href="/login">
-              <a
-                href=""
-                className="w-32 py-1 mr-4 leading-5 hollow button blue"
-              >
-                Log In
-              </a>
-            </Link>
-            <Link href="/register">
-              <a href="" className="w-32 py-1 leading-5 button blue">
-                Sign Up
-              </a>
-            </Link>
-          </Fragment>
-        )}
+        {!loading &&
+          (authenticated ? (
+            // show logout
+            <button
+              className="w-32 py-1 mr-4 leading-5 hollow button blue"
+              onClick={logout}
+            >
+              Logout
+            </button>
+          ) : (
+            <Fragment>
+              <Link href="/login">
+                <a
+                  href=""
+                  className="w-32 py-1 mr-4 leading-5 hollow button blue"
+                >
+                  Log In
+                </a>
+              </Link>
+              <Link href="/register">
+                <a href="" className="w-32 py-1 leading-5 button blue">
+                  Sign Up
+                </a>
+              </Link>
+            </Fragment>
+          ))}
       </div>
     </nav>
   );

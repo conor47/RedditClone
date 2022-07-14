@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FormEvent, useState } from 'react';
 import InputGroup from '../components/InputGroup';
 import { useRouter } from 'next/router';
+import { useAuthState } from '../context/Auth';
 interface errorsState {
   email?: string;
   username?: string;
@@ -16,8 +17,13 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState('');
   const [agreement, setAgreement] = useState(false);
   const [errors, setErrors] = useState<errorsState>({});
+  const { authenticated } = useAuthState();
 
   const router = useRouter();
+
+  if (authenticated) {
+    router.push('/');
+  }
 
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();

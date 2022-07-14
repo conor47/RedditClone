@@ -5,7 +5,7 @@ import { FormEvent, useState } from 'react';
 import InputGroup from '../components/InputGroup';
 import { useRouter } from 'next/router';
 
-import { useAuthDispatch } from '../context/Auth';
+import { useAuthDispatch, useAuthState } from '../context/Auth';
 import { Actions } from '../../types';
 
 interface errorsState {
@@ -18,8 +18,13 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<errorsState>({});
   const dispatch = useAuthDispatch();
+  const { authenticated } = useAuthState();
 
   const router = useRouter();
+
+  if (authenticated) {
+    router.push('/');
+  }
 
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();
