@@ -1,5 +1,6 @@
 import { createContext, useContext, useReducer } from 'react';
-import { User } from '../../types';
+
+import { User, Actions } from '../../types';
 
 interface State {
   authenticated: boolean;
@@ -7,7 +8,7 @@ interface State {
 }
 
 interface Action {
-  type: string;
+  type: Actions;
   payload: any;
 }
 
@@ -20,14 +21,14 @@ const DispatchContext = createContext(null);
 
 const reducer = (state: State, { type, payload }: Action) => {
   switch (type) {
-    case 'LOGIN':
+    case Actions.login:
       return {
         ...state,
         authenticated: true,
         user: payload,
       };
 
-    case 'LOGOUT':
+    case Actions.logout:
       return {
         ...state,
         authenticated: false,

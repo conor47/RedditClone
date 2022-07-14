@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 
 import Navbar from '../components/Navbar';
 import { Fragment } from 'react';
+import { AuthProvider } from '../context/Auth';
 
 // configure default base url and credentials to use for all backend requests
 Axios.defaults.baseURL = 'http://localhost:5001/api/';
@@ -19,9 +20,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const authRoute = authRoutes.includes(pathname);
 
   return (
-    <Fragment>
+    <AuthProvider>
       {!authRoute && <Navbar />}
       <Component {...pageProps} />
-    </Fragment>
+    </AuthProvider>
   );
 }

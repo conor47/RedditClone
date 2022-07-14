@@ -4,7 +4,9 @@ import Link from 'next/link';
 import { FormEvent, useState } from 'react';
 import InputGroup from '../components/InputGroup';
 import { useRouter } from 'next/router';
-import { GetStaticProps } from 'next';
+
+import { useAuthDispatch } from '../context/Auth';
+import { Actions } from '../../types';
 
 interface errorsState {
   username?: string;
@@ -15,16 +17,18 @@ const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<errorsState>({});
+  const dispatch = useAuthDispatch();
 
   const router = useRouter();
 
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post('auth/login', {
+      const res = await axios.post('auth/login', {
         password,
         username,
       });
+      dispatch({ type: Actions.login, payload: res.data });
       router.push('/');
     } catch (error) {
       if (error instanceof AxiosError) {

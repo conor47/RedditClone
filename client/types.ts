@@ -21,3 +21,8 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
+
+export enum Actions {
+  login = 'LOGIN',
+  logout = 'LOGOUT',
+}
