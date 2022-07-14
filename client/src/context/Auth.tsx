@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useContext, useReducer } from 'react';
 import { User } from '../../types';
 
 interface State {
@@ -37,4 +37,24 @@ const reducer = (state: State, { type, payload }: Action) => {
     default:
       throw new Error(`Unknown action type : ${type}`);
   }
+};
+
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [state, dispatch] = useReducer(reducer, {
+    user: null,
+    authenticated: false,
+  });
+
+  return (
+    <DispatchContext.Provider value={dispatch}>
+      <StateContext.Provider value={state}>{children}</StateContext.Provider>
+    </DispatchContext.Provider>
+  );
+};
+
+export const useAuthState = () => {
+  return useContext(StateContext);
+};
+export const useAuthDispatch = () => {
+  return useContext(DispatchContext);
 };
