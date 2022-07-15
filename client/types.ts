@@ -22,6 +22,15 @@ export interface User {
   updatedAt: string;
 }
 
+export interface Sub {
+  postCount?: number;
+  name: string;
+  imageUrl: string;
+  title: string;
+  description: string;
+  createdAt: string;
+}
+
 export enum Actions {
   login = 'LOGIN',
   logout = 'LOGOUT',

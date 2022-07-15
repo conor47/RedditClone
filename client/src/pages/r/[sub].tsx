@@ -1,11 +1,13 @@
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import PostCard from '../../components/PostCard';
+import SideBar from '../../components/SideBar';
 
 const Sub: React.FC = () => {
   const router = useRouter();
 
   const subName = router.query.sub;
+  console.log('router obj ---------', subName);
 
   const {
     data: sub,
@@ -30,7 +32,8 @@ const Sub: React.FC = () => {
   }
   return (
     <div className="container flex pt-5">
-      {sub && <div className="w-160">{postsMarkup}</div>}
+      <div className="w-160">{postsMarkup}</div>
+      {sub && <SideBar sub={sub} />}
     </div>
   );
 };

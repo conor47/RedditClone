@@ -3,6 +3,9 @@
 module.exports = {
   reactStrictMode: true,
   // next.config.js
+  images: {
+    domains: ['localhost', 'www.gravatar.com'],
+  },
 
   webpack(config) {
     config.module.rules.push({
