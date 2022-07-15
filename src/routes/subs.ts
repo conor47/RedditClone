@@ -5,6 +5,7 @@ import Post from '../entity/Post';
 import Sub from '../entity/Sub';
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 
 import User from '../entity/User';
 import { BadRequestError, NotFoundError } from '../errors';
@@ -79,7 +80,7 @@ const ownSub = async (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const sub = await Sub.findOneOrFail({ name: req.params.name });
-
+    // if the subs owner doesn't match the requesting user's username
     if (sub.username !== user.username) {
       throw new Unauthorized('You are not authorized');
     } else {
@@ -110,8 +111,41 @@ const upload = multer({
   },
 });
 
+// route for handling file upload
 const uploadSubImage = async (req: Request, res: Response) => {
-  return res.json({ success: true });
+  const sub: Sub = res.locals.sub;
+  try {
+    const type = req.body.type;
+
+    // handle invalid file types
+    if (type !== 'image' && type !== 'banner') {
+      // delete the uploaded file
+      fs.unlinkSync(req.file!.path!);
+      return res.status(400).json({ error: 'Invalid type' });
+    }
+    const urn = req.file!.filename;
+    // use the type key in the request object to determine whether the uploaded file is for the sub image or banner
+    // use oldImageUrn store the old image urn if one exists
+    let oldImageUrn: string = '';
+    if (type === 'image') {
+      oldImageUrn = sub.imageUrn || '';
+      sub.imageUrn = urn;
+    } else {
+      oldImageUrn = sub.bannerUrn || '';
+      sub.bannerUrn = urn;
+    }
+    // if an old image urn exists delete it
+    if (oldImageUrn !== '') {
+      fs.unlinkSync(`public/images/${oldImageUrn}`);
+    }
+
+    await sub.save();
+    return res.json(sub);
+  } catch (error) {
+    console.log(error);
+
+    throw new BadRequestError('something went wrong');
+  }
 };
 
 const router = Router();
