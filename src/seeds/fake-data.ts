@@ -55,7 +55,7 @@ export default class CreateData implements Seeder {
       .into(Sub)
       .values([
         {
-          name: 'gaming',
+          name: 'Gaming',
           title: 'Everything about gaming',
           description:
             'A subreddit for (almost) anything related to games - video games, board games, card games, etc. (but not sports).',
@@ -64,7 +64,7 @@ export default class CreateData implements Seeder {
           updatedAt: timePlus(minute * 20),
         },
         {
-          name: 'funny',
+          name: 'Funny',
           title: 'Everything Funny',
           description:
             "Welcome to r/Funny, Reddit's largest humour depository.",

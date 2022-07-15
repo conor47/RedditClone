@@ -1,31 +1,18 @@
-import axios from 'axios';
 import Head from 'next/head';
 
 import { Post } from '../../types';
-import { GetServerSideProps } from 'next';
+import useSWR from 'swr';
 import PostCard from '../components/PostCard';
+import axios from 'axios';
 
 interface HomeProps {
   posts: Post[];
 }
 
-const Home: React.FC<HomeProps> = ({ posts }) => {
-  // const [posts, setPosts] = useState([]);
+const Home: React.FC = () => {
+  const { data: posts, error, isValidating } = useSWR('posts');
 
-  // standard data fetching using useEffect hook
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     try {
-  //       const res = await axios.get('/posts');
-  //       console.log(res);
-
-  //       setPosts(res.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  //   fetchData();
-  // }, []);
+  console.log('validating ..', isValidating);
 
   return (
     <div className="pt-12">
@@ -35,9 +22,10 @@ const Home: React.FC<HomeProps> = ({ posts }) => {
       <div className="container flex pt-4">
         {/* Posts feed */}
         <div className="w-160">
-          {posts.map((post: Post) => (
-            <PostCard post={post} key={post.identifier} />
-          ))}
+          {!isValidating &&
+            posts.map((post: Post) => (
+              <PostCard post={post} key={post.identifier} />
+            ))}
         </div>
         {/* Sidebar */}
       </div>
@@ -46,25 +34,25 @@ const Home: React.FC<HomeProps> = ({ posts }) => {
 };
 
 // server side rendering. Fetching posts server side
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  try {
-    // we must explicitly include the cookies since this request is made on the server where cookies are not automatically passed
+// export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+//   try {
+// we must explicitly include the cookies since this request is made on the server where cookies are not automatically passed
 
-    const res = await axios.get('/posts', {
-      withCredentials: true,
-      headers: {
-        Cookie: req.headers.cookie ? req.headers.cookie : '',
-      },
-    });
+//     const res = await axios.get('/posts', {
+//       withCredentials: true,
+//       headers: {
+//         Cookie: req.headers.cookie ? req.headers.cookie : '',
+//       },
+//     });
 
-    return {
-      props: { posts: res.data }, // will be passed to the page component as props
-    };
-  } catch (error) {
-    return {
-      props: { error: 'something went wrong' },
-    };
-  }
-};
+//     return {
+//       props: { posts: res.data }, // will be passed to the page component as props
+//     };
+//   } catch (error) {
+//     return {
+//       props: { error: 'something went wrong' },
+//     };
+//   }
+// };
 
 export default Home;

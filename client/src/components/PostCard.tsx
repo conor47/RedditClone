@@ -116,7 +116,11 @@ const PostCard: React.FC<PostCardProps> = ({
             {title}
           </a>
         </Link>
-        {body && <p className="my-1 text-sm">{body}</p>}
+        {body && (
+          <p className="my-1 text-sm">
+            {body.length < 100 ? body : body.substring(0, 150) + ' ...'}
+          </p>
+        )}
         <div className="flex">
           <Link href={url}>
             <a>
