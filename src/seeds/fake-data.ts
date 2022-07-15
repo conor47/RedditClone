@@ -55,7 +55,7 @@ export default class CreateData implements Seeder {
       .into(Sub)
       .values([
         {
-          name: 'Gaming',
+          name: 'gaming',
           title: 'Everything about gaming',
           description:
             'A subreddit for (almost) anything related to games - video games, board games, card games, etc. (but not sports).',
@@ -64,7 +64,7 @@ export default class CreateData implements Seeder {
           updatedAt: timePlus(minute * 20),
         },
         {
-          name: 'Funny',
+          name: 'funny',
           title: 'Everything Funny',
           description:
             "Welcome to r/Funny, Reddit's largest humour depository.",
@@ -73,7 +73,7 @@ export default class CreateData implements Seeder {
           updatedAt: timePlus(minute * 25),
         },
         {
-          name: 'Movies',
+          name: 'movies',
           title: 'Everything about movies',
           description:
             'The goal of /r/Movies is to provide an inclusive place for discussions and news about films with major releases. ',
@@ -82,7 +82,7 @@ export default class CreateData implements Seeder {
           updatedAt: timePlus(minute * 30),
         },
         {
-          name: 'Books',
+          name: 'books',
           title: 'Everything about books',
           description:
             'This is a moderated subreddit. It is our intent and purpose to foster and encourage in-depth discussion about all things related to books, authors, genres, or publishing.',
@@ -91,7 +91,7 @@ export default class CreateData implements Seeder {
           updatedAt: timePlus(hour),
         },
         {
-          name: 'News',
+          name: 'news',
           title: 'Everything about the news',
           description:
             'The place for news articles about current events in the United States and the rest of the world. Discuss it all here.',
@@ -100,7 +100,7 @@ export default class CreateData implements Seeder {
           updatedAt: timePlus(hour),
         },
         {
-          name: 'AskReddit',
+          name: 'ask reddit',
           title: 'Ask reddit a question',
           description:
             'r/AskReddit is the place to ask and answer thought-provoking questions.',
@@ -111,10 +111,10 @@ export default class CreateData implements Seeder {
       ])
       .execute();
 
-    const gaming = await Sub.findOne({ where: { name: 'Gaming' } });
-    const askReddit = await Sub.findOne({ where: { name: 'AskReddit' } });
-    const movies = await Sub.findOne({ where: { name: 'Movies' } });
-    const books = await Sub.findOne({ where: { name: 'Books' } });
+    const gaming = await Sub.findOne({ where: { name: 'gaming' } });
+    const askReddit = await Sub.findOne({ where: { name: 'ask reddit' } });
+    const movies = await Sub.findOne({ where: { name: 'movies' } });
+    const books = await Sub.findOne({ where: { name: 'books' } });
 
     // Create posts
     await connection
