@@ -1,6 +1,6 @@
 import { isEmpty } from 'class-validator';
 import { Request, Response, Router } from 'express';
-import { getRepository } from 'typeorm';
+import { getConnection, getRepository } from 'typeorm';
 import Post from '../entity/Post';
 import Sub from '../entity/Sub';
 import multer from 'multer';
@@ -148,8 +148,30 @@ const uploadSubImage = async (req: Request, res: Response) => {
   }
 };
 
+const topSubs = async (req: Request, res: Response) => {
+  const imageUrlExp = `COALESCE('${process.env.APP_URL}/images/' || s."imageUrn" , 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y')`;
+  try {
+    const subs = await getConnection()
+      .createQueryBuilder()
+      .select(
+        `s.title,s.name,${imageUrlExp} as "imageUrl",count(p.id) as "postCount"`
+      )
+      .from(Sub, 's')
+      .leftJoin(Post, 'p', `s.name = p."subName"`)
+      .groupBy('s.title,s.name,"imageUrl"')
+      .orderBy(`"postCount"`, 'DESC')
+      .limit(5)
+      .execute();
+
+    return res.json(subs);
+  } catch (error) {
+    throw new BadRequestError('Something went wrong');
+  }
+};
+
 const router = Router();
 router.post('/', user, auth, createSub);
+router.get('/topSubs', topSubs);
 router.get('/:name', user, getSub);
 router.post(
   '/:name/image',
