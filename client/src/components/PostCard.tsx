@@ -31,8 +31,6 @@ const PostCard: React.FC<PostCardProps> = ({
     commentCount,
   },
 }) => {
-  console.log('uservote ', userVote);
-
   const castVote = async (value: number) => {
     try {
       const res = await axios.post('/votes/vote', {
@@ -40,7 +38,6 @@ const PostCard: React.FC<PostCardProps> = ({
         slug,
         value,
       });
-      console.log(res.data.userVote);
     } catch (error) {
       console.error(error);
     }

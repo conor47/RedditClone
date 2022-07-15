@@ -13,8 +13,6 @@ Axios.defaults.baseURL = 'http://localhost:5001/api/';
 Axios.defaults.withCredentials = true;
 
 const fetcher = async (url: string) => {
-  console.log('in fetcher ========', url);
-
   try {
     const res = await Axios.get(url);
     return res.data;
@@ -39,7 +37,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     >
       <AuthProvider>
         {!authRoute && <Navbar />}
-        <Component {...pageProps} />
+        <div className={authRoute ? '' : 'pt-12'}>
+          <Component {...pageProps} />
+        </div>
       </AuthProvider>
     </SWRConfig>
   );

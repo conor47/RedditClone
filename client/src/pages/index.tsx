@@ -4,6 +4,7 @@ import { Post } from '../../types';
 import useSWR from 'swr';
 import PostCard from '../components/PostCard';
 import axios from 'axios';
+import { Fragment } from 'react';
 
 interface HomeProps {
   posts: Post[];
@@ -12,10 +13,8 @@ interface HomeProps {
 const Home: React.FC = () => {
   const { data: posts, error, isValidating } = useSWR('posts');
 
-  console.log('validating ..', isValidating);
-
   return (
-    <div className="pt-12">
+    <Fragment>
       <Head>
         <title>reddit: the front page of the internet</title>
       </Head>
@@ -29,7 +28,7 @@ const Home: React.FC = () => {
         </div>
         {/* Sidebar */}
       </div>
-    </div>
+    </Fragment>
   );
 };
 

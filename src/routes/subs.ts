@@ -5,7 +5,7 @@ import Post from '../entity/Post';
 import Sub from '../entity/Sub';
 
 import User from '../entity/User';
-import { BadRequestError } from '../errors';
+import { BadRequestError, NotFoundError } from '../errors';
 import auth from '../Middleware/auth';
 import user from '../Middleware/user';
 
@@ -64,7 +64,7 @@ const getSub = async (req: Request, res: Response) => {
     return res.json(sub);
   } catch (error) {
     console.log(error);
-    throw new BadRequestError('Something went wrong');
+    throw new NotFoundError('Sub not found');
   }
 };
 
