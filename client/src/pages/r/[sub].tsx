@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
+
 import PostCard from '../../components/PostCard';
 import SideBar from '../../components/SideBar';
 

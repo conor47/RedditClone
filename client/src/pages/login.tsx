@@ -34,7 +34,7 @@ const Login: React.FC = () => {
         username,
       });
       dispatch({ type: Actions.login, payload: res.data });
-      router.push('/');
+      router.back();
     } catch (error) {
       if (error instanceof AxiosError) {
         setErrors(error.response.data);
