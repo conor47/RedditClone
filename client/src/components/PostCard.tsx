@@ -31,8 +31,6 @@ const PostCard: React.FC<PostCardProps> = ({
     commentCount,
   },
 }) => {
-  console.log('uservote ', userVote);
-
   const castVote = async (value: number) => {
     try {
       const res = await axios.post('/votes/vote', {
@@ -40,7 +38,6 @@ const PostCard: React.FC<PostCardProps> = ({
         slug,
         value,
       });
-      console.log(res.data.userVote);
     } catch (error) {
       console.error(error);
     }
@@ -116,7 +113,11 @@ const PostCard: React.FC<PostCardProps> = ({
             {title}
           </a>
         </Link>
-        {body && <p className="my-1 text-sm">{body}</p>}
+        {body && (
+          <p className="my-1 text-sm">
+            {body.length < 100 ? body : body.substring(0, 150) + ' ...'}
+          </p>
+        )}
         <div className="flex">
           <Link href={url}>
             <a>

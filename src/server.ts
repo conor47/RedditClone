@@ -29,6 +29,8 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(trim);
 app.use(cookieparser());
+app.use(express.static('public'));
+
 app.get('/', (_: Request, res: Response) => {
   res.send('Hello');
 });

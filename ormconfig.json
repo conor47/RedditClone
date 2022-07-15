@@ -12,6 +12,7 @@
     "entities": ["src/entity/**/*.ts"],
     "migrations": ["src/migration/**/*.ts"],
     "subscribers": ["src/subscriber/**/*.ts"],
+    "seeds": ["src/seeds/**/*{.ts,.js}"],
     "cli": {
       "entitiesDir": "src/entity",
       "migrationsDir": "src/migration",
@@ -50,7 +51,8 @@
     "logging": true,
     "entities": ["src/entity/**/*.ts"],
     "migrations": ["src/migration/**/*.ts"],
-    "subscribers": ["src/subscriber/**/*.ts"],
+    "subscribers": ["src/subsThat' punny hahaha!!criber/**/*.ts"],
+    "seeds": ["src/seeds/**/*{.ts,.js}"],
     "cli": {
       "entitiesDir": "src/entity",
       "migrationsDir": "src/migration",
