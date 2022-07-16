@@ -25,10 +25,14 @@ export interface User {
 export interface Sub {
   postCount?: number;
   name: string;
-  imageUrl: string;
+  imageUrl?: string;
   title: string;
   description: string;
   createdAt: string;
+  bannerUrn?: string;
+  imageUrn?: string;
+  bannerUrl?: string;
+  posts: Post[];
 }
 
 export enum Actions {
