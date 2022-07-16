@@ -6,6 +6,7 @@ import useSWR from 'swr';
 import PostCard from '../../components/PostCard';
 import SideBar from '../../components/SideBar';
 import { Sub } from '../../../types';
+import Image from 'next/image';
 
 const Sub: React.FC = () => {
   const router = useRouter();
@@ -42,10 +43,11 @@ const Sub: React.FC = () => {
         <Fragment>
           {/* Sub info and images */}
           <div>
-            <div className="bg-blue-500">
+            {/* banner image */}
+            <div>
               {sub.bannerUrl ? (
                 <div
-                  className="h-56 bg-blue-500"
+                  className="h-56 "
                   style={{
                     backgroundImage: `url(${sub.bannerUrl})`,
                     backgroundRepeat: 'no-repeat',
@@ -56,6 +58,28 @@ const Sub: React.FC = () => {
               ) : (
                 <div className="h-20 bg-blue-500"></div>
               )}
+            </div>
+            {/* Sub meta data */}
+            <div className="h-20 bg-white">
+              <div className="container relative flex">
+                <div className="absolute" style={{ top: -15 }}>
+                  <Image
+                    src={sub.imageUrl}
+                    alt="Sub"
+                    width={70}
+                    height={70}
+                    className="rounded-full"
+                  />
+                </div>
+                <div className="pt-1 pl-24">
+                  <div className="flex items-center">
+                    <h1 className="mb-1 text-3xl font-bold">{sub.title}</h1>
+                  </div>
+                  <p className="text-sm font-bold text-grey-500">
+                    /r/{sub.name}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 

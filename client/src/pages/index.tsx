@@ -1,15 +1,12 @@
 import Head from 'next/head';
 
-import { Post, Sub } from '../../types';
 import useSWR from 'swr';
 import PostCard from '../components/PostCard';
 import { Fragment } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-interface HomeProps {
-  posts: Post[];
-}
+import { Post, Sub } from '../../types';
 
 const Home: React.FC = () => {
   const {
