@@ -31,6 +31,7 @@ export interface Sub {
   createdAt: string;
   bannerUrn?: string;
   imageUrn?: string;
+  username: string;
   bannerUrl?: string;
   posts: Post[];
 }

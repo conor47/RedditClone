@@ -1,27 +1,46 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Fragment } from 'react';
+import { createRef, Fragment, useEffect, useState } from 'react';
 import useSWR from 'swr';
+import classNames from 'classnames';
 
 import PostCard from '../../components/PostCard';
 import SideBar from '../../components/SideBar';
 import { Sub } from '../../../types';
 import Image from 'next/image';
+import { useAuthState } from '../../context/Auth';
 
 const Sub: React.FC = () => {
+  const { authenticated, user } = useAuthState();
+  const fileInputRef = createRef<HTMLInputElement>();
+  const [ownSub, setOwnSub] = useState(false);
   const router = useRouter();
 
   const subName = router.query.sub;
-
   const {
     data: sub,
     error,
     isValidating,
   } = useSWR<Sub>(subName ? `subs/${subName}` : null);
 
+  useEffect(() => {
+    if (!sub) {
+      return;
+    }
+    setOwnSub(authenticated && user.username === sub.username);
+  }, [sub]);
+
   if (error) {
     router.push('/');
   }
+
+  const openFileInput = (type: string): void => {
+    if (!ownSub) {
+      return;
+    }
+    fileInputRef.current.name = type;
+    fileInputRef.current.click();
+  };
 
   let postsMarkup;
 
@@ -41,10 +60,16 @@ const Sub: React.FC = () => {
       </Head>
       {sub && (
         <Fragment>
+          <input type="file" hidden={true} ref={fileInputRef} />
           {/* Sub info and images */}
           <div>
             {/* banner image */}
-            <div>
+            <div
+              className={classNames('bg-blue-500', {
+                'cursor-pointer': ownSub,
+              })}
+              onClick={() => openFileInput('banner')}
+            >
               {sub.bannerUrl ? (
                 <div
                   className="h-56 "
@@ -68,7 +93,10 @@ const Sub: React.FC = () => {
                     alt="Sub"
                     width={70}
                     height={70}
-                    className="rounded-full"
+                    className={classNames('rounded-full', {
+                      'cursor-pointer': ownSub,
+                    })}
+                    onClick={() => openFileInput('image')}
                   />
                 </div>
                 <div className="pt-1 pl-24">
