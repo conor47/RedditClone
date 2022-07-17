@@ -104,9 +104,7 @@ const Register: React.FC = () => {
             <small>
               Already a Redditor ?
               <Link href={'/login'}>
-                <a href="" className="ml-1 text-blue-500 uppercase">
-                  Log in
-                </a>
+                <a className="ml-1 text-blue-500 uppercase">Log in</a>
               </Link>
             </small>
           </div>
