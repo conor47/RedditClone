@@ -52,17 +52,12 @@ const Navbar: React.FC = () => {
           ) : (
             <Fragment>
               <Link href="/login">
-                <a
-                  href=""
-                  className="w-32 py-1 mr-4 leading-5 hollow button blue"
-                >
+                <a className="w-32 py-1 mr-4 leading-5 hollow button blue">
                   Log In
                 </a>
               </Link>
               <Link href="/register">
-                <a href="" className="w-32 py-1 leading-5 button blue">
-                  Sign Up
-                </a>
+                <a className="w-32 py-1 leading-5 button blue">Sign Up</a>
               </Link>
             </Fragment>
           ))}

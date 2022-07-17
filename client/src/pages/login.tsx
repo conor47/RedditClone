@@ -85,9 +85,7 @@ const Login: React.FC = () => {
             <small>
               New to Reddit ?
               <Link href={'/register'}>
-                <a href="" className="ml-1 text-blue-500 uppercase">
-                  Register
-                </a>
+                <a className="ml-1 text-blue-500 uppercase">Register</a>
               </Link>
             </small>
           </div>

@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { createRef, Fragment, useEffect, useState } from 'react';
+import { ChangeEvent, Fragment, useEffect, useRef, useState } from 'react';
 import useSWR from 'swr';
 import classNames from 'classnames';
 
@@ -9,10 +9,11 @@ import SideBar from '../../components/SideBar';
 import { Sub } from '../../../types';
 import Image from 'next/image';
 import { useAuthState } from '../../context/Auth';
+import axios from 'axios';
 
 const Sub: React.FC = () => {
   const { authenticated, user } = useAuthState();
-  const fileInputRef = createRef<HTMLInputElement>();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [ownSub, setOwnSub] = useState(false);
   const router = useRouter();
 
@@ -42,6 +43,22 @@ const Sub: React.FC = () => {
     fileInputRef.current.click();
   };
 
+  const uploadImage = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files[0];
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('type', fileInputRef.current.type);
+
+    try {
+      const res = await axios.post<Sub>(`/subs/${sub.name}/image`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data ' },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   let postsMarkup;
 
   if (!sub) {
@@ -60,7 +77,12 @@ const Sub: React.FC = () => {
       </Head>
       {sub && (
         <Fragment>
-          <input type="file" hidden={true} ref={fileInputRef} />
+          <input
+            type="file"
+            hidden={true}
+            ref={fileInputRef}
+            onChange={uploadImage}
+          />
           {/* Sub info and images */}
           <div>
             {/* banner image */}
