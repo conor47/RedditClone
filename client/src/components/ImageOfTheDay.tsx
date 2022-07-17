@@ -6,7 +6,10 @@ const ImageOfTheDay: React.FC = () => {
       <div className="p-4 border-b-2">
         <p className="text-lg font-semibold text-center">Image of the day</p>
       </div>
-      <Image src={'https://api.unsplash.com/photos/random'} />
+      <Image
+        src={'https://api.unsplash.com/photos/random'}
+        alt="Image of the day"
+      />
     </div>
   );
 };
