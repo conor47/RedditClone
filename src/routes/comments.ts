@@ -8,6 +8,7 @@ import { BadRequestError } from '../errors';
 import auth from '../Middleware/auth';
 import user from '../Middleware/user';
 
+// make a comment on a post
 const commentOnPost = async (req: Request, res: Response) => {
   const { identifier, slug } = req.params;
   const body = req.body.body;
@@ -23,6 +24,7 @@ const commentOnPost = async (req: Request, res: Response) => {
   }
 };
 
+// fetch all comments across all posts
 const getAllComments = async (req: Request, res: Response) => {
   try {
     const comments = await Comment.find({});
@@ -33,6 +35,7 @@ const getAllComments = async (req: Request, res: Response) => {
   }
 };
 
+// fetch a single comment
 const getSingleComment = async (req: Request, res: Response) => {
   const { identifier } = req.params;
 
@@ -51,10 +54,34 @@ const getSingleComment = async (req: Request, res: Response) => {
   }
 };
 
+// fetch all of the comments for a single post
+const getPostComments = async (req: Request, res: Response) => {
+  const { identifier, slug } = req.params;
+  try {
+    const post = await Post.findOneOrFail({ identifier, slug });
+
+    const comments = await Comment.find({
+      where: { post },
+      order: { createdAt: 'DESC' },
+      relations: ['votes'],
+    });
+
+    if (res.locals.user) {
+      comments.forEach((comment) => comment.setUserVote(res.locals.user));
+    }
+
+    return res.json(comments);
+  } catch (error) {
+    console.log(error);
+    throw new BadRequestError('Something went wrong');
+  }
+};
+
 const router = Router();
 
 router.post('/:identifier/:slug', user, auth, commentOnPost);
 router.get('/', getAllComments);
 router.get('/:identifier', getSingleComment);
+router.get('/:identifier/:slug/comments', user, getPostComments);
 
 export default router;

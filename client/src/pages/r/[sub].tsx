@@ -95,7 +95,7 @@ export default function SubPage() {
             >
               {sub.bannerUrl ? (
                 <div
-                  className="h-56 bg-blue-500"
+                  className="h-56 bg-blue-500 "
                   style={{
                     backgroundImage: `url(${sub.bannerUrl})`,
                     backgroundRepeat: 'no-repeat',
@@ -110,11 +110,18 @@ export default function SubPage() {
             {/* Sub meta data */}
             <div className="h-20 bg-white">
               <div className="container relative flex">
-                <div className="absolute" style={{ top: -15 }}>
+                <div
+                  className="absolute"
+                  style={{
+                    top: -15,
+                    border: '2px solid white',
+                    borderRadius: '9999px',
+                  }}
+                >
                   <Image
                     src={sub.imageUrl}
                     alt="Sub"
-                    className={classNames('rounded-full', {
+                    className={classNames('rounded-full border-2', {
                       'cursor-pointer': ownSub,
                     })}
                     onClick={() => openFileInput('image')}

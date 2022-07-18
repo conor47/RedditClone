@@ -1,6 +1,9 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const NotFound: React.FC = () => {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen bg-white">
       <div className="flex ">

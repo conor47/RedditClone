@@ -1,4 +1,4 @@
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import {
   BeforeInsert,
   Column,
@@ -42,6 +42,12 @@ export default class Comment extends Entity {
   @Exclude()
   @OneToMany(() => Vote, (vote) => vote.comment)
   votes: Vote[];
+
+  @Expose() get voteScore(): number {
+    return this.votes?.reduce((acc, cur) => {
+      return acc + (cur.value || 0);
+    }, 0);
+  }
 
   protected userVote: number;
   setUserVote(user: User) {

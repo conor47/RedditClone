@@ -13,6 +13,7 @@ dayjs.extend(relativeTime);
 import { Post } from '../../../../../types';
 import SideBar from '../../../../components/SideBar';
 import { useAuthState } from '../../../../context/Auth';
+import ActionButton from '../../../../components/ActionButton';
 
 const PostPage: React.FC = () => {
   const router = useRouter();
@@ -60,7 +61,7 @@ const PostPage: React.FC = () => {
               <div className="flex items-center w-full h-20 p-8 bg-blue-500">
                 <div className="container flex">
                   {post && (
-                    <div className="w-8 h-8 mr-2 overflow-hidden rounded-full">
+                    <div className="w-8 h-8 mr-2 overflow-hidden rounded-full ">
                       <Image
                         src={post.sub.imageUrl}
                         height={(8 * 16) / 4}
@@ -125,6 +126,32 @@ const PostPage: React.FC = () => {
                           </a>
                         </Link>
                       </p>
+                      {/* post title */}
+                      <h1 className="my-1 text-xl font-medium">{post.title}</h1>
+                      {/* post body */}
+                      <p className="my-3 text-sm">{post.body}</p>
+                      {/* actions  */}
+                      <div className="flex">
+                        <Link href={post.url}>
+                          <a>
+                            <ActionButton>
+                              <i className="mr-1 fas fa-comment-alt "></i>
+                              <span className="font-bold">
+                                {post.commentCount}
+                              </span>
+                            </ActionButton>
+                          </a>
+                        </Link>
+
+                        <ActionButton>
+                          <i className="mr-1 fas fa-share"></i>
+                          <span className="font-medium">Share</span>
+                        </ActionButton>
+                        <ActionButton>
+                          <i className="mr-1 fas fa-bookmark "></i>
+                          <span className="font-medium">Save</span>
+                        </ActionButton>
+                      </div>
                     </div>
                   </div>
                 )}
