@@ -14,19 +14,26 @@ import { Post, Comment } from '../../../../../types';
 import SideBar from '../../../../components/SideBar';
 import { useAuthState } from '../../../../context/Auth';
 import ActionButton from '../../../../components/ActionButton';
-
+import { useState } from 'react';
 const PostPage: React.FC = () => {
   const router = useRouter();
-  const { authenticated } = useAuthState();
+  const { authenticated, user } = useAuthState();
+  const [newComment, setNewComment] = useState('');
   const { identifier, sub, slug } = router.query;
 
   // fetch post
-  const { data: post, error: postError } = useSWR<Post>(
-    identifier && slug ? `/posts/${identifier}/${slug}` : null
-  );
+  const {
+    data: post,
+    error: postError,
+    mutate: mutatePost,
+  } = useSWR<Post>(identifier && slug ? `/posts/${identifier}/${slug}` : null);
 
   // fetch comments
-  const { data: comments, error: commentError } = useSWR<Comment[]>(
+  const {
+    data: comments,
+    error: commentError,
+    mutate: mutateComment,
+  } = useSWR<Comment[]>(
     identifier && slug ? `/comments/${identifier}/${slug}/comments` : null
   );
 
@@ -54,9 +61,14 @@ const PostPage: React.FC = () => {
       const res = await axios.post('/votes/vote', {
         identifier: identifier,
         slug,
-        commentIdentifier: comment.identifier,
+        commentIdentifier: comment?.identifier,
         value,
       });
+      if (comment) {
+        mutateComment();
+      } else {
+        mutatePost();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -127,7 +139,7 @@ const PostPage: React.FC = () => {
                           ></i>
                         </div>
                       </div>
-                      <div className="p-2">
+                      <div className="py-2 pl-1">
                         <p className="text-xs text-gray-500">
                           Posted by
                           <Link href={`/u/user`}>
@@ -171,6 +183,44 @@ const PostPage: React.FC = () => {
                         </div>
                       </div>
                     </div>
+                    {/* Comment input */}
+                    <div className="pl-10 pr-6 mb-4">
+                      {authenticated ? (
+                        <div>
+                          <p className="mb-1 text-xs">
+                            Comment as{' '}
+                            <Link href={`/r/${user.username}`}>
+                              <a className="font-semibold text-blue-500">
+                                {user.username}
+                              </a>
+                            </Link>
+                          </p>
+                          <form onSubmit={submitComment}>
+                            <textarea
+                              className="w-full p-3 border border-gray-300 focus:outline-none focus:border-gray-600"
+                              onChange={(e) => setNewComment(e.target.value)}
+                            ></textarea>
+                          </form>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-between px-2 py-4 border border-gray-200 rounded">
+                          <p className="font-semibold text-gray-400">
+                            Log in or Sign up to leave a comment !
+                          </p>
+                          <div>
+                            <Link href="/login">
+                              <a className="w-24 py-2 hollow blue button w-30">
+                                Login
+                              </a>
+                            </Link>
+                            <Link href="/register">
+                              <a className="w-24 py-2 blue button">Register</a>
+                            </Link>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <hr />
                     {/* comments*/}
                     {comments &&
                       comments.map((comment) => (
@@ -205,7 +255,7 @@ const PostPage: React.FC = () => {
                               ></i>
                             </div>
                           </div>
-                          <div className="py-2 pr-2">
+                          <div className="py-2 pl-1">
                             <p className="mb-1 text-xs leading-none">
                               <Link href={`/u/${comment.username}`}>
                                 <a className="mr-1 font-bold hover:underline">
