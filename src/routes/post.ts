@@ -53,6 +53,11 @@ const getPost = async (req: Request, res: Response) => {
         relations: ['sub', 'votes', 'comments', 'comments.votes'],
       }
     );
+
+    if (res.locals.user) {
+      post.setUserVote(res.locals.user);
+    }
+
     return res.json(post);
   } catch (error) {
     console.log(error);
@@ -63,6 +68,6 @@ const getPost = async (req: Request, res: Response) => {
 const router = Router();
 router.post('/', user, auth, createPost);
 router.get('/', user, getPosts);
-router.get('/:identifier/:slug', getPost);
+router.get('/:identifier/:slug', user, getPost);
 
 export default router;

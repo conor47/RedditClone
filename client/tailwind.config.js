@@ -34,11 +34,17 @@ module.exports = {
       container: false,
     },
   },
+  variants: {
+    extend: {
+      backgroundColor: ['disabled'],
+      borderColor: ['disabled'],
+    },
+  },
   plugins: [
     function ({ addComponents }) {
       addComponents({
         '.container': {
-          width: '100%',
+          width: '101%',
           marginLeft: 'auto',
           marginRight: 'auto',
           '@screen sm': { maxWidth: '640px' },

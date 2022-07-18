@@ -7,6 +7,7 @@ export interface Post {
   subName: string;
   createdAt: string;
   updatedAt: string;
+  sub: Sub;
 
   // virtual fields
   voteScore?: number;
@@ -25,10 +26,25 @@ export interface User {
 export interface Sub {
   postCount?: number;
   name: string;
-  imageUrl: string;
+  imageUrl?: string;
   title: string;
   description: string;
   createdAt: string;
+  bannerUrn?: string;
+  imageUrn?: string;
+  username: string;
+  bannerUrl?: string;
+  posts: Post[];
+}
+
+export interface Comment {
+  createdAt: string;
+  updatedAt: string;
+  identifier: string;
+  body: string;
+  username: string;
+  userVote: number;
+  voteScore: number;
 }
 
 export enum Actions {

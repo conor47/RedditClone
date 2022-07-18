@@ -25,7 +25,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
 
   // array of routes where navbar will not be displayed
-  const authRoutes = ['/register', '/login'];
+  const authRoutes = ['/register', '/login', '/404'];
   const authRoute = authRoutes.includes(pathname);
 
   return (

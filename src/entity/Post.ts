@@ -6,7 +6,6 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
-  AfterLoad,
 } from 'typeorm';
 
 import Entity from './Entity';
@@ -16,7 +15,6 @@ import Sub from './Sub';
 import Comment from './Comment';
 import { Exclude, Expose } from 'class-transformer';
 import Vote from './Vote';
-import { ValidationTypes } from 'class-validator';
 
 @ToEntity('posts')
 export default class Post extends Entity {
