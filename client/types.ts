@@ -37,6 +37,16 @@ export interface Sub {
   posts: Post[];
 }
 
+export interface Comment {
+  createdAt: string;
+  updatedAt: string;
+  identifier: string;
+  body: string;
+  username: string;
+  userVote: number;
+  voteScore: number;
+}
+
 export enum Actions {
   login = 'LOGIN',
   logout = 'LOGOUT',
