@@ -3,15 +3,7 @@
 @tailwind utilities;
 
 .input {
-  @apply w-full px-3 py-3 transition-all border border-gray-300 rounded outline-none bg-gray-50;
-}
-
-.input:hover {
-  @apply hover:bg-white;
-}
-
-.input:focus {
-  @apply bg-white;
+  @apply w-full px-3 py-3 transition-all border border-gray-300 rounded outline-none bg-gray-50 hover:bg-white focus:bg-white;
 }
 
 .button {
@@ -19,17 +11,9 @@
 }
 
 .button.blue {
-  @apply text-white bg-blue-500 border-blue-500;
-}
-
-.button.blue:hover {
-  @apply bg-blue-400 border-blue-300;
+  @apply text-white bg-blue-500 border-blue-500 hover:bg-blue-400 hover:border-blue-300 disabled:bg-blue-300 disabled:border-blue-300;
 }
 
 .button.blue.hollow {
-  @apply text-blue-500 bg-transparent border-blue-500;
-}
-
-.button.blue.hollow:hover {
-  @apply bg-blue-50;
+  @apply text-blue-500 bg-transparent border-blue-500 hover:bg-blue-50;
 }

@@ -14,7 +14,7 @@ import { Post, Comment } from '../../../../../types';
 import SideBar from '../../../../components/SideBar';
 import { useAuthState } from '../../../../context/Auth';
 import ActionButton from '../../../../components/ActionButton';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 const PostPage: React.FC = () => {
   const router = useRouter();
   const { authenticated, user } = useAuthState();
@@ -64,6 +64,7 @@ const PostPage: React.FC = () => {
         commentIdentifier: comment?.identifier,
         value,
       });
+      setNewComment('');
       if (comment) {
         mutateComment();
       } else {
@@ -71,6 +72,23 @@ const PostPage: React.FC = () => {
       }
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const submitComment = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (newComment.trim() === '') {
+      return;
+    }
+
+    try {
+      await axios.post(`/comments/${post.identifier}/${post.slug}`, {
+        body: newComment,
+      });
+      mutateComment();
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -197,9 +215,18 @@ const PostPage: React.FC = () => {
                           </p>
                           <form onSubmit={submitComment}>
                             <textarea
-                              className="w-full p-3 border border-gray-300 focus:outline-none focus:border-gray-600"
+                              className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-gray-600"
                               onChange={(e) => setNewComment(e.target.value)}
+                              value={newComment}
                             ></textarea>
+                            <div className="flex justify-end">
+                              <button
+                                className="px-3 py-1 blue button"
+                                disabled={newComment.trim() === ''}
+                              >
+                                Comment
+                              </button>
+                            </div>
                           </form>
                         </div>
                       ) : (
