@@ -95,7 +95,7 @@ const PostCard: React.FC<PostCardProps> = ({
           </Link>
           <p className="text-xs text-gray-500">
             <span className="mx-1">•</span> Posted by
-            <Link href={`/u/user`}>
+            <Link href={`/u/${username}`}>
               <a href="" className="mx-1 hover:underline">
                 {username}
               </a>
