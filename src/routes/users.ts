@@ -35,7 +35,7 @@ const getUserSubmissions = async (req: Request, res: Response) => {
       submissions.push({ type: 'post', ...post.toJSON() })
     );
     comments.forEach((comment) =>
-      submissions.push({ type: 'post', ...comment.toJSON() })
+      submissions.push({ type: 'comment', ...comment.toJSON() })
     );
 
     type commentPost = Post | Comment;

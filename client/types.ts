@@ -45,6 +45,7 @@ export interface Comment {
   username: string;
   userVote: number;
   voteScore: number;
+  post?: Post;
 }
 
 export enum Actions {
