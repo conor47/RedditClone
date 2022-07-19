@@ -1,9 +1,14 @@
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { Comment, Post } from '../../../types';
 import PostCard from '../../components/PostCard';
+
+dayjs.extend(relativeTime);
 
 const User: React.FC = () => {
   const router = useRouter();
@@ -39,19 +44,15 @@ const User: React.FC = () => {
                     key={comment.identifier}
                     className="flex my-4 bg-white rounded"
                   >
-                    <div className="flex-shrink-0 w-10 py-4 text-center rounded-l ">
-                      <i className="mr-1 text-gray-500 fas fa-comment-alt fa-xs"></i>
+                    <div className="flex-shrink-0 w-10 py-4 text-center bg-gray-200 rounded-l">
+                      <i className="text-gray-500 fas fa-comment-alt fa-xs"></i>
                     </div>
                     <div className="w-full p-2">
                       <p className="mb-2 text-xs text-gray-500">
-                        <Link href={`/u/${comment.username}`}>
-                          <a className="text-blue-500 cursor-pointer hover:underline">
-                            {comment.username}
-                          </a>
-                        </Link>
-                        <span>commented on</span>
+                        {comment.username}
+                        <span> commented on </span>
                         <Link href={comment.post.url}>
-                          <a className="hover:underline cursor:pointer">
+                          <a className="font-semibold hover:underline cursor:pointer">
                             {comment.post.title}
                           </a>
                         </Link>
@@ -69,6 +70,30 @@ const User: React.FC = () => {
                 );
               }
             })}
+          </div>
+          <div className="ml-6 w-80">
+            <div className="bg-white rounded">
+              <div className="p-3 bg-blue-500 rounded-t">
+                <div className="relative w-16 h-16 mx-auto border-2 border-white rounded-full">
+                  <Image
+                    src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y/"
+                    alt="user photo"
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-full"
+                  />
+                </div>
+              </div>
+              <div className="p-3 text-center">
+                <h1 className="mb-3 text-xl text-center">
+                  {data.user.username}
+                </h1>
+                <hr />
+                <p className="mt-3">
+                  Joined {dayjs(data.user.createdAt).format('MMM YYYY')}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       )}
