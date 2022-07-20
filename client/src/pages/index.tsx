@@ -74,6 +74,10 @@ const Home: React.FC = () => {
     <Fragment>
       <Head>
         <title>reddit: the front page of the internet</title>
+        <meta
+          name="description"
+          content="Reddit is a network of communities based on peoples interests. Find communities you are interested in, and become part of an online community"
+        />
       </Head>
       <div className="container flex pt-4">
         {/* Posts feed */}

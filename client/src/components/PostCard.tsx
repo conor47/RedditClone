@@ -33,11 +33,14 @@ const PostCard: React.FC<PostCardProps> = ({
     username,
     url,
     commentCount,
+    sub,
   },
   revalidate,
 }) => {
   const { authenticated } = useAuthState();
   const router = useRouter();
+
+  const isInSubPage = router.pathname === '/r/[sub]';
 
   const castVote = async (value: number) => {
     if (!authenticated) {
@@ -102,22 +105,26 @@ const PostCard: React.FC<PostCardProps> = ({
       {/* data */}
       <div className="w-full p-2">
         <div className="flex items-center ">
-          <Link href={`/r/${subName}`}>
-            <Image
-              src={gravatar}
-              alt="placeholder gravatar"
-              height="24px"
-              width="24px"
-              className="rounded-full cursor-pointer"
-            />
-          </Link>
-          <Link href={`/r/${subName}`}>
-            <a className="ml-1 text-xs font-semibold hover:underline">
-              /r/{subName}
-            </a>
-          </Link>
+          {!isInSubPage && (
+            <>
+              <Link href={`/r/${subName}`}>
+                <Image
+                  src={sub.imageUrl}
+                  alt="placeholder gravatar"
+                  height="24px"
+                  width="24px"
+                  className="rounded-full cursor-pointer"
+                />
+              </Link>
+              <Link href={`/r/${subName}`}>
+                <a className="ml-1 text-xs font-semibold hover:underline">
+                  /r/{subName}
+                </a>
+              </Link>
+              <span className="mx-1 text-xs text-gray-500">•</span> Posted by
+            </>
+          )}
           <p className="text-xs text-gray-500">
-            <span className="mx-1">•</span> Posted by
             <Link href={`/u/${username}`}>
               <a href="" className="mx-1 hover:underline">
                 {username}
