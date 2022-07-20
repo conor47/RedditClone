@@ -67,14 +67,14 @@ const Navbar: React.FC = () => {
       </div>
       {/* Search input */}
       <div className="max-w-full px-4 w-160">
-        <div className="relative flex items-center mx-auto transition-all bg-gray-100 border rounded hover:border-blue-500 hover:bg-white">
+        <div className="relative flex items-center transition-all bg-gray-100 border rounded hover:border-blue-500 hover:bg-white">
           <i className="pl-4 pr-3 text-gray-500 fas fa-search"></i>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
             type="text"
             placeholder="search"
-            className="py-1 pr-3 bg-transparent rounded focus:outline-none w-160"
+            className="py-1 pr-3 bg-transparent rounded focus:outline-none "
           ></input>
           <div className="absolute inset-x-0 bg-white" style={{ top: '100%' }}>
             {subs?.map((sub) => (
