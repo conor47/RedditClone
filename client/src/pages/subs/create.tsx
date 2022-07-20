@@ -1,5 +1,8 @@
+import axios from 'axios';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useState } from 'react';
+import classNames from 'classnames';
 
 const Create: React.FC = () => {
   const [name, setName] = useState('');
@@ -19,10 +22,80 @@ const Create: React.FC = () => {
       <div className="flex flex-col justify-center pl-6">
         <div className="98">
           <h1 className="mb-2 text-lg font-medium">Create a Community</h1>
+          <hr />
+          <form onSubmit={() => {}}>
+            <div className="my-6">
+              <p className="font-medium">Name</p>
+              <p className="mb-2 text-xs text-gray-500">
+                Community names including capitalization cannot be changed.
+              </p>
+              <input
+                type="text"
+                className={classNames(
+                  'w-full p-3 border border-gray-200 rounded hover:border-blue-300 outline-none focus:border-blue-500',
+                  { 'border-red-600': errors.name }
+                )}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Community name"
+              />
+              <small className="font-medium text-red-600">{errors.name}</small>
+            </div>
+            <div className="my-6">
+              <p className="font-medium">Title</p>
+              <p className="mb-2 text-xs text-gray-500">
+                Give your community an interesting title. Can be changed at any
+                time.
+              </p>
+              <input
+                type="text"
+                className={classNames(
+                  'w-full p-3 border border-gray-200 rounded hover:border-blue-300 outline-none focus:border-blue-500',
+                  { 'border-red-600': errors.title }
+                )}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Community title"
+              />
+              <small className="font-medium text-red-600">{errors.name}</small>
+            </div>
+            <div className="my-6">
+              <p className="font-medium">Description</p>
+              <p className="mb-2 text-xs text-gray-500">
+                This is how new members come to understand what your community
+                is about !
+              </p>
+              <textarea
+                className="w-full p-3 border border-gray-200 rounded outline-none hover:border-blue-300 focus:border-blue-300"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Community description"
+              />
+              <small className="font-medium text-red-600">{errors.name}</small>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   );
+};
+
+// using server side rendering to check if the user is logged in with a valid token. If not we perform a redirect to the login page. This is one way of guarding the submit route
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  try {
+    // extract the cookie header
+    const cookie = req.headers.cookie;
+    if (!cookie) {
+      throw new Error('missing auth token');
+    }
+    // make a post request to the /auth/me endpoint passing along the cookie
+    await axios.get('/auth/me', { headers: { cookie } });
+    return { props: {} };
+  } catch (error) {
+    console.log(error);
+    // we return a 307 and perform a redirect to the login page
+    res.writeHead(307, { location: '/login' }).end();
+  }
 };
 
 export default Create;
