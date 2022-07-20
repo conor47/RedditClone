@@ -1,24 +1,25 @@
 import Head from 'next/head';
-
 import useSWR from 'swr';
-import PostCard from '../components/PostCard';
 import { Fragment } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { Post, Sub } from '../../types';
+import PostCard from '../components/PostCard';
+import { useAuthState } from '../context/Auth';
 
 const Home: React.FC = () => {
+  const { authenticated } = useAuthState();
   const {
     data: posts,
     error: errorPosts,
     isValidating: validatingPosts,
-  } = useSWR('posts');
+  } = useSWR<Post[]>('posts');
   const {
     data: topSubs,
     error: errorSubs,
     isValidating: validatingSubs,
-  } = useSWR('/subs/topSubs');
+  } = useSWR<Sub[]>('/subs/topSubs');
 
   return (
     <Fragment>
@@ -29,9 +30,7 @@ const Home: React.FC = () => {
         {/* Posts feed */}
         <div className="w-160">
           {!validatingPosts &&
-            posts.map((post: Post) => (
-              <PostCard post={post} key={post.identifier} />
-            ))}
+            posts.map((post) => <PostCard post={post} key={post.identifier} />)}
         </div>
         {/* Sidebar */}
         <div className="ml-6 w-80">
@@ -42,7 +41,7 @@ const Home: React.FC = () => {
               </p>
             </div>
             <div>
-              {topSubs?.map((sub: Sub) => {
+              {topSubs?.map((sub) => {
                 return (
                   <div
                     key={sub.name}
@@ -69,6 +68,15 @@ const Home: React.FC = () => {
                 );
               })}
             </div>
+            {authenticated && (
+              <div className="p-4 border-t-2">
+                <Link href="/subs/create">
+                  <a className="w-full px-2 py-2 blue button">
+                    Create Community
+                  </a>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
