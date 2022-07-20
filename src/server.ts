@@ -32,7 +32,7 @@ app.use(trim);
 app.use(cookieparser());
 app.use(express.static('public'));
 
-app.get('/', (_: Request, res: Response) => {
+app.get('/api', (_: Request, res: Response) => {
   res.send('Hello');
 });
 app.use('/api/auth', authRoutes);
