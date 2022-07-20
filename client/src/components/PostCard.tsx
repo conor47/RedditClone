@@ -9,11 +9,15 @@ import ActionButton from './ActionButton';
 import gravatar from '../../public/images/defaultGravatar.jpg';
 import { Post } from '../../types';
 import axios from 'axios';
+import { useAuthState } from '../context/Auth';
+import { Router } from 'express';
+import { useRouter } from 'next/router';
 
 dayjs.extend(relativeTime);
 
 interface PostCardProps {
   post: Post;
+  revalidate?: () => void;
 }
 
 const PostCard: React.FC<PostCardProps> = ({
@@ -30,14 +34,29 @@ const PostCard: React.FC<PostCardProps> = ({
     url,
     commentCount,
   },
+  revalidate,
 }) => {
+  const { authenticated } = useAuthState();
+  const router = useRouter();
+
   const castVote = async (value: number) => {
+    if (!authenticated) {
+      router.push('/login');
+    }
+
+    if (value === userVote) {
+      value = 0;
+    }
+
     try {
       const res = await axios.post('/votes/vote', {
         identifier: identifier,
         slug,
         value,
       });
+      if (revalidate) {
+        revalidate();
+      }
     } catch (error) {
       console.error(error);
     }

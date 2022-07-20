@@ -48,7 +48,7 @@ const Home: React.FC = () => {
       setObservedPost(id);
       observeElement(document.getElementById(id));
     }
-  }, posts);
+  }, [posts]);
 
   const observeElement = (element: HTMLElement) => {
     if (!element) {
@@ -78,8 +78,15 @@ const Home: React.FC = () => {
       <div className="container flex pt-4">
         {/* Posts feed */}
         <div className="px-4 md:w-160 w-fill md:p-0">
-          {!isLoadingInitialData &&
-            posts.map((post) => <PostCard post={post} key={post.identifier} />)}
+          {isLoadingInitialData && (
+            <p className="text-lg text-center">Loading ...</p>
+          )}
+          {posts?.map((post) => (
+            <PostCard post={post} key={post.identifier} revalidate={mutate} />
+          ))}
+          {isValidating && posts.length > 0 && (
+            <p className="text-lg text-center">Loading more posts ...</p>
+          )}
         </div>
         {/* Sidebar */}
         <div className="hidden ml-6 w-80 md:block">
@@ -120,7 +127,7 @@ const Home: React.FC = () => {
             {authenticated && (
               <div className="p-4 border-t-2">
                 <Link href="/subs/create">
-                  <a className="w-full px-2 py-2 blue button">
+                  <a className="w-full px-3 py-2 blue button">
                     Create Community
                   </a>
                 </Link>
