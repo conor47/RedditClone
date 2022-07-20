@@ -1,14 +1,27 @@
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import classNames from 'classnames';
+import { useRouter } from 'next/router';
 
 const Create: React.FC = () => {
   const [name, setName] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [errors, setErrors] = useState<Partial<any>>({});
+  const router = useRouter();
+
+  const submitForm = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post('/subs', { name, title, description });
+      router.push(`/r/${res.data.name}`);
+    } catch (error) {
+      console.log(error);
+      setErrors(error.response.data);
+    }
+  };
 
   return (
     <div className="flex bg-white">
@@ -23,7 +36,7 @@ const Create: React.FC = () => {
         <div className="98">
           <h1 className="mb-2 text-lg font-medium">Create a Community</h1>
           <hr />
-          <form onSubmit={() => {}}>
+          <form onSubmit={(e) => submitForm(e)}>
             <div className="my-6">
               <p className="font-medium">Name</p>
               <p className="mb-2 text-xs text-gray-500">
@@ -57,7 +70,7 @@ const Create: React.FC = () => {
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Community title"
               />
-              <small className="font-medium text-red-600">{errors.name}</small>
+              <small className="font-medium text-red-600">{errors.title}</small>
             </div>
             <div className="my-6">
               <p className="font-medium">Description</p>
@@ -71,7 +84,14 @@ const Create: React.FC = () => {
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Community description"
               />
-              <small className="font-medium text-red-600">{errors.name}</small>
+              <small className="font-medium text-red-600">
+                {errors.description}
+              </small>
+            </div>
+            <div className="flex justify-end">
+              <button className="px-4 py-2 text-lg capitalize font-sm blue button">
+                Create Community
+              </button>
             </div>
           </form>
         </div>

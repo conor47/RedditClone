@@ -28,12 +28,12 @@ const Home: React.FC = () => {
       </Head>
       <div className="container flex pt-4">
         {/* Posts feed */}
-        <div className="w-160">
+        <div className="px-4 md:w-160 w-fill md:p-0">
           {!validatingPosts &&
             posts.map((post) => <PostCard post={post} key={post.identifier} />)}
         </div>
         {/* Sidebar */}
-        <div className="ml-6 w-80">
+        <div className="hidden ml-6 w-80 md:block">
           <div className="bg-white rounded">
             <div className="p-4 border-b-2">
               <p className="text-lg font-semibold text-center">
