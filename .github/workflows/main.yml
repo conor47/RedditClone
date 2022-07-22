@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Rebuild server
-        uses: garygrossgarten/github-action-ssh@release
+      - uses: garygrossgarten/github-action-ssh@release
         with:
           command: |
-            cd /reddit.com
+            cd ../reddit.com
             git pull
             npm install
             npx tsc
