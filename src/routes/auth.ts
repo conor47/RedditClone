@@ -68,6 +68,7 @@ const login = async (req: Request, res: Response) => {
       return res.status(401).json({ password: 'Password is invalid' });
     }
 
+    // testing git workflow
     // create the JWT and attach it the cookies in the response
     attachCookiesToResponse({ res, user });
 
