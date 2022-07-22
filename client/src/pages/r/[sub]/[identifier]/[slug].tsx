@@ -236,12 +236,14 @@ const PostPage: React.FC = () => {
                           </p>
                           <div>
                             <Link href="/login">
-                              <a className="w-24 py-2 hollow blue button w-30">
+                              <a className="w-24 px-2 py-2 mr-1 hollow blue button w-30">
                                 Login
                               </a>
                             </Link>
                             <Link href="/register">
-                              <a className="w-24 py-2 blue button">Register</a>
+                              <a className="w-24 px-2 py-2 blue button">
+                                Register
+                              </a>
                             </Link>
                           </div>
                         </div>
