@@ -2,23 +2,23 @@ name: Pull code, rebuild files and restart pm2 processes
 
 on:
   push:
-    branchs: [master]
+    branches: [master]
 
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - name: Rebuild application
+      - name: Rebuild server
         uses: garygrossgarten/github-action-ssh@release
         with:
           command: |
-            cd /reddit.com  
+            cd /reddit.com
             git pull
             npm install
-            npx tsc 
+            npx tsc
             cd client
-            npm run build 
+            npm run build
             pm2 restart server client
           host: ${{ secrets.HOST }}
-          username: ${{secrets.USERNAME}}
+          username: ${{ secrets.USERNAME }}
           privateKey: ${{ secrets.PRIVATE_KEY}}
