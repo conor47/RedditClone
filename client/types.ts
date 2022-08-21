@@ -53,3 +53,11 @@ export enum Actions {
   logout = 'LOGOUT',
   stop_loading = 'STOP_LOADING',
 }
+
+export enum Filters {
+  best = 'BEST',
+  new = 'NEW',
+  top_hr = 'TOP-HOUR',
+  top_day = 'TOP_DAY',
+  top_week = 'TOP_WEEK',
+}

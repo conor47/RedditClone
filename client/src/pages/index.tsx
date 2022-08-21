@@ -10,9 +10,11 @@ import { Post, Sub } from '../../types';
 import PostCard from '../components/PostCard';
 import { useAuthState } from '../context/Auth';
 import ActionButton from '../components/ActionButton';
+import { Filters } from '../../types';
 
 const Home: React.FC = () => {
   const [observedPost, setObservedPost] = useState('');
+  const [filter, setFilter] = useState(Filters.best);
   const { authenticated } = useAuthState();
   // const {
   //   data: posts,
@@ -51,6 +53,11 @@ const Home: React.FC = () => {
     }
   }, [posts]);
 
+  const updateFilteredPosts = (e: Event, type: Filters) => {
+    e.preventDefault();
+    setFilter(type);
+  };
+
   const observeElement = (element: HTMLElement) => {
     if (!element) {
       return;
@@ -86,17 +93,29 @@ const Home: React.FC = () => {
           {isLoadingInitialData && (
             <p className="text-lg text-center">Loading ...</p>
           )}
-          <div className="py-2 pl-2 mb-3 bg-white flexmax-w-full">
+          <div className="py-3 pl-2 mb-3 bg-white rounded-sm flexmax-w-full">
             <div className="flex">
-              <ActionButton>
-                <i className="mr-1 fas fa-sun "></i>
+              <ActionButton
+                selected={filter == Filters.new}
+                type={Filters.new}
+                clickHandler={updateFilteredPosts}
+              >
+                <i className="mr-1 fas fa-sun"></i>
                 <span className="font-medium">New</span>
               </ActionButton>
-              <ActionButton>
-                <i className="mr-1 fas fa-rocket "></i>
+              <ActionButton
+                selected={filter == Filters.best}
+                type={Filters.best}
+                clickHandler={updateFilteredPosts}
+              >
+                <i className="mr-1 fas fa-rocket"></i>
                 <span className="font-medium">Best</span>
               </ActionButton>
-              <ActionButton>
+              <ActionButton
+                selected={filter == Filters.top_day}
+                type={Filters.top_day}
+                clickHandler={updateFilteredPosts}
+              >
                 <i className="mr-1 fas fa-square-poll-vertical"></i>
                 <span className="font-medium">Top</span>
               </ActionButton>
