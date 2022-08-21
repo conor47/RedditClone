@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { Post, Sub } from '../../types';
 import PostCard from '../components/PostCard';
 import { useAuthState } from '../context/Auth';
+import ActionButton from '../components/ActionButton';
 
 const Home: React.FC = () => {
   const [observedPost, setObservedPost] = useState('');
@@ -85,6 +86,22 @@ const Home: React.FC = () => {
           {isLoadingInitialData && (
             <p className="text-lg text-center">Loading ...</p>
           )}
+          <div className="py-2 pl-2 mb-3 bg-white flexmax-w-full">
+            <div className="flex">
+              <ActionButton>
+                <i className="mr-1 fas fa-sun "></i>
+                <span className="font-medium">New</span>
+              </ActionButton>
+              <ActionButton>
+                <i className="mr-1 fas fa-rocket "></i>
+                <span className="font-medium">Best</span>
+              </ActionButton>
+              <ActionButton>
+                <i className="mr-1 fas fa-square-poll-vertical"></i>
+                <span className="font-medium">Top</span>
+              </ActionButton>
+            </div>
+          </div>
           {posts?.map((post) => (
             <PostCard post={post} key={post.identifier} revalidate={mutate} />
           ))}

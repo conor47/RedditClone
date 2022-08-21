@@ -54,7 +54,7 @@ const Login: React.FC = () => {
         <div
           className="h-screen bg-center bg-cover w-36"
           style={{
-            backgroundImage: `url('${process.env.NEXT_PUBLIC_SERVER_BASE_URL})}/images/pattern.jpeg')`,
+            backgroundImage: `url('${process.env.NEXT_PUBLIC_CLIENT_BASE_URL}/pattern.jpeg')`,
           }}
         ></div>
         <div className="flex flex-col justify-center pl-6 ">
