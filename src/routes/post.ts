@@ -5,7 +5,8 @@ import Post from '../entity/Post';
 import Sub from '../entity/Sub';
 import auth from '../Middleware/auth';
 import user from '../Middleware/user';
-import moment from 'moment';
+
+import sub from 'date-fns/sub';
 import { Between } from 'typeorm';
 
 const createPost = async (req: Request, res: Response) => {
@@ -45,7 +46,9 @@ const getPosts = async (req: Request, res: Response) => {
     } else if (filter == 'TOP_DAY') {
       posts = await Post.find({
         // order: { createdAt: 'DESC' },
-        where: { createdAt: Between(moment(), moment().subtract(1, 'day')) },
+        where: {
+          createdAt: Between(sub(new Date(), { days: 1 }), new Date()),
+        },
         relations: ['comments', 'votes', 'sub'],
         skip: currentPage * postsPerPage,
         take: postsPerPage,
@@ -55,7 +58,9 @@ const getPosts = async (req: Request, res: Response) => {
     } else if (filter == 'TOP_WEEK') {
       posts = await Post.find({
         order: { createdAt: 'DESC' },
-        where: { createdAt: Between(moment(), moment().subtract(7, 'day')) },
+        where: {
+          createdAt: Between(sub(new Date(), { days: 7 }), new Date()),
+        },
         relations: ['comments', 'votes', 'sub'],
         skip: currentPage * postsPerPage,
         take: postsPerPage,
@@ -65,16 +70,13 @@ const getPosts = async (req: Request, res: Response) => {
     } else if (filter == 'TOP_MONTH') {
       posts = await Post.find({
         order: { createdAt: 'DESC' },
-        where: { createdAt: Between(moment(), moment().subtract(30, 'day')) },
+        where: {
+          createdAt: Between(sub(new Date(), { days: 30 }), new Date()),
+        },
         relations: ['comments', 'votes', 'sub'],
         skip: currentPage * postsPerPage,
         take: postsPerPage,
       });
-      posts.filter((post) =>
-        moment(post.createdAt).isAfter(
-          moment(post.createdAt).subtract(30, 'day')
-        )
-      );
       posts.sort((a, b) => b.voteScore - a.voteScore);
     } else if (filter == 'TOP_ALLTIME') {
       posts = await Post.find({
