@@ -14,7 +14,7 @@ import { Filters } from '../../types';
 
 const Home: React.FC = () => {
   const [observedPost, setObservedPost] = useState('');
-  const [filter, setFilter] = useState(Filters.best);
+  const [filter, setFilter] = useState(Filters.top_alltime);
   const [sortTop, setSortTop] = useState(false);
   const { authenticated } = useAuthState();
   // const {

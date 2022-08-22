@@ -135,9 +135,36 @@ const getPost = async (req: Request, res: Response) => {
   }
 };
 
+const editPost = async (req: Request, res: Response) => {
+  const { identifier, slug } = req.params;
+  const { body, title } = req.body;
+  console.log('identifer', identifier);
+  console.log('slug', slug);
+
+  try {
+    const post = await Post.findOneOrFail({ identifier, slug });
+    post.title = title;
+    post.body = body;
+
+    if (post.username !== res.locals.user.username) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .send({ error: 'Unauthorized' });
+    }
+    await post.save();
+    return res.status(StatusCodes.OK).json(post);
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: 'Something went wrong' });
+  }
+};
+
 const router = Router();
 router.post('/', user, auth, createPost);
 router.get('/', user, getPosts);
 router.get('/:identifier/:slug', user, getPost);
+router.patch('/:identifier/:slug', user, auth, editPost);
 
 export default router;
