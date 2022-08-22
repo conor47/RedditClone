@@ -162,7 +162,7 @@ const Home: React.FC = () => {
                         filter == Filters.top_week ||
                         filter == Filters.top_alltime
                       }
-                      type={Filters.top_day}
+                      type={filter}
                       clickHandler={filterTopPosts}
                     >
                       <span className="relative font-bold">

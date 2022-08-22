@@ -9,6 +9,17 @@ import user from '../Middleware/user';
 import sub from 'date-fns/sub';
 import { Between } from 'typeorm';
 
+const paginatePosts = (
+  page: number,
+  postsPerPage: number,
+  posts: Post[]
+): Post[] => {
+  return posts.slice(
+    page * postsPerPage,
+    page * postsPerPage + postsPerPage + 1
+  );
+};
+
 const createPost = async (req: Request, res: Response) => {
   const { title, body, sub } = req.body;
 
@@ -50,11 +61,12 @@ const getPosts = async (req: Request, res: Response) => {
           createdAt: Between(sub(new Date(), { days: 1 }), new Date()),
         },
         relations: ['comments', 'votes', 'sub'],
-        skip: currentPage * postsPerPage,
-        take: postsPerPage,
+        // skip: currentPage * postsPerPage,
+        // take: postsPerPage,
       });
 
       posts.sort((a, b) => b.voteScore - a.voteScore);
+      posts = paginatePosts(currentPage, postsPerPage, posts);
     } else if (filter == 'TOP_WEEK') {
       posts = await Post.find({
         order: { createdAt: 'DESC' },
@@ -62,11 +74,12 @@ const getPosts = async (req: Request, res: Response) => {
           createdAt: Between(sub(new Date(), { days: 7 }), new Date()),
         },
         relations: ['comments', 'votes', 'sub'],
-        skip: currentPage * postsPerPage,
-        take: postsPerPage,
+        // skip: currentPage * postsPerPage,
+        // take: postsPerPage,
       });
 
       posts.sort((a, b) => b.voteScore - a.voteScore);
+      posts = paginatePosts(currentPage, postsPerPage, posts);
     } else if (filter == 'TOP_MONTH') {
       posts = await Post.find({
         order: { createdAt: 'DESC' },
@@ -74,18 +87,20 @@ const getPosts = async (req: Request, res: Response) => {
           createdAt: Between(sub(new Date(), { days: 30 }), new Date()),
         },
         relations: ['comments', 'votes', 'sub'],
-        skip: currentPage * postsPerPage,
-        take: postsPerPage,
+        // skip: currentPage * postsPerPage,
+        // take: postsPerPage,
       });
       posts.sort((a, b) => b.voteScore - a.voteScore);
+      posts = paginatePosts(currentPage, postsPerPage, posts);
     } else if (filter == 'TOP_ALLTIME') {
       posts = await Post.find({
         order: { createdAt: 'DESC' },
         relations: ['comments', 'votes', 'sub'],
-        skip: currentPage * postsPerPage,
-        take: postsPerPage,
+        // skip: currentPage * postsPerPage,
+        // take: postsPerPage,
       });
       posts.sort((a, b) => b.voteScore - a.voteScore);
+      posts = paginatePosts(currentPage, postsPerPage, posts);
     }
     if (res.locals.user) {
       posts.forEach((post) => post.setUserVote(res.locals.user));
