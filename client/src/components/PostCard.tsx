@@ -6,11 +6,9 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import classNames from 'classnames';
 
 import ActionButton from './ActionButton';
-import gravatar from '../../public/images/defaultGravatar.jpg';
 import { Post } from '../../types';
 import axios from 'axios';
 import { useAuthState } from '../context/Auth';
-import { Router } from 'express';
 import { useRouter } from 'next/router';
 
 dayjs.extend(relativeTime);
@@ -37,7 +35,7 @@ const PostCard: React.FC<PostCardProps> = ({
   },
   revalidate,
 }) => {
-  const { authenticated } = useAuthState();
+  const { authenticated, user } = useAuthState();
   const router = useRouter();
 
   const isInSubPage = router.pathname === '/r/[sub]';
@@ -166,6 +164,16 @@ const PostCard: React.FC<PostCardProps> = ({
             <i className="mr-1 fas fa-bookmark "></i>
             <span className="font-medium">Save</span>
           </ActionButton>
+          <ActionButton>
+            <i className="mr-1 fas fa-bookmark "></i>
+            <span className="font-medium">Save</span>
+          </ActionButton>
+          {user && user.username === username && (
+            <ActionButton>
+              <i className="mr-1 fas fa-pen"></i>
+              <span className="font-medium">Edit</span>
+            </ActionButton>
+          )}
         </div>
       </div>
     </div>

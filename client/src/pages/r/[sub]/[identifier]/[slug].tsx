@@ -14,11 +14,13 @@ import { Post, Comment } from '../../../../../types';
 import SideBar from '../../../../components/SideBar';
 import { useAuthState } from '../../../../context/Auth';
 import ActionButton from '../../../../components/ActionButton';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 const PostPage: React.FC = () => {
   const router = useRouter();
   const { authenticated, user } = useAuthState();
   const [newComment, setNewComment] = useState('');
+  const [editingPost, setEditingPost] = useState(false);
+  const [updatedPost, setUpdatedPost] = useState('');
   const { identifier, sub, slug } = router.query;
 
   // fetch post
@@ -89,6 +91,19 @@ const PostPage: React.FC = () => {
       mutateComment();
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const updatePost = async (e: Event) => {
+    e.preventDefault();
+    try {
+      await axios.patch(`/posts/${post.identifier}/${post.slug}`, {
+        body: updatedPost,
+      }),
+        setEditingPost(false);
+      mutatePost();
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -176,7 +191,16 @@ const PostPage: React.FC = () => {
                           {post.title}
                         </h1>
                         {/* post body */}
-                        <p className="my-3 text-sm">{post.body}</p>
+                        {editingPost ? (
+                          <textarea
+                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-gray-600"
+                            onChange={(e) => setUpdatedPost(e.target.value)}
+                            value={updatedPost}
+                            placeholder={post.body}
+                          ></textarea>
+                        ) : (
+                          <p className="my-3 text-sm">{post.body}</p>
+                        )}
                         {/* actions  */}
                         <div className="flex">
                           <Link href={post.url}>
@@ -198,6 +222,23 @@ const PostPage: React.FC = () => {
                             <i className="mr-1 fas fa-bookmark "></i>
                             <span className="font-medium">Save</span>
                           </ActionButton>
+                          {user && post.username === user.username && (
+                            <div onClick={() => setEditingPost(!editingPost)}>
+                              <ActionButton>
+                                <i className="mr-1 fas fa-pen"></i>
+                                <span className="font-medium">Edit</span>
+                              </ActionButton>
+                            </div>
+                          )}
+                          {editingPost && (
+                            <button
+                              onClick={(e) => updatePost(e.nativeEvent)}
+                              className="px-3 py-1 blue button"
+                              disabled={updatedPost === post.body}
+                            >
+                              Update post
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>

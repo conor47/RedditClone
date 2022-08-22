@@ -137,13 +137,12 @@ const getPost = async (req: Request, res: Response) => {
 
 const editPost = async (req: Request, res: Response) => {
   const { identifier, slug } = req.params;
-  const { body, title } = req.body;
+  const { body } = req.body;
   console.log('identifer', identifier);
   console.log('slug', slug);
 
   try {
     const post = await Post.findOneOrFail({ identifier, slug });
-    post.title = title;
     post.body = body;
 
     if (post.username !== res.locals.user.username) {
