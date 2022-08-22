@@ -15,6 +15,7 @@ import { Filters } from '../../types';
 const Home: React.FC = () => {
   const [observedPost, setObservedPost] = useState('');
   const [filter, setFilter] = useState(Filters.best);
+  const [sortTop, setSortTop] = useState(false);
   const { authenticated } = useAuthState();
   // const {
   //   data: posts,
@@ -53,11 +54,6 @@ const Home: React.FC = () => {
     }
   }, [posts]);
 
-  const updateFilteredPosts = (e: Event, type: Filters) => {
-    e.preventDefault();
-    setFilter(type);
-  };
-
   const observeElement = (element: HTMLElement) => {
     if (!element) {
       return;
@@ -75,6 +71,30 @@ const Home: React.FC = () => {
       );
       // begin observing the element passed as arguement
       observer.observe(element);
+    }
+  };
+
+  const updateFilteredPosts = (e: Event, type: Filters) => {
+    e.preventDefault();
+    setFilter(type);
+  };
+
+  const filterTopPosts = (e: Event, type: Filters) => {
+    e.preventDefault();
+    setSortTop(!sortTop);
+    setFilter(type);
+  };
+
+  const formatFilterText = (type: Filters): string => {
+    switch (type) {
+      case Filters.top_day:
+        return 'Today';
+      case Filters.top_week:
+        return 'Week';
+      case Filters.top_month:
+        return 'Month';
+      case Filters.top_alltime:
+        return 'All time';
     }
   };
 
@@ -101,7 +121,7 @@ const Home: React.FC = () => {
                 clickHandler={updateFilteredPosts}
               >
                 <i className="mr-1 fas fa-sun"></i>
-                <span className="font-medium">New</span>
+                <span className="font-bold">New</span>
               </ActionButton>
               <ActionButton
                 selected={filter == Filters.best}
@@ -109,16 +129,81 @@ const Home: React.FC = () => {
                 clickHandler={updateFilteredPosts}
               >
                 <i className="mr-1 fas fa-rocket"></i>
-                <span className="font-medium">Best</span>
+                <span className="font-bold">Best</span>
               </ActionButton>
               <ActionButton
-                selected={filter == Filters.top_day}
+                selected={
+                  filter == Filters.top_day ||
+                  filter == Filters.top_week ||
+                  filter == Filters.top_month ||
+                  filter == Filters.top_alltime
+                }
                 type={Filters.top_day}
                 clickHandler={updateFilteredPosts}
               >
                 <i className="mr-1 fas fa-square-poll-vertical"></i>
-                <span className="font-medium">Top</span>
+                <span className="font-bold">Top</span>
               </ActionButton>
+              {(filter == Filters.top_day ||
+                filter == Filters.top_month ||
+                filter == Filters.top_week ||
+                filter == Filters.top_alltime) && (
+                <>
+                  <div>
+                    <ActionButton
+                      selected={
+                        filter == Filters.top_day ||
+                        filter == Filters.top_month ||
+                        filter == Filters.top_week ||
+                        filter == Filters.top_alltime
+                      }
+                      type={Filters.top_day}
+                      clickHandler={filterTopPosts}
+                    >
+                      <span className="relative font-bold">
+                        {formatFilterText(filter)}
+                      </span>
+                      <i className="ml-1 fas fa-chevron-down"></i>
+                    </ActionButton>
+                    {sortTop && (
+                      <div className="absolute flex bg-white shadow">
+                        <p
+                          className="px-2 py-2 text-sm text-gray-400 transition-all cursor-pointer hover:bg-blue-100 hover:text-black"
+                          onClick={(e) =>
+                            filterTopPosts(e.nativeEvent, Filters.top_day)
+                          }
+                        >
+                          Today
+                        </p>
+                        <p
+                          className="px-2 py-2 text-sm text-gray-400 transition-all cursor-pointer hover:bg-blue-100 hover:text-black"
+                          onClick={(e) =>
+                            filterTopPosts(e.nativeEvent, Filters.top_week)
+                          }
+                        >
+                          Week
+                        </p>
+                        <p
+                          className="px-2 py-2 text-sm text-gray-400 transition-all cursor-pointer hover:bg-blue-100 hover:text-black"
+                          onClick={(e) =>
+                            filterTopPosts(e.nativeEvent, Filters.top_month)
+                          }
+                        >
+                          Month
+                        </p>
+                        <p
+                          className="px-2 py-2 text-sm text-gray-400 transition-all cursor-pointer hover:bg-blue-100 hover:text-black"
+                          onClick={(e) =>
+                            filterTopPosts(e.nativeEvent, Filters.top_alltime)
+                          }
+                        >
+                          All time
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
           </div>
           {posts?.map((post) => (

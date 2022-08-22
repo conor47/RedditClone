@@ -27,6 +27,8 @@ const createPost = async (req: Request, res: Response) => {
 };
 
 const getPosts = async (req: Request, res: Response) => {
+  console.log('params', req.query);
+
   const currentPage: number = (req.query.page || 0) as number;
   const postsPerPage: number = (req.query.count || 8) as number;
 

@@ -57,7 +57,8 @@ export enum Actions {
 export enum Filters {
   best = 'BEST',
   new = 'NEW',
-  top_hr = 'TOP-HOUR',
   top_day = 'TOP_DAY',
   top_week = 'TOP_WEEK',
+  top_month = 'TOP_MONTH',
+  top_alltime = 'TOP_ALLTIME',
 }

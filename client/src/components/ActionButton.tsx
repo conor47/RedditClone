@@ -17,8 +17,8 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   return (
     <div
       onClick={(e) => clickHandler(e.nativeEvent, type)}
-      className={`px-1 py-1 mr-1 text-xs text-gray-400 transition-all rounded cursor-pointer hover:bg-gray-200 ${
-        selected ? 'text-blue-400' : ''
+      className={`px-2 py-2 mr-1 text-xs text-gray-400 transition-all cursor-pointer hover:bg-gray-200 rounded-xl ${
+        selected ? 'text-blue-500 bg-gray-200 rounded-xl' : ''
       }`}
     >
       {children}

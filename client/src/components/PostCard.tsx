@@ -121,7 +121,8 @@ const PostCard: React.FC<PostCardProps> = ({
                   /r/{subName}
                 </a>
               </Link>
-              <span className="mx-1 text-xs text-gray-500">•</span> Posted by
+              <span className="mx-1 text-xs text-gray-500">•</span>{' '}
+              <span className="text-xs">Posted by</span>
             </>
           )}
           <p className="text-xs text-gray-500">
