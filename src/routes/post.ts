@@ -5,6 +5,8 @@ import Post from '../entity/Post';
 import Sub from '../entity/Sub';
 import auth from '../Middleware/auth';
 import user from '../Middleware/user';
+import moment from 'moment';
+import { Between } from 'typeorm';
 
 const createPost = async (req: Request, res: Response) => {
   const { title, body, sub } = req.body;
@@ -27,18 +29,62 @@ const createPost = async (req: Request, res: Response) => {
 };
 
 const getPosts = async (req: Request, res: Response) => {
-  console.log('params', req.query);
-
   const currentPage: number = (req.query.page || 0) as number;
   const postsPerPage: number = (req.query.count || 8) as number;
+  const filter = req.query.filter;
+  let posts: Post[] = [];
 
   try {
-    const posts = await Post.find({
-      order: { createdAt: 'DESC' },
-      relations: ['comments', 'votes', 'sub'],
-      skip: currentPage * postsPerPage,
-      take: postsPerPage,
-    });
+    if (filter == 'NEW') {
+      posts = await Post.find({
+        order: { createdAt: 'DESC' },
+        relations: ['comments', 'votes', 'sub'],
+        skip: currentPage * postsPerPage,
+        take: postsPerPage,
+      });
+    } else if (filter == 'TOP_DAY') {
+      posts = await Post.find({
+        // order: { createdAt: 'DESC' },
+        where: { createdAt: Between(moment(), moment().subtract(1, 'day')) },
+        relations: ['comments', 'votes', 'sub'],
+        skip: currentPage * postsPerPage,
+        take: postsPerPage,
+      });
+
+      posts.sort((a, b) => b.voteScore - a.voteScore);
+    } else if (filter == 'TOP_WEEK') {
+      posts = await Post.find({
+        order: { createdAt: 'DESC' },
+        where: { createdAt: Between(moment(), moment().subtract(7, 'day')) },
+        relations: ['comments', 'votes', 'sub'],
+        skip: currentPage * postsPerPage,
+        take: postsPerPage,
+      });
+
+      posts.sort((a, b) => b.voteScore - a.voteScore);
+    } else if (filter == 'TOP_MONTH') {
+      posts = await Post.find({
+        order: { createdAt: 'DESC' },
+        where: { createdAt: Between(moment(), moment().subtract(30, 'day')) },
+        relations: ['comments', 'votes', 'sub'],
+        skip: currentPage * postsPerPage,
+        take: postsPerPage,
+      });
+      posts.filter((post) =>
+        moment(post.createdAt).isAfter(
+          moment(post.createdAt).subtract(30, 'day')
+        )
+      );
+      posts.sort((a, b) => b.voteScore - a.voteScore);
+    } else if (filter == 'TOP_ALLTIME') {
+      posts = await Post.find({
+        order: { createdAt: 'DESC' },
+        relations: ['comments', 'votes', 'sub'],
+        skip: currentPage * postsPerPage,
+        take: postsPerPage,
+      });
+      posts.sort((a, b) => b.voteScore - a.voteScore);
+    }
     if (res.locals.user) {
       posts.forEach((post) => post.setUserVote(res.locals.user));
     }

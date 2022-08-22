@@ -35,7 +35,9 @@ const Home: React.FC = () => {
     size: page,
     setSize: setPage,
     isValidating,
-  } = useSWRInfinite<Post[]>((index) => `/posts?page=${index}`);
+  } = useSWRInfinite<Post[]>(
+    (index) => `/posts?page=${index}&filter=${filter}`
+  );
 
   const posts: Post[] = data ? [].concat(...data) : [];
   const isLoadingInitialData = !data && !error;
@@ -74,15 +76,18 @@ const Home: React.FC = () => {
     }
   };
 
+  // function for handling posts filtering
   const updateFilteredPosts = (e: Event, type: Filters) => {
     e.preventDefault();
     setFilter(type);
   };
 
+  // function for handling updating top posts filter
   const filterTopPosts = (e: Event, type: Filters) => {
     e.preventDefault();
     setSortTop(!sortTop);
     setFilter(type);
+    updateFilteredPosts(e, type);
   };
 
   const formatFilterText = (type: Filters): string => {
@@ -116,20 +121,20 @@ const Home: React.FC = () => {
           <div className="py-3 pl-2 mb-3 bg-white rounded-sm flexmax-w-full">
             <div className="flex">
               <ActionButton
-                selected={filter == Filters.new}
-                type={Filters.new}
-                clickHandler={updateFilteredPosts}
-              >
-                <i className="mr-1 fas fa-sun"></i>
-                <span className="font-bold">New</span>
-              </ActionButton>
-              <ActionButton
                 selected={filter == Filters.best}
                 type={Filters.best}
                 clickHandler={updateFilteredPosts}
               >
                 <i className="mr-1 fas fa-rocket"></i>
                 <span className="font-bold">Best</span>
+              </ActionButton>
+              <ActionButton
+                selected={filter == Filters.new}
+                type={Filters.new}
+                clickHandler={updateFilteredPosts}
+              >
+                <i className="mr-1 fas fa-sun"></i>
+                <span className="font-bold">New</span>
               </ActionButton>
               <ActionButton
                 selected={
