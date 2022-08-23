@@ -6,14 +6,16 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import classNames from 'classnames';
 
 import ActionButton from './ActionButton';
-import gravatar from '../../public/images/defaultGravatar.jpg';
 import { Post } from '../../types';
 import axios from 'axios';
+import { useAuthState } from '../context/Auth';
+import { useRouter } from 'next/router';
 
 dayjs.extend(relativeTime);
 
 interface PostCardProps {
   post: Post;
+  revalidate?: () => void;
 }
 
 const PostCard: React.FC<PostCardProps> = ({
@@ -29,22 +31,44 @@ const PostCard: React.FC<PostCardProps> = ({
     username,
     url,
     commentCount,
+    sub,
   },
+  revalidate,
 }) => {
+  const { authenticated, user } = useAuthState();
+  const router = useRouter();
+
+  const isInSubPage = router.pathname === '/r/[sub]';
+
   const castVote = async (value: number) => {
+    if (!authenticated) {
+      router.push('/login');
+    }
+
+    if (value === userVote) {
+      value = 0;
+    }
+
     try {
       const res = await axios.post('/votes/vote', {
         identifier: identifier,
         slug,
         value,
       });
+      if (revalidate) {
+        revalidate();
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <div key={identifier} className="flex mb-4 bg-white rounded">
+    <div
+      key={identifier}
+      className="flex mb-4 bg-white rounded"
+      id={identifier}
+    >
       {/* vote section */}
       <div className="flex flex-col items-center justify-start w-10 bg-gray-200 rounded-l">
         <div
@@ -79,23 +103,28 @@ const PostCard: React.FC<PostCardProps> = ({
       {/* data */}
       <div className="w-full p-2">
         <div className="flex items-center ">
-          <Link href={`/r/${subName}`}>
-            <Image
-              src={gravatar}
-              alt="placeholder gravatar"
-              height="24px"
-              width="24px"
-              className="rounded-full cursor-pointer"
-            />
-          </Link>
-          <Link href={`/r/${subName}`}>
-            <a className="ml-1 text-xs font-semibold hover:underline">
-              /r/{subName}
-            </a>
-          </Link>
+          {!isInSubPage && (
+            <>
+              <Link href={`/r/${subName}`}>
+                <Image
+                  src={sub.imageUrl}
+                  alt="placeholder gravatar"
+                  height="24px"
+                  width="24px"
+                  className="rounded-full cursor-pointer"
+                />
+              </Link>
+              <Link href={`/r/${subName}`}>
+                <a className="ml-1 text-xs font-semibold hover:underline">
+                  /r/{subName}
+                </a>
+              </Link>
+              <span className="mx-1 text-xs text-gray-500">•</span>{' '}
+              <span className="text-xs">Posted by</span>
+            </>
+          )}
           <p className="text-xs text-gray-500">
-            <span className="mx-1">•</span> Posted by
-            <Link href={`/u/user`}>
+            <Link href={`/u/${username}`}>
               <a href="" className="mx-1 hover:underline">
                 {username}
               </a>
@@ -142,3 +171,4 @@ const PostCard: React.FC<PostCardProps> = ({
 };
 
 export default PostCard;
+// test

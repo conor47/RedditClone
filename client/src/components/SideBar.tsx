@@ -34,7 +34,9 @@ const SideBar: React.FC<SideBarProps> = ({ sub }) => {
           </p>
           {authenticated && (
             <Link href={`/r/${sub.name}/submit`}>
-              <a className="w-full py-1 text-sm blue button">Create Post</a>
+              <a className="w-full px-2 py-1 text-sm button blue">
+                Create Post
+              </a>
             </Link>
           )}
         </div>
