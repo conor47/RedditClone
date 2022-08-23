@@ -18,9 +18,13 @@ import { FormEvent, useEffect, useState } from 'react';
 const PostPage: React.FC = () => {
   const router = useRouter();
   const { authenticated, user } = useAuthState();
-  const [newComment, setNewComment] = useState('');
+  // state for post editing
   const [editingPost, setEditingPost] = useState(false);
   const [updatedPost, setUpdatedPost] = useState('');
+  // state for new comments and comment editing
+  const [newComment, setNewComment] = useState('');
+  const [editingComment, setEditingComment] = useState('');
+  const [updatedComment, setUpdatedComment] = useState('');
   const { identifier, sub, slug } = router.query;
 
   // fetch post
@@ -108,6 +112,18 @@ const PostPage: React.FC = () => {
     }
   };
 
+  const updateComment = async (e: Event, identifier: String) => {
+    e.preventDefault();
+    try {
+      await axios.patch(`/comments/${identifier}`, {
+        body: updatedComment,
+      }),
+        setEditingComment('');
+      mutateComment();
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div>
       {post && (
@@ -349,8 +365,71 @@ const PostPage: React.FC = () => {
                               } Points • ${dayjs(
                                 comment.createdAt
                               ).fromNow()}`}</span>
+                              {comment.createdAt !== comment.updatedAt && (
+                                <span className="text-gray 600">
+                                  - last edit{' '}
+                                  {dayjs(comment.updatedAt).fromNow()}
+                                </span>
+                              )}
                             </p>
-                            <p>{comment.body}</p>
+
+                            {editingComment === comment.identifier &&
+                            editingComment !== '' ? (
+                              <textarea
+                                className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-gray-600"
+                                onChange={(e) =>
+                                  setUpdatedComment(e.target.value)
+                                }
+                                value={updatedComment}
+                                placeholder={comment.body}
+                              ></textarea>
+                            ) : (
+                              <p>{comment.body}</p>
+                            )}
+                            <div className="flex">
+                              {/* if user is logged and and same user as comment owner then display edit button */}
+                              {user && user.username == comment.username && (
+                                <div
+                                  onClick={() => {
+                                    setUpdatedComment(comment.body);
+                                    if (editingComment === '') {
+                                      setEditingComment(comment.identifier);
+                                    } else if (
+                                      editingComment !== '' &&
+                                      comment.identifier !== editingComment
+                                    ) {
+                                      setEditingComment(comment.identifier);
+                                    } else {
+                                      setEditingComment('');
+                                    }
+                                  }}
+                                >
+                                  <div className="flex">
+                                    <ActionButton>
+                                      <i className="mr-1 fas fa-pen"></i>
+                                      <span className="font-medium">Edit</span>
+                                    </ActionButton>
+                                    {editingComment === comment.identifier && (
+                                      <button
+                                        onClick={(e) =>
+                                          updateComment(
+                                            e.nativeEvent,
+                                            comment.identifier
+                                          )
+                                        }
+                                        className="px-3 py-1 blue button"
+                                        disabled={
+                                          updatedComment === comment.body ||
+                                          updatedComment === ''
+                                        }
+                                      >
+                                        Save edits
+                                      </button>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
                       ))}
