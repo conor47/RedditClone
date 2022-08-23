@@ -106,7 +106,7 @@ const Home: React.FC = () => {
   return (
     <Fragment>
       <Head>
-        <title>reddit: the front paage of the internet</title>
+        <title>reddit: the front page of the internet</title>
         <meta
           name="description"
           content="Reddit is a network of communities based on peoples interests. Find communities you are interested in, and become part of an online community"
