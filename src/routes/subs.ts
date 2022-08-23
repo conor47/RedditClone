@@ -1,4 +1,4 @@
-import { isEmpty } from 'class-validator';
+import { IsEmpty, isEmpty } from 'class-validator';
 import { Request, Response, Router } from 'express';
 import { getConnection, getRepository } from 'typeorm';
 import Post from '../entity/Post';
@@ -14,6 +14,16 @@ import user from '../Middleware/user';
 import { makeId } from '../Utils/helpers';
 import { NextFunction } from 'express-serve-static-core';
 import Unauthorized from '../errors/Unauthorized';
+
+const getAllSubs = async (req: Request, res: Response) => {
+  try {
+    const subs = await Sub.find({});
+    return res.status(200).json(subs);
+  } catch (error) {
+    console.log(error);
+    throw new BadRequestError('something went wrong');
+  }
+};
 
 const createSub = async (req: Request, res: Response) => {
   const { name, title, description } = req.body;
@@ -52,7 +62,6 @@ const createSub = async (req: Request, res: Response) => {
 
 const getSub = async (req: Request, res: Response) => {
   let { name } = req.params;
-  name = name.toLowerCase();
   try {
     const sub = await Sub.findOneOrFail({ name });
     const posts = await Post.find({
@@ -169,10 +178,34 @@ const topSubs = async (req: Request, res: Response) => {
   }
 };
 
+const searchSubs = async (req: Request, res: Response) => {
+  const name = req.params.name;
+
+  try {
+    if (name.trim() === '') {
+      return new BadRequestError('Name must not be empty');
+    }
+
+    const subs = await getRepository(Sub)
+      .createQueryBuilder()
+      .where('LOWER(name) LIKE :name', {
+        name: `${name.toLowerCase().trim()}%`,
+      })
+      .getMany();
+
+    return res.json(subs);
+  } catch (error) {
+    console.log(error);
+    throw new BadRequestError('Something went wrong');
+  }
+};
+
 const router = Router();
 router.post('/', user, auth, createSub);
+router.get('/', getAllSubs);
 router.get('/topSubs', topSubs);
 router.get('/:name', user, getSub);
+router.get('/search/:name', searchSubs);
 router.post(
   '/:name/image',
   user,

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FormEvent, useState } from 'react';
@@ -86,6 +87,24 @@ const Submit: React.FC = () => {
       {sub && <SideBar sub={sub} />}
     </div>
   );
+};
+
+// using server side rendering to check if the user is logged in with a valid token. If not we perform a redirect to the login page. This is one way of guarding the submit route
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  try {
+    // extract the cookie header
+    const cookie = req.headers.cookie;
+    if (!cookie) {
+      throw new Error('missing auth token');
+    }
+    // make a post request to the /auth/me endpoint passing along the cookie
+    await axios.get('/auth/me', { headers: { cookie } });
+    return { props: {} };
+  } catch (error) {
+    console.log(error);
+    // we return a 307 and perform a redirect to the login page
+    res.writeHead(307, { location: '/login' }).end();
+  }
 };
 
 export default Submit;

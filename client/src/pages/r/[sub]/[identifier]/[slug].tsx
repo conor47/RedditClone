@@ -14,11 +14,17 @@ import { Post, Comment } from '../../../../../types';
 import SideBar from '../../../../components/SideBar';
 import { useAuthState } from '../../../../context/Auth';
 import ActionButton from '../../../../components/ActionButton';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 const PostPage: React.FC = () => {
   const router = useRouter();
   const { authenticated, user } = useAuthState();
+  // state for post editing
+  const [editingPost, setEditingPost] = useState(false);
+  const [updatedPost, setUpdatedPost] = useState('');
+  // state for new comments and comment editing
   const [newComment, setNewComment] = useState('');
+  const [editingComment, setEditingComment] = useState('');
+  const [updatedComment, setUpdatedComment] = useState('');
   const { identifier, sub, slug } = router.query;
 
   // fetch post
@@ -87,11 +93,37 @@ const PostPage: React.FC = () => {
         body: newComment,
       });
       mutateComment();
+      setNewComment('');
     } catch (error) {
       console.log(error);
     }
   };
 
+  const updatePost = async (e: Event) => {
+    e.preventDefault();
+    try {
+      await axios.patch(`/posts/${post.identifier}/${post.slug}`, {
+        body: updatedPost,
+      }),
+        setEditingPost(false);
+      mutatePost();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const updateComment = async (e: Event, identifier: String) => {
+    e.preventDefault();
+    try {
+      await axios.patch(`/comments/${identifier}`, {
+        body: updatedComment,
+      }),
+        setEditingComment('');
+      mutateComment();
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div>
       {post && (
@@ -170,13 +202,27 @@ const PostPage: React.FC = () => {
                               {dayjs(post.createdAt).fromNow()}
                             </a>
                           </Link>
+                          {post.createdAt !== post.updatedAt && (
+                            <span>
+                              - last edit : {dayjs(post.updatedAt).fromNow()}
+                            </span>
+                          )}
                         </p>
                         {/* post title */}
                         <h1 className="my-1 text-xl font-medium">
                           {post.title}
                         </h1>
                         {/* post body */}
-                        <p className="my-3 text-sm">{post.body}</p>
+                        {editingPost ? (
+                          <textarea
+                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-gray-600"
+                            onChange={(e) => setUpdatedPost(e.target.value)}
+                            value={updatedPost}
+                            placeholder={post.body}
+                          ></textarea>
+                        ) : (
+                          <p className="my-3 text-sm">{post.body}</p>
+                        )}
                         {/* actions  */}
                         <div className="flex">
                           <Link href={post.url}>
@@ -198,6 +244,29 @@ const PostPage: React.FC = () => {
                             <i className="mr-1 fas fa-bookmark "></i>
                             <span className="font-medium">Save</span>
                           </ActionButton>
+                          {/* if the user is logged in and the post belongs to the user then display the button */}
+                          {user && post.username === user.username && (
+                            <div
+                              onClick={() => {
+                                setUpdatedPost(post.body);
+                                setEditingPost(!editingPost);
+                              }}
+                            >
+                              <ActionButton>
+                                <i className="mr-1 fas fa-pen"></i>
+                                <span className="font-medium">Edit</span>
+                              </ActionButton>
+                            </div>
+                          )}
+                          {editingPost && (
+                            <button
+                              onClick={(e) => updatePost(e.nativeEvent)}
+                              className="px-3 py-1 blue button"
+                              disabled={updatedPost === post.body}
+                            >
+                              Save edits
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -236,12 +305,14 @@ const PostPage: React.FC = () => {
                           </p>
                           <div>
                             <Link href="/login">
-                              <a className="w-24 py-2 hollow blue button w-30">
+                              <a className="w-24 px-2 py-2 mr-1 hollow blue button w-30">
                                 Login
                               </a>
                             </Link>
                             <Link href="/register">
-                              <a className="w-24 py-2 blue button">Register</a>
+                              <a className="w-24 px-2 py-2 blue button">
+                                Register
+                              </a>
                             </Link>
                           </div>
                         </div>
@@ -294,8 +365,72 @@ const PostPage: React.FC = () => {
                               } Points • ${dayjs(
                                 comment.createdAt
                               ).fromNow()}`}</span>
+                              {comment.createdAt !== comment.updatedAt && (
+                                <span className="text-gray 600">
+                                  {` - last edit : ${dayjs(
+                                    comment.updatedAt
+                                  ).fromNow()}`}
+                                </span>
+                              )}
                             </p>
-                            <p>{comment.body}</p>
+
+                            {editingComment === comment.identifier &&
+                            editingComment !== '' ? (
+                              <textarea
+                                className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-gray-600"
+                                onChange={(e) =>
+                                  setUpdatedComment(e.target.value)
+                                }
+                                value={updatedComment}
+                                placeholder={comment.body}
+                              ></textarea>
+                            ) : (
+                              <p>{comment.body}</p>
+                            )}
+                            <div className="flex">
+                              {/* if user is logged and and same user as comment owner then display edit button */}
+                              {user && user.username == comment.username && (
+                                <div
+                                  onClick={() => {
+                                    setUpdatedComment(comment.body);
+                                    if (editingComment === '') {
+                                      setEditingComment(comment.identifier);
+                                    } else if (
+                                      editingComment !== '' &&
+                                      comment.identifier !== editingComment
+                                    ) {
+                                      setEditingComment(comment.identifier);
+                                    } else {
+                                      setEditingComment('');
+                                    }
+                                  }}
+                                >
+                                  <div className="flex">
+                                    <ActionButton>
+                                      <i className="mr-1 fas fa-pen"></i>
+                                      <span className="font-medium">Edit</span>
+                                    </ActionButton>
+                                    {editingComment === comment.identifier && (
+                                      <button
+                                        onClick={(e) =>
+                                          updateComment(
+                                            e.nativeEvent,
+                                            comment.identifier
+                                          )
+                                        }
+                                        className="px-3 py-1 blue button"
+                                        disabled={
+                                          updatedComment === comment.body ||
+                                          updatedComment === ''
+                                        }
+                                      >
+                                        Save edits
+                                      </button>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
                       ))}

@@ -45,10 +45,20 @@ export interface Comment {
   username: string;
   userVote: number;
   voteScore: number;
+  post?: Post;
 }
 
 export enum Actions {
   login = 'LOGIN',
   logout = 'LOGOUT',
   stop_loading = 'STOP_LOADING',
+}
+
+export enum Filters {
+  best = 'BEST',
+  new = 'NEW',
+  top_day = 'TOP_DAY',
+  top_week = 'TOP_WEEK',
+  top_month = 'TOP_MONTH',
+  top_alltime = 'TOP_ALLTIME',
 }

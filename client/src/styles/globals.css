@@ -7,7 +7,7 @@
 }
 
 .button {
-  @apply inline-block text-xs font-bold text-center uppercase transition-all border rounded-3xl;
+  @apply text-xs font-bold text-center uppercase transition-all border rounded-3xl;
 }
 
 .button.blue {
