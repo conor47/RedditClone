@@ -4,6 +4,7 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  Unique,
 } from 'typeorm';
 
 import Entity from './Entity';
@@ -19,14 +20,11 @@ export default class Message extends Entity {
   @Column()
   body: string;
 
-  @Column()
-  username: string;
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'id', referencedColumnName: 'id' })
+  creatorId: User;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'username', referencedColumnName: 'username' })
-  from: User;
-
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'username', referencedColumnName: 'username' })
-  to: User;
+  recipientName: User;
 }
