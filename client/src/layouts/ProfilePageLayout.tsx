@@ -17,14 +17,15 @@ const ProfilePageLayout: React.FC = ({ children }: ProfilePageLayoutProps) => {
 
   return (
     <>
-      <div className="flex items-center justify-center w-full h-10 bg-white border-gray-200 border-y">
-        <div className="container flex">
+      <div className="flex items-center justify-center w-full h-10 leading-9 bg-white border-gray-200 border-y">
+        <div className="container flex h-full">
           <Link href={`/u/${username}`}>
             <span
               className={classNames(
                 'px-2 text-center cursor-pointer transition-all',
                 {
-                  'text-blue-300': path === username,
+                  'text-blue-300  border-b-blue-300 border-b-2':
+                    path === username,
                 }
               )}
             >
@@ -34,9 +35,10 @@ const ProfilePageLayout: React.FC = ({ children }: ProfilePageLayoutProps) => {
           <Link href={`/u/${username}/comments`}>
             <span
               className={classNames(
-                'px-2 text-center cursor-pointer transition-all',
+                'px-2 text-center cursor-pointer transition-all h-full',
                 {
-                  'text-blue-300': path === 'comments',
+                  'text-blue-300 border-b-blue-300 border-b-2':
+                    path === 'comments',
                 }
               )}
             >
@@ -48,7 +50,8 @@ const ProfilePageLayout: React.FC = ({ children }: ProfilePageLayoutProps) => {
               className={classNames(
                 'px-2 text-center cursor-pointer transition-all',
                 {
-                  'text-blue-300': path === 'posts',
+                  'text-blue-300 border-b-blue-300 border-b-2':
+                    path === 'posts',
                 }
               )}
             >
