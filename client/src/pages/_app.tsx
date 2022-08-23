@@ -1,12 +1,13 @@
 import '../styles/globals.css';
 import '../styles/icons.css';
-import type { AppProps } from 'next/app';
+// import type { AppProps } from 'next/app';
 import Axios from 'axios';
 import { useRouter } from 'next/router';
 import { SWRConfig } from 'swr';
 
 import Navbar from '../components/Navbar';
 import { AuthProvider } from '../context/Auth';
+import { NextComponentType, NextPageContext } from 'next';
 
 // configure default base url and credentials to use for all backend requests
 Axios.defaults.baseURL = 'http://localhost:5001/api/';
@@ -21,6 +22,13 @@ const fetcher = async (url: string) => {
   }
 };
 
+type AppProps = {
+  pageProps: any;
+  Component: NextComponentType<NextPageContext, any, {}> & {
+    layout?: any;
+  };
+};
+
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
 
@@ -28,8 +36,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const authRoutes = ['/register', '/login', '/404'];
   const authRoute = authRoutes.includes(pathname);
 
-  //@ts-ignore
-  const Layout = Component.layout;
+  const Layout = Component.layout || (({ children }) => <>{children}</>);
   return (
     <SWRConfig
       value={{
@@ -41,7 +48,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         {!authRoute && <Navbar />}
         <div className={authRoute ? '' : 'pt-12'}>
           <Layout>
-            <Component {...pageProps} />
+            <Component {...pageProps}></Component>
           </Layout>
         </div>
       </AuthProvider>
