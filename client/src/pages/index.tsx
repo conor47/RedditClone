@@ -23,7 +23,7 @@ const Home: React.FC = () => {
   return (
     <Fragment>
       <Head>
-        <title>reddit: the front page of the internet</title>
+        <title>Reddit: the front page of the internet</title>
       </Head>
       <div className="container flex pt-4">
         {/* Posts feed */}
