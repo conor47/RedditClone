@@ -164,10 +164,6 @@ const PostCard: React.FC<PostCardProps> = ({
             <i className="mr-1 fas fa-bookmark "></i>
             <span className="font-medium">Save</span>
           </ActionButton>
-          <ActionButton>
-            <i className="mr-1 fas fa-bookmark "></i>
-            <span className="font-medium">Save</span>
-          </ActionButton>
           {user && user.username === username && (
             <ActionButton>
               <i className="mr-1 fas fa-pen"></i>
