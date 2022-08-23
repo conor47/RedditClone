@@ -77,11 +77,35 @@ const getPostComments = async (req: Request, res: Response) => {
   }
 };
 
+const editComment = async (req: Request, res: Response) => {
+  const { identifier } = req.params;
+  const { body } = req.body;
+
+  try {
+    const comment = await Comment.findOneOrFail({ identifier });
+    comment.body = body;
+
+    if (comment.username !== res.locals.user.username) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .send({ error: 'Unauthorized' });
+    }
+    await comment.save();
+    return res.status(StatusCodes.OK).json(comment);
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: 'Something went wrong' });
+  }
+};
+
 const router = Router();
 
 router.post('/:identifier/:slug', user, auth, commentOnPost);
 router.get('/', getAllComments);
 router.get('/:identifier', getSingleComment);
+router.patch('/:identifier', user, auth, editComment);
 router.get('/:identifier/:slug/comments', user, getPostComments);
 
 export default router;

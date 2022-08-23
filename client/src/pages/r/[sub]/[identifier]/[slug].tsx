@@ -89,6 +89,7 @@ const PostPage: React.FC = () => {
         body: newComment,
       });
       mutateComment();
+      setNewComment('');
     } catch (error) {
       console.log(error);
     }
@@ -247,7 +248,7 @@ const PostPage: React.FC = () => {
                               className="px-3 py-1 blue button"
                               disabled={updatedPost === post.body}
                             >
-                              Update post
+                              Save edits
                             </button>
                           )}
                         </div>
