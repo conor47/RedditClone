@@ -56,7 +56,13 @@ class MyDocument extends Document {
             href="/images/favicon-16x16.png"
           />
         </Head>
-        <body className="font-body" style={{ backgroundColor: '#DAE0E6' }}>
+        <body
+          className="font-body"
+          style={{
+            backgroundColor: '#DAE0E6',
+            overflowY: 'scroll',
+          }}
+        >
           <Main />
           <NextScript />
         </body>
