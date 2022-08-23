@@ -367,8 +367,9 @@ const PostPage: React.FC = () => {
                               ).fromNow()}`}</span>
                               {comment.createdAt !== comment.updatedAt && (
                                 <span className="text-gray 600">
-                                  - last edit{' '}
-                                  {dayjs(comment.updatedAt).fromNow()}
+                                  {` - last edit : ${dayjs(
+                                    comment.updatedAt
+                                  ).fromNow()}`}
                                 </span>
                               )}
                             </p>
