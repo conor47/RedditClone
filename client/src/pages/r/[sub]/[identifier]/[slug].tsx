@@ -185,6 +185,11 @@ const PostPage: React.FC = () => {
                               {dayjs(post.createdAt).fromNow()}
                             </a>
                           </Link>
+                          {post.createdAt !== post.updatedAt && (
+                            <span>
+                              - last edit : {dayjs(post.updatedAt).fromNow()}
+                            </span>
+                          )}
                         </p>
                         {/* post title */}
                         <h1 className="my-1 text-xl font-medium">
@@ -222,8 +227,14 @@ const PostPage: React.FC = () => {
                             <i className="mr-1 fas fa-bookmark "></i>
                             <span className="font-medium">Save</span>
                           </ActionButton>
+                          {/* if the user is logged in and the post belongs to the user then display the button */}
                           {user && post.username === user.username && (
-                            <div onClick={() => setEditingPost(!editingPost)}>
+                            <div
+                              onClick={() => {
+                                setUpdatedPost(post.body);
+                                setEditingPost(!editingPost);
+                              }}
+                            >
                               <ActionButton>
                                 <i className="mr-1 fas fa-pen"></i>
                                 <span className="font-medium">Edit</span>
