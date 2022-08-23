@@ -13,13 +13,12 @@ jobs:
         with:
           command: |
             cd /reddit.com
-            ls 
-            # git pull
-            # npm install
-            # npx tsc
-            # cd client
-            # npm run build
-            # pm2 restart server client
+            git pull
+            npm install
+            npx tsc
+            cd client
+            npm run build
+            pm2 restart all
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           privateKey: ${{ secrets.PRIVATE_KEY}}
