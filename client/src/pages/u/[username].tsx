@@ -5,6 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
+
+import ProfilePageLayout from '../../layouts/ProfilePageLayout';
 import { Comment, Post } from '../../../types';
 import PostCard from '../../components/PostCard';
 
@@ -100,5 +102,8 @@ const User: React.FC = () => {
     </>
   );
 };
+
+//@ts-ignore
+User.layout = ProfilePageLayout;
 
 export default User;

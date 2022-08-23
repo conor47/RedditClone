@@ -28,6 +28,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const authRoutes = ['/register', '/login', '/404'];
   const authRoute = authRoutes.includes(pathname);
 
+  //@ts-ignore
+  const Layout = Component.layout;
   return (
     <SWRConfig
       value={{
@@ -38,7 +40,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <AuthProvider>
         {!authRoute && <Navbar />}
         <div className={authRoute ? '' : 'pt-12'}>
-          <Component {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </div>
       </AuthProvider>
     </SWRConfig>

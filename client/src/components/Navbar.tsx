@@ -73,8 +73,8 @@ const Navbar: React.FC = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             type="text"
-            placeholder="search"
-            className="py-1 pr-3 bg-transparent rounded focus:outline-none "
+            placeholder="Search Reddit"
+            className="py-1 pr-3 text-sm font-light bg-transparent rounded focus:outline-none"
           ></input>
           <div className="absolute inset-x-0 bg-white" style={{ top: '100%' }}>
             {subs?.map((sub) => (
