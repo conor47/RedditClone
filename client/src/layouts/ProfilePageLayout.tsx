@@ -1,6 +1,7 @@
 import { parseISOWithOptions } from 'date-fns/fp';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import classNames from 'classnames';
 interface ProfilePageLayoutProps {
   children: JSX.Element[];
 }
@@ -8,15 +9,52 @@ interface ProfilePageLayoutProps {
 const ProfilePageLayout: React.FC = ({ children }: ProfilePageLayoutProps) => {
   const router = useRouter();
   const { username } = router.query;
+  const paths = router.asPath.split('/');
+  const path = paths[paths.length - 1];
+  console.log('path', path);
+
   console.log('name', username);
 
   return (
     <>
-      <div className="w-full h-10 bg-white border-gray-200 border-y">
+      <div className="flex items-center justify-center w-full h-10 bg-white border-gray-200 border-y">
         <div className="container flex">
-          <Link href={`/u/${username}`}>overview</Link>
-          <Link href={`/u/${username}/comments`}>comments</Link>
-          <Link href={`/u/${username}/posts`}>posts</Link>
+          <Link href={`/u/${username}`}>
+            <span
+              className={classNames(
+                'px-2 text-center cursor-pointer transition-all',
+                {
+                  'text-blue-300': path === username,
+                }
+              )}
+            >
+              Overview
+            </span>
+          </Link>
+          <Link href={`/u/${username}/comments`}>
+            <span
+              className={classNames(
+                'px-2 text-center cursor-pointer transition-all',
+                {
+                  'text-blue-300': path === 'comments',
+                }
+              )}
+            >
+              Comments
+            </span>
+          </Link>
+          <Link href={`/u/${username}/posts`}>
+            <span
+              className={classNames(
+                'px-2 text-center cursor-pointer transition-all',
+                {
+                  'text-blue-300': path === 'posts',
+                }
+              )}
+            >
+              Posts
+            </span>
+          </Link>
         </div>
       </div>
 

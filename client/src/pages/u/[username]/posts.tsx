@@ -6,7 +6,7 @@ import ProfilePageLayout from '../../../layouts/ProfilePageLayout';
 import { Comment, Post } from '../../../../types';
 import Link from 'next/link';
 
-const Overview: React.FC = () => {
+const Posts: React.FC = () => {
   const router = useRouter();
 
   const username = router.query.username;
@@ -25,7 +25,7 @@ const Overview: React.FC = () => {
     <div className="container flex pt-5">
       <div className="w-160">
         {data.submissions
-          .filter((sub: any) => sub.type === 'comment')
+          .filter((sub: any) => sub.type === 'post')
           .map((sub: any) => {
             if (sub.type === 'post') {
               const post: Post = sub;
@@ -70,6 +70,6 @@ const Overview: React.FC = () => {
 };
 
 //@ts-ignore
-Overview.layout = ProfilePageLayout;
+Posts.layout = ProfilePageLayout;
 
-export default Overview;
+export default Posts;
