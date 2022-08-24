@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@types/date-fns": "^2.6.0",
+    "@types/ws": "^8.5.3",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
@@ -39,9 +40,11 @@
     "jsonwebtoken": "^8.5.1",
     "multer": "*",
     "pg": "^8.4.0",
+    "query-string": "^7.1.1",
     "reflect-metadata": "^0.1.10",
     "typeorm": "0.2.37",
-    "typeorm-seeding": "^1.6.1"
+    "typeorm-seeding": "^1.6.1",
+    "ws": "^8.8.1"
   },
   "scripts": {
     "start": "node build/index.js",

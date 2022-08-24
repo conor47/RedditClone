@@ -37,13 +37,13 @@ const Overview: React.FC = () => {
                 return (
                   <div
                     key={comment.identifier}
-                    className="flex my-4 bg-white rounded"
+                    className="flex my-4 transition-all bg-white rounded dark:bg-slate-900"
                   >
-                    <div className="flex-shrink-0 w-10 py-4 text-center bg-gray-200 rounded-l">
-                      <i className="text-gray-500 fas fa-comment-alt fa-xs"></i>
+                    <div className="flex-shrink-0 w-10 py-4 text-center transition-all bg-gray-200 rounded-l dark:bg-slate-900">
+                      <i className="text-gray-500 fas fa-comment-alt fa-xs dark:text-white"></i>
                     </div>
                     <div className="w-full p-2">
-                      <p className="mb-2 text-xs text-gray-500">
+                      <p className="mb-2 text-xs text-gray-500 transition-all dark:text-white">
                         {comment.username}
                         <span> commented on </span>
                         <Link href={comment.post.url}>
@@ -53,13 +53,15 @@ const Overview: React.FC = () => {
                         </Link>
                         <span className="mx-1">•</span>
                         <Link href={`/r/${comment.post.subName}`}>
-                          <a className="text-black hover:underline cursor:pointer">
+                          <a className="text-black transition-all hover:underline cursor:pointer dark:text-white">
                             /r/{comment.post.subName}
                           </a>
                         </Link>
                       </p>
                       <hr />
-                      <p>{comment.body}</p>
+                      <p className="transition-all dark:text-white">
+                        {comment.body}
+                      </p>
                     </div>
                   </div>
                 );

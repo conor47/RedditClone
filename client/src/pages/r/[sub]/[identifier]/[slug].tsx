@@ -134,7 +134,7 @@ const PostPage: React.FC = () => {
           {/* banner */}
           <Link href={`/r/${sub}`}>
             <a>
-              <div className="flex items-center w-full h-20 p-8 bg-blue-500">
+              <div className="flex items-center w-full h-20 p-8 transition-all bg-blue-500 dark:bg-black">
                 <div className="container flex">
                   {post && (
                     <div className="w-8 h-8 mr-2 overflow-hidden rounded-full ">
@@ -154,7 +154,7 @@ const PostPage: React.FC = () => {
           {/* Post  */}
           <div className="container flex pt-5">
             <div className="w-160">
-              <div className="bg-white rounded">
+              <div className="transition-all bg-white rounded dark:bg-slate-900">
                 {post && (
                   <>
                     <div className="flex">
@@ -209,7 +209,7 @@ const PostPage: React.FC = () => {
                           )}
                         </p>
                         {/* post title */}
-                        <h1 className="my-1 text-xl font-medium">
+                        <h1 className="my-1 text-xl font-medium dark:text-white">
                           {post.title}
                         </h1>
                         {/* post body */}
@@ -221,7 +221,9 @@ const PostPage: React.FC = () => {
                             placeholder={post.body}
                           ></textarea>
                         ) : (
-                          <p className="my-3 text-sm">{post.body}</p>
+                          <p className="my-3 text-sm dark:text-white">
+                            {post.body}
+                          </p>
                         )}
                         {/* actions  */}
                         <div className="flex">
@@ -274,7 +276,7 @@ const PostPage: React.FC = () => {
                     <div className="pl-10 pr-6 mb-4">
                       {authenticated ? (
                         <div>
-                          <p className="mb-1 text-xs">
+                          <p className="mb-1 text-xs dark:text-white">
                             Comment as{' '}
                             <Link href={`/r/${user.username}`}>
                               <a className="font-semibold text-blue-500">
@@ -290,7 +292,7 @@ const PostPage: React.FC = () => {
                             ></textarea>
                             <div className="flex justify-end">
                               <button
-                                className="px-3 py-1 blue button"
+                                className="px-3 py-1 mt-2 blue button"
                                 disabled={newComment.trim() === ''}
                               >
                                 Comment
@@ -356,7 +358,7 @@ const PostPage: React.FC = () => {
                           <div className="py-2 pl-1">
                             <p className="mb-1 text-xs leading-none">
                               <Link href={`/u/${comment.username}`}>
-                                <a className="mr-1 font-bold hover:underline">
+                                <a className="mr-1 font-bold hover:underline dark:text-white">
                                   {comment.username}
                                 </a>
                               </Link>
@@ -366,7 +368,7 @@ const PostPage: React.FC = () => {
                                 comment.createdAt
                               ).fromNow()}`}</span>
                               {comment.createdAt !== comment.updatedAt && (
-                                <span className="text-gray 600">
+                                <span className="text-gray-600 dark:text-gray">
                                   {` - last edit : ${dayjs(
                                     comment.updatedAt
                                   ).fromNow()}`}
@@ -385,7 +387,7 @@ const PostPage: React.FC = () => {
                                 placeholder={comment.body}
                               ></textarea>
                             ) : (
-                              <p>{comment.body}</p>
+                              <p className="dark:text-white">{comment.body}</p>
                             )}
                             <div className="flex">
                               {/* if user is logged and and same user as comment owner then display edit button */}

@@ -2,24 +2,34 @@ import Link from 'next/link';
 import RedditLogo from '../images/redditLogo.svg';
 
 import { useAuthDispatch, useAuthState } from '../context/Auth';
+import {
+  useGlobalStateContext,
+  useGlobalStateDispatch,
+} from '../context/GlobalState';
 import { Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
-import { Actions, Sub } from '../../types';
+import { Actions as authActions } from '../reducers/authReducer';
+import { Actions as globalActions } from '../reducers/globalStateReducer';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { Sub } from '../../types';
 
 const Navbar: React.FC = () => {
   const [name, setName] = useState('');
   const [subs, setSubs] = useState<Sub[]>([]);
   const [timer, setTimer] = useState(null);
-  const { authenticated, loading } = useAuthState();
-  const dispatch = useAuthDispatch();
+  const { authenticated, loading, user } = useAuthState();
+  const { darkMode } = useGlobalStateContext();
+  const authDispatch = useAuthDispatch();
+  const globalStateDispatch = useGlobalStateDispatch();
   const router = useRouter();
+  let htmlRef;
+  let bodyRef;
 
   // function which posts a logout request for the currently logged in user
   const logout = async (): Promise<void> => {
     await axios.get('/auth/logout');
-    dispatch({ type: Actions.logout });
+    authDispatch({ type: authActions.logout });
     window.location.reload();
   };
 
@@ -43,6 +53,23 @@ const Navbar: React.FC = () => {
     setName('');
   };
 
+  const toggleDarkMode = (e: Event) => {
+    if (darkMode) {
+      globalStateDispatch({ type: globalActions.light });
+      htmlRef.classList.remove('dark');
+      bodyRef.style.backgroundColor = '#DAE0E6';
+    } else {
+      globalStateDispatch({ type: globalActions.dark });
+      htmlRef.classList.add('dark');
+      bodyRef.style.backgroundColor = 'black';
+    }
+  };
+
+  useEffect(() => {
+    htmlRef = document.querySelector('html');
+    bodyRef = document.querySelector('body');
+  });
+
   useEffect(() => {
     if (name.trim() === '') {
       setSubs([]);
@@ -53,7 +80,7 @@ const Navbar: React.FC = () => {
   }, [name]);
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-10 flex items-center justify-between h-12 px-5 bg-white">
+    <nav className="fixed inset-x-0 top-0 z-10 flex items-center justify-between h-12 px-5 transition-all bg-white dark:bg-slate-900">
       {/* Logo and Title */}
       <div className="flex items-center">
         <Link href="/">
@@ -61,7 +88,7 @@ const Navbar: React.FC = () => {
             <RedditLogo className="w-8 h-8 mr-2" />
           </a>
         </Link>
-        <span className="hidden text-2xl font-semibold lg:block">
+        <span className="hidden text-2xl font-semibold transition-all lg:block dark:text-white">
           <Link href="/">Reddit</Link>
         </span>
       </div>
@@ -101,15 +128,34 @@ const Navbar: React.FC = () => {
       </div>
       {/* Auth buttons */}
       <div className="flex">
+        {darkMode ? (
+          <i
+            className="mt-1 mr-5 text-orange-500 cursor-pointer fas fa-sun"
+            onClick={(e) => toggleDarkMode(e.nativeEvent)}
+          ></i>
+        ) : (
+          <i
+            className="mt-1 mr-5 text-center cursor-pointer text-slate-900 fas fa-moon"
+            onClick={(e) => toggleDarkMode(e.nativeEvent)}
+          ></i>
+        )}
         {!loading &&
           (authenticated ? (
             // show logout
-            <button
-              className="hidden w-20 py-1 mr-4 leading-5 sm:block lg:w-32 hollow button blue"
-              onClick={logout}
-            >
-              Logout
-            </button>
+            <>
+              <Link href={`/u/${user.username}`}>
+                <button className="hidden w-20 py-1 mr-4 leading-5 sm:block lg:w-32 hollow button blue">
+                  {/* {user.username} */}
+                  Profile
+                </button>
+              </Link>
+              <button
+                className="hidden w-20 py-1 mr-4 leading-5 sm:block lg:w-32 hollow button blue"
+                onClick={logout}
+              >
+                Logout
+              </button>
+            </>
           ) : (
             <Fragment>
               <Link href="/login">

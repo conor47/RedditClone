@@ -7,6 +7,7 @@ import { SWRConfig } from 'swr';
 
 import Navbar from '../components/Navbar';
 import { AuthProvider } from '../context/Auth';
+import { GlobalStateProvider } from '../context/GlobalState';
 import { NextComponentType, NextPageContext } from 'next';
 
 // configure default base url and credentials to use for all backend requests
@@ -45,12 +46,14 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       }}
     >
       <AuthProvider>
-        {!authRoute && <Navbar />}
-        <div className={authRoute ? '' : 'pt-12'}>
-          <Layout>
-            <Component {...pageProps}></Component>
-          </Layout>
-        </div>
+        <GlobalStateProvider>
+          {!authRoute && <Navbar />}
+          <div className={authRoute ? '' : 'pt-12'}>
+            <Layout>
+              <Component {...pageProps}></Component>
+            </Layout>
+          </div>
+        </GlobalStateProvider>
       </AuthProvider>
     </SWRConfig>
   );

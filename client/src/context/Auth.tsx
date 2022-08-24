@@ -1,57 +1,37 @@
 import axios from 'axios';
 import { createContext, useContext, useEffect, useReducer } from 'react';
 
-import { User, Actions } from '../../types';
+import { User } from '../../types';
+import { Actions } from '../reducers/authReducer';
+import reducer from '../reducers/authReducer';
 
-interface State {
+export interface State {
   authenticated: boolean;
   user: User | undefined;
   loading: boolean;
-}
-
-interface Action {
-  type: Actions;
-  payload: any;
+  wsConnection: WebSocket;
 }
 
 const StateContext = createContext<State>({
   authenticated: false,
   user: null,
   loading: true,
+  wsConnection: null,
 });
 
 const DispatchContext = createContext(null);
 
-const reducer = (state: State, { type, payload }: Action) => {
-  switch (type) {
-    case Actions.login:
-      return {
-        ...state,
-        authenticated: true,
-        user: payload,
-        loading: false,
-      };
-
-    case Actions.logout:
-      return {
-        ...state,
-        authenticated: false,
-        user: null,
-        loading: true,
-      };
-    case Actions.stop_loading:
-      return { ...state, loading: false };
-
-    default:
-      throw new Error(`Unknown action type : ${type}`);
-  }
-};
+export interface Action {
+  type: Actions;
+  payload: any;
+}
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, {
     user: null,
     authenticated: false,
     loading: true,
+    wsConnection: null,
   });
 
   useEffect(() => {

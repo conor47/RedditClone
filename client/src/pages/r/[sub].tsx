@@ -103,11 +103,11 @@ export default function SubPage() {
                   }}
                 ></div>
               ) : (
-                <div className="h-20 bg-blue-500"></div>
+                <div className="h-20 bg-blue-500 dark:bg-black"></div>
               )}
             </div>
             {/* Sub meta data */}
-            <div className="h-20 bg-white">
+            <div className="h-20 bg-white dark:bg-black">
               <div className="container relative flex">
                 <div
                   className="absolute"
@@ -130,7 +130,9 @@ export default function SubPage() {
                 </div>
                 <div className="pt-1 pl-24">
                   <div className="flex items-center">
-                    <h1 className="mb-1 text-3xl font-bold">{sub.title}</h1>
+                    <h1 className="mb-1 text-3xl font-bold dark:text-white">
+                      {sub.title}
+                    </h1>
                   </div>
                   <p className="text-sm font-bold text-gray-500">
                     /r/{sub.name}
