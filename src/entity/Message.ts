@@ -18,13 +18,16 @@ export default class Message extends Entity {
   }
 
   @Column()
+  id: number;
+
+  @Column()
   body: string;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'id', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'creator_id', referencedColumnName: 'id' })
   creatorId: User;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'username', referencedColumnName: 'username' })
-  recipientName: User;
+  @JoinColumn({ name: 'recipient_id', referencedColumnName: 'id' })
+  recipientID: User;
 }

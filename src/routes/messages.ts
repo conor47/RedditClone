@@ -22,7 +22,7 @@ const createMessage = async (req: Request, res: Response) => {
     const post = new Message({
       body,
       creatorId: sender,
-      recipientName: recipient,
+      recipientID: recipient,
     });
     await post.save();
     res.status(StatusCodes.OK).send(post);
@@ -33,6 +33,6 @@ const createMessage = async (req: Request, res: Response) => {
 
 const router = Router();
 
-router.post('/:id', user, auth, createMessage);
+router.post('/', user, auth, createMessage);
 
 export default router;

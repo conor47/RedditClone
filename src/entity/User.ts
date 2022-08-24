@@ -12,6 +12,7 @@ import {
 import Entity from './Entity';
 import Post from './Post';
 import Vote from './Vote';
+import Message from './Message';
 
 @ToEntity('users')
 export default class User extends Entity {
@@ -39,6 +40,12 @@ export default class User extends Entity {
 
   @OneToMany(() => Vote, (vote) => vote.user)
   votes: Vote[];
+
+  @OneToMany(() => Message, (message) => message.creatorId)
+  createdMessages: Message[];
+
+  @OneToMany(() => Message, (message) => message.recipientID)
+  receivedMessages: Message[];
 
   @ManyToOne(() => Vote)
   @BeforeInsert()
