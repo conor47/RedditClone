@@ -39,14 +39,6 @@ const Home: React.FC = () => {
     (index) => `/posts?page=${index}&filter=${filter}`
   );
 
-  if (typeof window !== 'undefined') {
-    const wsInstance = new WebSocket('ws://127.0.0.1:5001/foo');
-    wsInstance.onopen = function (event) {
-      console.log('connection is open');
-      wsInstance.send('hello');
-    };
-  }
-
   const posts: Post[] = data ? [].concat(...data) : [];
   const isLoadingInitialData = !data && !error;
 

@@ -48,12 +48,6 @@ export interface Comment {
   post?: Post;
 }
 
-export enum Actions {
-  login = 'LOGIN',
-  logout = 'LOGOUT',
-  stop_loading = 'STOP_LOADING',
-}
-
 export enum Filters {
   best = 'BEST',
   new = 'NEW',

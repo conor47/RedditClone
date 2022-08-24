@@ -4,9 +4,10 @@ import RedditLogo from '../images/redditLogo.svg';
 import { useAuthDispatch, useAuthState } from '../context/Auth';
 import { Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
-import { Actions, Sub } from '../../types';
+import { Actions } from '../reducers/authReducer';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { Sub } from '../../types';
 
 const Navbar: React.FC = () => {
   const [name, setName] = useState('');

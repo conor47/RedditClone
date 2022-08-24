@@ -6,7 +6,7 @@ import InputGroup from '../components/InputGroup';
 import { useRouter } from 'next/router';
 
 import { useAuthDispatch, useAuthState } from '../context/Auth';
-import { Actions } from '../../types';
+import { Actions } from '../reducers/authReducer';
 
 interface errorsState {
   username?: string;
