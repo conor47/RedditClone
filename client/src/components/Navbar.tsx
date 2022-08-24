@@ -8,12 +8,13 @@ import { Actions } from '../reducers/authReducer';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Sub } from '../../types';
+import { userAgent } from 'next/server';
 
 const Navbar: React.FC = () => {
   const [name, setName] = useState('');
   const [subs, setSubs] = useState<Sub[]>([]);
   const [timer, setTimer] = useState(null);
-  const { authenticated, loading } = useAuthState();
+  const { authenticated, loading, user } = useAuthState();
   const dispatch = useAuthDispatch();
   const router = useRouter();
 
@@ -105,12 +106,20 @@ const Navbar: React.FC = () => {
         {!loading &&
           (authenticated ? (
             // show logout
-            <button
-              className="hidden w-20 py-1 mr-4 leading-5 sm:block lg:w-32 hollow button blue"
-              onClick={logout}
-            >
-              Logout
-            </button>
+            <>
+              <Link href={`/u/${user.username}`}>
+                <button className="hidden w-20 py-1 mr-4 leading-5 sm:block lg:w-32 hollow button blue">
+                  {/* {user.username} */}
+                  Profile
+                </button>
+              </Link>
+              <button
+                className="hidden w-20 py-1 mr-4 leading-5 sm:block lg:w-32 hollow button blue"
+                onClick={logout}
+              >
+                Logout
+              </button>
+            </>
           ) : (
             <Fragment>
               <Link href="/login">

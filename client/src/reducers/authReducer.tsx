@@ -25,6 +25,7 @@ const reducer = (state: State, { type, payload }: Action) => {
         authenticated: false,
         user: null,
         loading: true,
+        wsInstance: null,
       };
     case Actions.stop_loading:
       return { ...state, loading: false };
