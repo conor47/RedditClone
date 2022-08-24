@@ -118,7 +118,7 @@ const Home: React.FC = () => {
           {isLoadingInitialData && (
             <p className="text-lg text-center">Loading ...</p>
           )}
-          <div className="py-3 pl-2 mb-3 bg-white rounded-sm flexmax-w-full">
+          <div className="py-3 pl-2 mb-3 transition-all bg-white rounded-sm flexmax-w-full dark:bg-slate-900">
             <div className="flex">
               <ActionButton
                 selected={filter == Filters.best}
@@ -220,9 +220,9 @@ const Home: React.FC = () => {
         </div>
         {/* Sidebar */}
         <div className="hidden ml-6 w-80 md:block">
-          <div className="bg-white rounded">
-            <div className="p-4 border-b-2">
-              <p className="text-lg font-semibold text-center">
+          <div className="transition-all bg-white rounded dark:bg-slate-900 dark:text-white">
+            <div className="p-4 border-b-2 dark:border-b-black">
+              <p className="text-lg font-semibold text-center transition-all dark:bg-slate-900">
                 Top Communities
               </p>
             </div>
@@ -231,7 +231,7 @@ const Home: React.FC = () => {
                 return (
                   <div
                     key={sub.name}
-                    className="flex items-center px-4 py-2 text-xs border-b"
+                    className="flex items-center px-4 py-2 text-xs border-b dark:border-b-black"
                   >
                     <Link href={`/r/${sub.name}`}>
                       <Image
@@ -255,7 +255,7 @@ const Home: React.FC = () => {
               })}
             </div>
             {authenticated && (
-              <div className="p-4 border-t-2">
+              <div className="p-4 border-t-2 dark:border-t-black">
                 <Link href="/subs/create">
                   <a className="w-full px-3 py-2 blue button">
                     Create Community

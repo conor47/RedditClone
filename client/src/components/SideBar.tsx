@@ -12,23 +12,23 @@ const SideBar: React.FC<SideBarProps> = ({ sub }) => {
 
   return (
     <div className="ml-6 w-80">
-      <div className="bg-white rounded">
-        <div className="p-3 bg-blue-500 rounded-t">
-          <p className="font-semibold text-white">About Community</p>
+      <div className="transition-all bg-white rounded dark:bg-slate-900">
+        <div className="p-3 transition-all bg-blue-500 rounded-t dark:bg-slate-900">
+          <p className="font-semibold text-white ">About Community</p>
         </div>
         <div className="p-3">
-          <p className="mb-3 text-base">{sub.description}</p>
+          <p className="mb-3 text-base dark:text-white">{sub.description}</p>
           <div className="flex mb-3 text-sm font-medium">
-            <div className="w-1/2">
+            <div className="w-1/2 dark:text-white">
               <p>5.2k</p>
               <p>Members</p>
             </div>
-            <div className="w-1/2">
+            <div className="w-1/2 dark:text-white">
               <p>100</p>
               <p>Online</p>
             </div>
           </div>
-          <p className="my-3">
+          <p className="my-3 dark:text-white">
             <i className="mr-2 fas fa-birthday-cake"></i>
             Created {dayjs(sub.createdAt).format('D MMM YYYY')}
           </p>

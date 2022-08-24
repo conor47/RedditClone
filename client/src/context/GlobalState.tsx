@@ -35,9 +35,9 @@ export const GlobalStateProvider = ({
   );
 };
 
-export const useAuthState = () => {
+export const useGlobalStateContext = () => {
   return useContext(StateContext);
 };
-export const useAuthDispatch = () => {
+export const useGlobalStateDispatch = () => {
   return useContext(DispatchContext);
 };

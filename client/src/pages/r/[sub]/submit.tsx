@@ -48,13 +48,13 @@ const Submit: React.FC = () => {
         <title>Submit to Reddit</title>
       </Head>
       <div className="w-160">
-        <div className="p-4 bg-white rounded">
+        <div className="p-4 bg-white rounded dark:bg-slate-900 dark:text-white">
           <h1 className="mb-3 text-lg">Submit a post to /r/{subName}</h1>
           <form onSubmit={submitPost}>
             <div className="relative mb-2">
               <input
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-gray-600"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-gray-600 dark:text-black"
                 placeholder="Title"
                 onChange={(e) => setTitle(e.target.value)}
               />
@@ -66,13 +66,13 @@ const Submit: React.FC = () => {
               </div>
             </div>
             <textarea
-              className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-gray-600"
+              className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-gray-600 dark:text-black"
               value={body}
               placeholder="Text (optional)"
               rows={4}
               onChange={(e) => setBody(e.target.value)}
             />
-            <div className="flex justify-end">
+            <div className="flex justify-end mt-2">
               <button
                 className="px-3 py-1 blue button"
                 type="submit"

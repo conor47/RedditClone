@@ -44,23 +44,28 @@ const User: React.FC = () => {
                 return (
                   <div
                     key={comment.identifier}
-                    className="flex my-4 bg-white rounded"
+                    className="flex my-4 transition-all bg-white rounded dark:bg-slate-900 dark:text-white"
                   >
-                    <div className="flex-shrink-0 w-10 py-4 text-center bg-gray-200 rounded-l">
-                      <i className="text-gray-500 fas fa-comment-alt fa-xs"></i>
+                    <div className="flex-shrink-0 w-10 py-4 text-center transition-all bg-gray-200 rounded-l dark:bg-slate-900">
+                      <i className="text-gray-500 transition-all dark:text-white fas fa-comment-alt fa-xs"></i>
                     </div>
                     <div className="w-full p-2">
-                      <p className="mb-2 text-xs text-gray-500">
+                      <p className="mb-2 text-xs text-gray-500 transition-all dark:text-white">
                         {comment.username}
-                        <span> commented on </span>
+                        <span className="transition-all dark:text-white">
+                          {' '}
+                          commented on{' '}
+                        </span>
                         <Link href={comment.post.url}>
                           <a className="font-semibold hover:underline cursor:pointer">
                             {comment.post.title}
                           </a>
                         </Link>
-                        <span className="mx-1">•</span>
+                        <span className="mx-1 transition-all dark:text-white">
+                          •
+                        </span>
                         <Link href={`/r/${comment.post.subName}`}>
-                          <a className="text-black hover:underline cursor:pointer">
+                          <a className="text-black transition-all hover:underline cursor:pointer dark:text-white">
                             /r/{comment.post.subName}
                           </a>
                         </Link>
@@ -75,7 +80,7 @@ const User: React.FC = () => {
           </div>
           <div className="ml-6 w-80">
             <div className="bg-white rounded">
-              <div className="p-3 bg-blue-500 rounded-t">
+              <div className="p-3 transition-all bg-blue-500 rounded-t dark:bg-slate-900">
                 <div className="relative w-16 h-16 mx-auto border-2 border-white rounded-full">
                   <Image
                     src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y/"
@@ -86,7 +91,7 @@ const User: React.FC = () => {
                   />
                 </div>
               </div>
-              <div className="p-3 text-center">
+              <div className="p-3 text-center transition-all dark:bg-slate-900 dark:text-white">
                 <h1 className="mb-3 text-xl text-center">
                   {data.user.username}
                 </h1>
