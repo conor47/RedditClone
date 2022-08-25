@@ -221,7 +221,7 @@ const Home: React.FC = () => {
         {/* Sidebar */}
         <div className="hidden ml-6 w-80 md:block">
           <div className="transition-all bg-white rounded dark:bg-slate-900 dark:text-white">
-            <div className="p-4 border-b-2 dark:border-b-black">
+            <div className="p-4 transition-all border-b-2 dark:border-b-black">
               <p className="text-lg font-semibold text-center transition-all dark:bg-slate-900">
                 Top Communities
               </p>

@@ -171,10 +171,13 @@ const PostPage: React.FC = () => {
                           ></i>
                         </div>
                         <p
-                          className={classNames('text-xs font-bold ', {
-                            'text-red-500': post.userVote === 1,
-                            'text-blue-500': post.userVote === -1,
-                          })}
+                          className={classNames(
+                            'text-xs font-bold dark:text-white transition-all',
+                            {
+                              'text-red-500': post.userVote === 1,
+                              'text-blue-500': post.userVote === -1,
+                            }
+                          )}
                         >
                           {post.voteScore}
                         </p>
@@ -337,10 +340,13 @@ const PostPage: React.FC = () => {
                               ></i>
                             </div>
                             <p
-                              className={classNames('text-xs font-bold ', {
-                                'text-red-500': comment.userVote === 1,
-                                'text-blue-500': comment.userVote === -1,
-                              })}
+                              className={classNames(
+                                'text-xs font-bold dark:text-white transition-all',
+                                {
+                                  'text-red-500': comment.userVote === 1,
+                                  'text-blue-500': comment.userVote === -1,
+                                }
+                              )}
                             >
                               {comment.voteScore}
                             </p>
