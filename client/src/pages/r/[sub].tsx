@@ -110,16 +110,16 @@ export default function SubPage() {
             <div className="h-20 bg-white dark:bg-black">
               <div className="container relative flex">
                 <div
-                  className="absolute"
+                  className="absolute w-20 h-20 border-2 borer-white dark:border-black"
                   style={{
                     top: -15,
-                    border: '2px solid white',
                     borderRadius: '9999px',
                   }}
                 >
                   <Image
                     src={sub.imageUrl}
                     alt="Sub"
+                    layout="fill"
                     className={classNames('rounded-full border-2', {
                       'cursor-pointer': ownSub,
                     })}
