@@ -96,7 +96,7 @@ export default function SubPage() {
   } else if (sub && !sub.isSubscribed) {
     joinButtonMarkup = (
       <button
-        className="w-20 h-8 mt-2 ml-5 button blue"
+        className="w-20 h-8 mt-2 ml-5 button black dark:bg-white dark:text-black transistion-all"
         onClick={(e) => createSubscription(e.nativeEvent)}
       >
         Join
@@ -105,7 +105,7 @@ export default function SubPage() {
   } else {
     joinButtonMarkup = (
       <button
-        className="w-20 h-8 mt-2 ml-5 button blue"
+        className="w-20 h-8 mt-2 ml-5 transition-all button dark:bg-black dark:text-white dark:border-white"
         onClick={(e) => deleteSubscription(e.nativeEvent)}
       >
         Leave
