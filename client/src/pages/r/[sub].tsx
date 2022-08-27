@@ -10,6 +10,8 @@ import { Sub } from '../../../types';
 import { useAuthState } from '../../context/Auth';
 import Axios from 'axios';
 import Sidebar from '../../components/SideBar';
+import Link from 'next/link';
+import axios from 'axios';
 
 export default function SubPage() {
   // Local state
@@ -57,6 +59,24 @@ export default function SubPage() {
     }
   };
 
+  const createSubscription = async (event: Event) => {
+    if (!authenticated) {
+      return;
+    }
+
+    await axios.post(`/subscriptions/${sub.name}`);
+    mutate();
+  };
+
+  const deleteSubscription = async (event: Event) => {
+    if (!authenticated) {
+      return;
+    }
+
+    await axios.delete(`/subscriptions/${sub.name}`);
+    mutate();
+  };
+
   if (error) router.push('/');
 
   let postsMarkup;
@@ -68,6 +88,29 @@ export default function SubPage() {
     postsMarkup = sub.posts.map((post) => (
       <PostCard key={post.identifier} post={post} revalidate={mutate} />
     ));
+  }
+
+  let joinButtonMarkup;
+  if (!authenticated) {
+    joinButtonMarkup = <Link href={'/login'}>Join</Link>;
+  } else if (sub && !sub.isSubscribed) {
+    joinButtonMarkup = (
+      <button
+        className="w-20 h-8 mt-2 ml-5 button blue"
+        onClick={(e) => createSubscription(e.nativeEvent)}
+      >
+        Join
+      </button>
+    );
+  } else {
+    joinButtonMarkup = (
+      <button
+        className="w-20 h-8 mt-2 ml-5 button blue"
+        onClick={(e) => deleteSubscription(e.nativeEvent)}
+      >
+        Leave
+      </button>
+    );
   }
 
   return (
@@ -138,8 +181,7 @@ export default function SubPage() {
                     /r/{sub.name}
                   </p>
                 </div>
-                {authenticated}
-                <button className="w-20 h-8 mt-2 ml-4 button blue">Join</button>
+                {joinButtonMarkup}
               </div>
             </div>
           </div>

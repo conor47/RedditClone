@@ -10,18 +10,16 @@ import Sub from '../entity/Sub';
 // route for creating a subscription between a user and a sub
 const createSubscription = async (req: Request, res: Response) => {
   const user: User = res.locals.user;
-  const { sub_id } = req.params;
-  console.log('user', user);
-  console.log('sub id', sub_id);
+  const { subname } = req.params;
 
-  if (!sub_id) {
+  if (!subname) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .send({ error: 'Something went wrong' });
   }
 
   try {
-    const sub = await Sub.findOneOrFail({ where: { id: sub_id } });
+    const sub = await Sub.findOneOrFail({ where: { name: subname } });
     const subscription = await Subscription.create({ sub, user });
     await subscription.save();
     return res.status(StatusCodes.OK).send(subscription);
@@ -35,16 +33,16 @@ const createSubscription = async (req: Request, res: Response) => {
 // route for deleting a subscription between a user and a sub
 const deleteSubsciption = async (req: Request, res: Response) => {
   const user: User = res.locals.user;
-  const { sub_id } = req.params;
+  const { subname } = req.params;
 
-  if (!sub_id) {
+  if (!subname) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .send({ error: 'Something went wrong' });
   }
 
   try {
-    const sub = await Sub.findOneOrFail({ where: { id: sub_id } });
+    const sub = await Sub.findOneOrFail({ where: { name: subname } });
     const subscription = await Subscription.findOneOrFail({
       where: { user, sub },
     });
@@ -59,7 +57,7 @@ const deleteSubsciption = async (req: Request, res: Response) => {
 
 const router = Router();
 
-router.post('/:sub_id', user, auth, createSubscription);
-router.delete('/:sub_id', user, auth, deleteSubsciption);
+router.post('/:subname', user, auth, createSubscription);
+router.delete('/:subname', user, auth, deleteSubsciption);
 
 export default router;
