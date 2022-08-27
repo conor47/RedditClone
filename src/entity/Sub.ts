@@ -5,12 +5,14 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 
 import Entity from './Entity';
 import User from './User';
 import Post from './Post';
 import { Expose } from 'class-transformer';
+import Subscription from './Subscriptions';
 
 @ToEntity('subs')
 export default class Sub extends Entity {
@@ -60,4 +62,7 @@ export default class Sub extends Entity {
 
   @OneToMany(() => Post, (post) => post.sub)
   posts: Post[];
+
+  @OneToMany(() => Subscription, (subscription) => subscription.sub)
+  subscriptions: Subscription[];
 }

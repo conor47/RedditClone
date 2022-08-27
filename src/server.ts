@@ -12,7 +12,6 @@ import subRoutes from './routes/subs';
 import votingRoutes from './routes/voting';
 import commentRoutes from './routes/comments';
 import userRoutes from './routes/users';
-import messageRouter from './routes/messages';
 import trim from './Middleware/trim';
 import notFoundMiddleware from './Middleware/not-found';
 import errorHandlerMiddleware from './Middleware/error-handler';
@@ -42,7 +41,6 @@ app.use('/api/subs', subRoutes);
 app.use('/api/votes', votingRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/messages', messageRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
