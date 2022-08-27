@@ -138,6 +138,8 @@ export default function SubPage() {
                     /r/{sub.name}
                   </p>
                 </div>
+                {authenticated}
+                <button className="w-20 h-8 mt-2 ml-4 button blue">Join</button>
               </div>
             </div>
           </div>

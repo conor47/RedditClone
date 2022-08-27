@@ -11,7 +11,7 @@ import {
 import Entity from './Entity';
 import User from './User';
 import Post from './Post';
-import { Expose } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import Subscription from './Subscriptions';
 
 @ToEntity('subs')
@@ -63,6 +63,21 @@ export default class Sub extends Entity {
   @OneToMany(() => Post, (post) => post.sub)
   posts: Post[];
 
+  @Exclude()
   @OneToMany(() => Subscription, (subscription) => subscription.sub)
   subscriptions: Subscription[];
+
+  protected isSubscribed: boolean;
+  setIsSubscribed(user: User) {
+    console.log('user', user);
+    console.log('this', this);
+
+    this.isSubscribed = this.subscriptions?.find((subscription) => {
+      console.log('subscription', subscription);
+
+      return subscription.user.id == user.id;
+    })
+      ? true
+      : false;
+  }
 }

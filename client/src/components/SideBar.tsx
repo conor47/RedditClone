@@ -32,8 +32,14 @@ const SideBar: React.FC<SideBarProps> = ({ sub }) => {
             <i className="mr-2 fas fa-birthday-cake"></i>
             Created {dayjs(sub.createdAt).format('D MMM YYYY')}
           </p>
-          {authenticated && (
+          {authenticated ? (
             <Link href={`/r/${sub.name}/submit`}>
+              <a className="w-full px-2 py-1 text-sm button blue">
+                Create Post
+              </a>
+            </Link>
+          ) : (
+            <Link href={`/login`}>
               <a className="w-full px-2 py-1 text-sm button blue">
                 Create Post
               </a>
