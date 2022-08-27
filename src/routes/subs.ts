@@ -62,8 +62,13 @@ const createSub = async (req: Request, res: Response) => {
 
 const getSub = async (req: Request, res: Response) => {
   let { name } = req.params;
+  console.log('name', name);
+
   try {
-    const sub = await Sub.findOneOrFail({ name });
+    const sub = await Sub.findOneOrFail({
+      where: { name },
+      relations: ['subscriptions', 'subscriptions.user'],
+    });
     const posts = await Post.find({
       where: { sub },
       order: { createdAt: 'DESC' },
@@ -74,6 +79,7 @@ const getSub = async (req: Request, res: Response) => {
 
     if (res.locals.user) {
       sub.posts.forEach((post) => post.setUserVote(res.locals.user));
+      sub.setIsSubscribed(res.locals.user);
     }
 
     return res.json(sub);

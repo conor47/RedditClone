@@ -35,6 +35,7 @@ export interface Sub {
   username: string;
   bannerUrl?: string;
   posts: Post[];
+  isSubscribed?: boolean;
 }
 
 export interface Comment {

@@ -1,0 +1,29 @@
+import {
+  Entity as ToEntity,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  OneToOne,
+  Unique,
+} from 'typeorm';
+
+import Entity from './Entity';
+import Sub from './Sub';
+import User from './User';
+
+@ToEntity('subscriptions')
+export default class Subscription extends Entity {
+  constructor(subscription: Partial<Subscription>) {
+    super();
+    Object.assign(this, subscription);
+  }
+
+  @Unique('unique_sub', ['sub', 'user'])
+  @ManyToOne(() => Sub)
+  @JoinColumn({ name: 'sub_id', referencedColumnName: 'id' })
+  sub: Sub;
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  user: User;
+}

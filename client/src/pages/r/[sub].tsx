@@ -10,6 +10,8 @@ import { Sub } from '../../../types';
 import { useAuthState } from '../../context/Auth';
 import Axios from 'axios';
 import Sidebar from '../../components/SideBar';
+import Link from 'next/link';
+import axios from 'axios';
 
 export default function SubPage() {
   // Local state
@@ -57,6 +59,24 @@ export default function SubPage() {
     }
   };
 
+  const createSubscription = async (event: Event) => {
+    if (!authenticated) {
+      return;
+    }
+
+    await axios.post(`/subscriptions/${sub.name}`);
+    mutate();
+  };
+
+  const deleteSubscription = async (event: Event) => {
+    if (!authenticated) {
+      return;
+    }
+
+    await axios.delete(`/subscriptions/${sub.name}`);
+    mutate();
+  };
+
   if (error) router.push('/');
 
   let postsMarkup;
@@ -68,6 +88,29 @@ export default function SubPage() {
     postsMarkup = sub.posts.map((post) => (
       <PostCard key={post.identifier} post={post} revalidate={mutate} />
     ));
+  }
+
+  let joinButtonMarkup;
+  if (!authenticated) {
+    joinButtonMarkup = <Link href={'/login'}>Join</Link>;
+  } else if (sub && !sub.isSubscribed) {
+    joinButtonMarkup = (
+      <button
+        className="w-20 h-8 mt-2 ml-5 button black dark:bg-white dark:text-black transistion-all"
+        onClick={(e) => createSubscription(e.nativeEvent)}
+      >
+        Join
+      </button>
+    );
+  } else {
+    joinButtonMarkup = (
+      <button
+        className="w-20 h-8 mt-2 ml-5 transition-all button dark:bg-black dark:text-white dark:border-white"
+        onClick={(e) => deleteSubscription(e.nativeEvent)}
+      >
+        Leave
+      </button>
+    );
   }
 
   return (
@@ -110,16 +153,16 @@ export default function SubPage() {
             <div className="h-20 bg-white dark:bg-black">
               <div className="container relative flex">
                 <div
-                  className="absolute"
+                  className="absolute w-20 h-20 border-2 borer-white dark:border-black"
                   style={{
                     top: -15,
-                    border: '2px solid white',
                     borderRadius: '9999px',
                   }}
                 >
                   <Image
                     src={sub.imageUrl}
                     alt="Sub"
+                    layout="fill"
                     className={classNames('rounded-full border-2', {
                       'cursor-pointer': ownSub,
                     })}
@@ -138,6 +181,7 @@ export default function SubPage() {
                     /r/{sub.name}
                   </p>
                 </div>
+                {joinButtonMarkup}
               </div>
             </div>
           </div>

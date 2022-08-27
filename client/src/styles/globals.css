@@ -7,11 +7,15 @@
 }
 
 .button {
-  @apply text-xs font-bold text-center uppercase transition-all border rounded-3xl;
+  @apply text-xs font-bold text-center uppercase transition-all border border-black rounded-3xl;
 }
 
 .button.blue {
   @apply text-white bg-blue-500 border-blue-500 hover:bg-blue-400 hover:border-blue-300 disabled:bg-blue-300 disabled:border-blue-300;
+}
+
+.button.black {
+  @apply text-white bg-black border-0;
 }
 
 .button.blue.hollow {
