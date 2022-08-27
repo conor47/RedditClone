@@ -32,8 +32,34 @@ const createSubscription = async (req: Request, res: Response) => {
   }
 };
 
+// route for deleting a subscription between a user and a sub
+const deleteSubsciption = async (req: Request, res: Response) => {
+  const user: User = res.locals.user;
+  const { sub_id } = req.params;
+
+  if (!sub_id) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .send({ error: 'Something went wrong' });
+  }
+
+  try {
+    const sub = await Sub.findOneOrFail({ where: { id: sub_id } });
+    const subscription = await Subscription.findOneOrFail({
+      where: { user, sub },
+    });
+    await subscription.remove();
+    return res.status(StatusCodes.OK).send({});
+  } catch (error) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .send({ error: 'Something went wrong' });
+  }
+};
+
 const router = Router();
 
 router.post('/:sub_id', user, auth, createSubscription);
+router.delete('/:sub_id', user, auth, deleteSubsciption);
 
 export default router;
