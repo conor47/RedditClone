@@ -7,7 +7,8 @@ import auth from '../Middleware/auth';
 import user from '../Middleware/user';
 
 import sub from 'date-fns/sub';
-import { Between } from 'typeorm';
+import { Between, In } from 'typeorm';
+import Subscription from '../entity/Subscriptions';
 
 const paginatePosts = (
   page: number,
@@ -41,6 +42,8 @@ const createPost = async (req: Request, res: Response) => {
 };
 
 const getPosts = async (req: Request, res: Response) => {
+  console.log('getting all posts');
+
   const currentPage: number = (req.query.page || 0) as number;
   const postsPerPage: number = (req.query.count || 8) as number;
   const filter = req.query.filter;
@@ -160,9 +163,105 @@ const editPost = async (req: Request, res: Response) => {
   }
 };
 
+const getHomepagePosts = async (req: Request, res: Response) => {
+  console.log('getting homepage posts');
+
+  const currentPage: number = (req.query.page || 0) as number;
+  const postsPerPage: number = (req.query.count || 8) as number;
+  const filter = req.query.filter;
+  const user = res.locals.user;
+  let posts: Post[] = [];
+  let subscriptions: Subscription[] = [];
+  let subscribedSubs: string[] = [];
+
+  try {
+    subscriptions = await Subscription.find({
+      where: { user },
+      relations: ['sub'],
+    });
+    console.log('subscriptions', subscriptions);
+    subscribedSubs = subscriptions.map((subscription) => subscription.sub.name);
+    console.log('subs', subscribedSubs);
+
+    if (filter == 'NEW') {
+      posts = await Post.find({
+        order: { createdAt: 'DESC' },
+        relations: ['comments', 'votes', 'sub'],
+        skip: currentPage * postsPerPage,
+        take: postsPerPage,
+      });
+    } else if (filter == 'TOP_DAY') {
+      console.log('here ------');
+
+      posts = await Post.find({
+        // order: { createdAt: 'DESC' },
+        where: {
+          createdAt: Between(sub(new Date(), { days: 1 }), new Date()),
+          subName: In(subscribedSubs),
+        },
+        relations: ['comments', 'votes', 'sub'],
+
+        // skip: currentPage * postsPerPage,
+        // take: postsPerPage,
+      });
+
+      posts.sort((a, b) => b.voteScore - a.voteScore);
+      posts = paginatePosts(currentPage, postsPerPage, posts);
+    } else if (filter == 'TOP_WEEK') {
+      posts = await Post.find({
+        order: { createdAt: 'DESC' },
+        where: {
+          createdAt: Between(sub(new Date(), { days: 7 }), new Date()),
+          subName: In(subscribedSubs),
+        },
+        relations: ['comments', 'votes', 'sub'],
+        // skip: currentPage * postsPerPage,
+        // take: postsPerPage,
+      });
+
+      posts.sort((a, b) => b.voteScore - a.voteScore);
+      posts = paginatePosts(currentPage, postsPerPage, posts);
+    } else if (filter == 'TOP_MONTH') {
+      posts = await Post.find({
+        order: { createdAt: 'DESC' },
+        where: {
+          createdAt: Between(sub(new Date(), { days: 30 }), new Date()),
+          subName: In(subscribedSubs),
+        },
+        relations: ['comments', 'votes', 'sub'],
+        // skip: currentPage * postsPerPage,
+        // take: postsPerPage,
+      });
+      posts.sort((a, b) => b.voteScore - a.voteScore);
+      posts = paginatePosts(currentPage, postsPerPage, posts);
+    } else if (filter == 'TOP_ALLTIME') {
+      posts = await Post.find({
+        where: {
+          sub: In(user.subscriptions),
+          subName: In(subscribedSubs),
+        },
+        order: { createdAt: 'DESC' },
+        relations: ['comments', 'votes', 'sub'],
+        // skip: currentPage * postsPerPage,
+        // take: postsPerPage,
+      });
+      posts.sort((a, b) => b.voteScore - a.voteScore);
+      posts = paginatePosts(currentPage, postsPerPage, posts);
+    }
+    posts.forEach((post) => post.setUserVote(res.locals.user));
+    return res.json(posts);
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: 'Something went wrong' });
+  }
+};
+
 const router = Router();
 router.post('/', user, auth, createPost);
 router.get('/', user, getPosts);
+router.get('/:userId', user, auth, getHomepagePosts);
 router.get('/:identifier/:slug', user, getPost);
 router.patch('/:identifier/:slug', user, auth, editPost);
 
