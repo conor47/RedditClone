@@ -92,7 +92,13 @@ export default function SubPage() {
 
   let joinButtonMarkup;
   if (!authenticated) {
-    joinButtonMarkup = <Link href={'/login'}>Join</Link>;
+    joinButtonMarkup = (
+      <Link href={'/login'}>
+        <button className="w-20 h-8 mt-2 ml-5 button black dark:bg-white dark:text-black transistion-all">
+          Join
+        </button>
+      </Link>
+    );
   } else if (sub && !sub.isSubscribed) {
     joinButtonMarkup = (
       <button
