@@ -16,7 +16,7 @@ const Home: React.FC = () => {
   const [observedPost, setObservedPost] = useState('');
   const [filter, setFilter] = useState(Filters.top_alltime);
   const [sortTop, setSortTop] = useState(false);
-  const { authenticated } = useAuthState();
+  const { authenticated, user } = useAuthState();
   // const {
   //   data: posts,
   //   error: errorPosts,
@@ -36,7 +36,7 @@ const Home: React.FC = () => {
     setSize: setPage,
     isValidating,
   } = useSWRInfinite<Post[]>(
-    (index) => `/posts?page=${index}&filter=${filter}`
+    (index) => `/posts/${user.id}/?page=${index}&filter=${filter}`
   );
 
   const posts: Post[] = data ? [].concat(...data) : [];
@@ -211,9 +211,13 @@ const Home: React.FC = () => {
               )}
             </div>
           </div>
-          {posts?.map((post) => (
-            <PostCard post={post} key={post.identifier} revalidate={mutate} />
-          ))}
+          {posts.length > 0 ? (
+            posts?.map((post) => (
+              <PostCard post={post} key={post.identifier} revalidate={mutate} />
+            ))
+          ) : (
+            <div>There are no posts yet. Join more communities !</div>
+          )}
           {isValidating && posts.length > 0 && (
             <p className="text-lg text-center">Loading more posts ...</p>
           )}

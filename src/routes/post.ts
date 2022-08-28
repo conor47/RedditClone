@@ -185,6 +185,9 @@ const getHomepagePosts = async (req: Request, res: Response) => {
 
     if (filter == 'NEW') {
       posts = await Post.find({
+        where: {
+          subName: In(subscribedSubs),
+        },
         order: { createdAt: 'DESC' },
         relations: ['comments', 'votes', 'sub'],
         skip: currentPage * postsPerPage,

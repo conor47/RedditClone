@@ -21,6 +21,7 @@ export interface User {
   email: string;
   createdAt: string;
   updatedAt: string;
+  id: number;
 }
 
 export interface Sub {
