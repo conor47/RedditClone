@@ -216,7 +216,17 @@ const Home: React.FC = () => {
               <PostCard post={post} key={post.identifier} revalidate={mutate} />
             ))
           ) : (
-            <div>There are no posts yet. Join more communities !</div>
+            <div>
+              <p className="mb-3">
+                There are no posts yet. Consider joining more communities or
+                make some posts of your own !
+              </p>
+              <Link href={'/r/all'}>
+                <a className="px-2 py-3 mt-2 button blue">
+                  Visit the front page
+                </a>
+              </Link>
+            </div>
           )}
           {isValidating && posts.length > 0 && (
             <p className="text-lg text-center">Loading more posts ...</p>
