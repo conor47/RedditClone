@@ -264,7 +264,7 @@ const getHomepagePosts = async (req: Request, res: Response) => {
 const router = Router();
 router.post('/', user, auth, createPost);
 router.get('/', user, getPosts);
-router.get('/:userId', user, auth, getHomepagePosts);
+router.get('/homepage', user, auth, getHomepagePosts);
 router.get('/:identifier/:slug', user, getPost);
 router.patch('/:identifier/:slug', user, auth, editPost);
 
