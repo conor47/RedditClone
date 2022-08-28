@@ -36,6 +36,7 @@ export interface Sub {
   bannerUrl?: string;
   posts: Post[];
   isSubscribed?: boolean;
+  subCount?: number;
 }
 
 export interface Comment {

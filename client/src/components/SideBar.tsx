@@ -20,7 +20,7 @@ const SideBar: React.FC<SideBarProps> = ({ sub }) => {
           <p className="mb-3 text-base dark:text-white">{sub.description}</p>
           <div className="flex mb-3 text-sm font-medium">
             <div className="w-1/2 dark:text-white">
-              <p>5.2k</p>
+              <p>{sub.subCount}</p>
               <p>Members</p>
             </div>
             <div className="w-1/2 dark:text-white">

@@ -18,7 +18,6 @@ export default class Subscription extends Entity {
     Object.assign(this, subscription);
   }
 
-  @Unique('unique_sub', ['sub', 'user'])
   @ManyToOne(() => Sub)
   @JoinColumn({ name: 'sub_id', referencedColumnName: 'id' })
   sub: Sub;

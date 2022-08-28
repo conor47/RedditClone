@@ -13,6 +13,7 @@ import User from './User';
 import Post from './Post';
 import { Exclude, Expose } from 'class-transformer';
 import Subscription from './Subscriptions';
+import { sub } from 'date-fns';
 
 @ToEntity('subs')
 export default class Sub extends Entity {
@@ -79,5 +80,12 @@ export default class Sub extends Entity {
     })
       ? true
       : false;
+  }
+
+  protected subCount: number;
+  setSubCount() {
+    this.subCount = this.subscriptions?.reduce((acc, cur) => {
+      return this.id == cur.sub.id ? acc + 1 : acc;
+    }, 0);
   }
 }

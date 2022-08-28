@@ -67,7 +67,7 @@ const getSub = async (req: Request, res: Response) => {
   try {
     const sub = await Sub.findOneOrFail({
       where: { name },
-      relations: ['subscriptions', 'subscriptions.user'],
+      relations: ['subscriptions', 'subscriptions.user', 'subscriptions.sub'],
     });
     const posts = await Post.find({
       where: { sub },
@@ -76,6 +76,7 @@ const getSub = async (req: Request, res: Response) => {
     });
 
     sub.posts = posts;
+    sub.setSubCount();
 
     if (res.locals.user) {
       sub.posts.forEach((post) => post.setUserVote(res.locals.user));
