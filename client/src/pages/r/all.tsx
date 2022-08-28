@@ -6,17 +6,17 @@ import {} from 'swr';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Post, Sub } from '../../types';
-import PostCard from '../components/PostCard';
-import { useAuthState } from '../context/Auth';
-import ActionButton from '../components/ActionButton';
-import { Filters } from '../../types';
+import { Post, Sub } from '../../../types';
+import PostCard from '../../components/PostCard';
+import { useAuthState } from '../../context/Auth';
+import ActionButton from '../../components/ActionButton';
+import { Filters } from '../../../types';
 
 const Home: React.FC = () => {
   const [observedPost, setObservedPost] = useState('');
   const [filter, setFilter] = useState(Filters.top_alltime);
   const [sortTop, setSortTop] = useState(false);
-  const { authenticated, user } = useAuthState();
+  const { authenticated } = useAuthState();
   // const {
   //   data: posts,
   //   error: errorPosts,
@@ -36,7 +36,7 @@ const Home: React.FC = () => {
     setSize: setPage,
     isValidating,
   } = useSWRInfinite<Post[]>(
-    (index) => `/posts/${user.id}/?page=${index}&filter=${filter}`
+    (index) => `/posts?page=${index}&filter=${filter}`
   );
 
   const posts: Post[] = data ? [].concat(...data) : [];
@@ -211,23 +211,9 @@ const Home: React.FC = () => {
               )}
             </div>
           </div>
-          {posts.length > 0 ? (
-            posts?.map((post) => (
-              <PostCard post={post} key={post.identifier} revalidate={mutate} />
-            ))
-          ) : (
-            <div>
-              <p className="mb-3">
-                There are no posts yet. Consider joining more communities or
-                make some posts of your own !
-              </p>
-              <Link href={'/r/all'}>
-                <a className="px-2 py-3 mt-2 button blue">
-                  Visit the front page
-                </a>
-              </Link>
-            </div>
-          )}
+          {posts?.map((post) => (
+            <PostCard post={post} key={post.identifier} revalidate={mutate} />
+          ))}
           {isValidating && posts.length > 0 && (
             <p className="text-lg text-center">Loading more posts ...</p>
           )}

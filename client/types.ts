@@ -21,6 +21,7 @@ export interface User {
   email: string;
   createdAt: string;
   updatedAt: string;
+  id: number;
 }
 
 export interface Sub {
@@ -36,6 +37,7 @@ export interface Sub {
   bannerUrl?: string;
   posts: Post[];
   isSubscribed?: boolean;
+  subCount?: number;
 }
 
 export interface Comment {
