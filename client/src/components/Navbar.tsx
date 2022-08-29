@@ -5,7 +5,7 @@ import { useAuthDispatch, useAuthState } from '../context/Auth';
 import {
   useGlobalStateContext,
   useGlobalStateDispatch,
-} from '../context/globalState';
+} from '../context/GlobalState';
 import { Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Actions as authActions } from '../reducers/authReducer';

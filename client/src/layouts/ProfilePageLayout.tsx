@@ -11,9 +11,7 @@ const ProfilePageLayout: React.FC = ({ children }: ProfilePageLayoutProps) => {
   const { username } = router.query;
   const paths = router.asPath.split('/');
   const path = paths[paths.length - 1];
-  console.log('path', path);
 
-  console.log('name', username);
 
   return (
     <>

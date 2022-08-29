@@ -49,6 +49,8 @@ export interface Comment {
   userVote: number;
   voteScore: number;
   post?: Post;
+  parentId: string;
+  children?: Comment[];
 }
 
 export enum Filters {

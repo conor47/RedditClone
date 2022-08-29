@@ -64,7 +64,6 @@ const Home: React.FC = () => {
       const observer = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting === true) {
-            console.log('reached bottom of post');
             setPage(page + 1);
             observer.unobserve(element);
           }

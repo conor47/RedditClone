@@ -15,7 +15,8 @@ import SideBar from '../../../../components/SideBar';
 import CommentComponent from '../../../../components/Comment';
 import { useAuthState } from '../../../../context/Auth';
 import ActionButton from '../../../../components/ActionButton';
-import { FormEvent, useEffect, useState } from 'react';
+import { Children, FormEvent, useEffect, useState } from 'react';
+import ThreadedComment from '../../../../components/ThreadedComment';
 const PostPage: React.FC = () => {
   const router = useRouter();
   const { authenticated, user } = useAuthState();
@@ -27,7 +28,6 @@ const PostPage: React.FC = () => {
   const [editingComment, setEditingComment] = useState('');
   const [updatedComment, setUpdatedComment] = useState('');
   const { identifier, sub, slug } = router.query;
-
   // fetch post
   const {
     data: post,
@@ -43,8 +43,6 @@ const PostPage: React.FC = () => {
   } = useSWR<Comment[]>(
     identifier && slug ? `/comments/${identifier}/${slug}/comments` : null
   );
-
-  console.log('comments', comments);
 
   if (postError) {
     router.push('/');
@@ -113,18 +111,31 @@ const PostPage: React.FC = () => {
     }
   };
 
-  const updateComment = async (e: Event, identifier: String) => {
-    e.preventDefault();
-    try {
-      await axios.patch(`/comments/${identifier}`, {
-        body: updatedComment,
-      }),
-        setEditingComment('');
-      mutateComment();
-    } catch (err) {
-      console.log(err);
-    }
+  const commentsWithChildren = (comments: Comment[]) => {
+    const commentsWithChildren: Comment[] = comments.map((comment) => ({
+      ...comment,
+      children: [],
+    }));
+    console.log('comments', commentsWithChildren);
+
+    commentsWithChildren.forEach((childComment) => {
+      const { parentId } = childComment;
+
+      if (parentId) {
+        const parent = commentsWithChildren.find(
+          (comment) => parentId === comment.identifier
+        );
+        parent.children = parent.children.concat(childComment);
+      }
+    });
+
+    return commentsWithChildren.filter(
+      (comment) =>
+        comment.parentId === null &&
+        (comment.body !== null || comment.children.length > 0)
+    );
   };
+
   return (
     <div>
       {post && (
@@ -326,16 +337,14 @@ const PostPage: React.FC = () => {
                     </div>
                     <hr />
                     {/* comments*/}
-                    {comments &&
-                      comments.map((comment) => (
-                        <CommentComponent
-                          comment={comment}
-                          post={post}
-                          mutateComment={mutateComment}
-                          mutatePost={mutatePost}
-                          key={comment.identifier}
-                        />
-                      ))}
+                    {comments && (
+                      <ThreadedComment
+                        comments={commentsWithChildren(comments)}
+                        post={post}
+                        mutateComment={mutateComment}
+                        mutatePost={mutatePost}
+                      />
+                    )}
                   </>
                 )}
               </div>

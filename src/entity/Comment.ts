@@ -30,7 +30,7 @@ export default class Comment extends Entity {
   body: string;
 
   @Column({ nullable: true })
-  parentId: number;
+  parentId: string;
 
   @Column()
   username: string;
@@ -40,6 +40,7 @@ export default class Comment extends Entity {
   user: User;
 
   @ManyToOne(() => Post, (post) => post.comments, { nullable: false })
+  @JoinColumn({ name: 'post', referencedColumnName: 'id' })
   post: Post;
 
   @Exclude()
