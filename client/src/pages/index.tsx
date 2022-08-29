@@ -36,7 +36,7 @@ const Home: React.FC = () => {
     setSize: setPage,
     isValidating,
   } = useSWRInfinite<Post[]>(
-    (index) => `/posts/homepage/?page=${index}&filter=${filter}`
+    (index) => `/posts/homepage?page=${index}&filter=${filter}`
   );
 
   const posts: Post[] = data ? [].concat(...data) : [];

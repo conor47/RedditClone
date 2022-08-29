@@ -12,10 +12,13 @@ import user from '../Middleware/user';
 const commentOnPost = async (req: Request, res: Response) => {
   const { identifier, slug } = req.params;
   const body = req.body.body;
+  const parentId = req.body.parentId;
+  console.log('parentId', parentId);
+
   const user: User = res.locals.user;
   try {
     const post = await Post.findOneOrFail({ identifier, slug });
-    const comment = new Comment({ body, user, post });
+    const comment = new Comment({ body, user, post, parentId });
     await comment.save();
     return res.status(StatusCodes.CREATED).json(comment);
   } catch (error) {
