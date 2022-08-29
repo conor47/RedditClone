@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
@@ -28,6 +28,8 @@ const Comment: React.FC<CommentProps> = ({
   const { authenticated, user } = useAuthState();
   const [editingComment, setEditingComment] = useState('');
   const [updatedComment, setUpdatedComment] = useState('');
+  const [replyComment, setReplyComment] = useState('');
+  const [writingReply, setWritingReply] = useState(false);
 
   const router = useRouter();
 
@@ -68,6 +70,25 @@ const Comment: React.FC<CommentProps> = ({
       mutateComment();
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const submitReply = async (e: Event, parentId: string) => {
+    e.preventDefault();
+
+    if (replyComment === '') {
+      return;
+    }
+
+    try {
+      await axios.post(`/comments/${post.identifier}/${post.slug}`, {
+        body: replyComment,
+        parentId,
+      });
+      mutateComment();
+      setWritingReply(false);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -137,41 +158,75 @@ const Comment: React.FC<CommentProps> = ({
           <div className="flex">
             {/* if user is logged and and same user as comment owner then display edit button */}
             {user && user.username == comment.username && (
-              <div
-                onClick={() => {
-                  setUpdatedComment(comment.body);
-                  if (editingComment === '') {
-                    setEditingComment(comment.identifier);
-                  } else if (
-                    editingComment !== '' &&
-                    comment.identifier !== editingComment
-                  ) {
-                    setEditingComment(comment.identifier);
-                  } else {
-                    setEditingComment('');
-                  }
-                }}
-              >
+              <div>
                 <div className="flex">
-                  <ActionButton>
-                    <i className="mr-1 fas fa-pen"></i>
-                    <span className="font-medium">Edit</span>
-                  </ActionButton>
-                  {editingComment === comment.identifier && (
-                    <button
-                      onClick={(e) => updateComment(e.nativeEvent)}
-                      className="px-3 py-1 blue button"
-                      disabled={
-                        updatedComment === comment.body || updatedComment === ''
+                  <div
+                    className="flex"
+                    onClick={() => {
+                      setUpdatedComment(comment.body);
+                      if (editingComment === '') {
+                        setEditingComment(comment.identifier);
+                      } else if (
+                        editingComment !== '' &&
+                        comment.identifier !== editingComment
+                      ) {
+                        setEditingComment(comment.identifier);
+                      } else {
+                        setEditingComment('');
                       }
-                    >
-                      Save edits
-                    </button>
-                  )}
+                    }}
+                  >
+                    <ActionButton>
+                      <i className="mr-1 fas fa-pen"></i>
+                      <span className="font-medium">Edit</span>
+                    </ActionButton>
+                    {editingComment === comment.identifier && (
+                      <button
+                        onClick={(e) => updateComment(e.nativeEvent)}
+                        className="px-3 py-1 blue button"
+                        disabled={
+                          updatedComment === comment.body ||
+                          updatedComment === ''
+                        }
+                      >
+                        Save edits
+                      </button>
+                    )}
+                  </div>
+                  <div
+                    className="flex"
+                    onClick={() => setWritingReply(!writingReply)}
+                  >
+                    <ActionButton>
+                      <i className="mr-1 fas fa-message"></i>
+                      <span className="font-medium">Reply</span>
+                    </ActionButton>
+                  </div>
                 </div>
               </div>
             )}
           </div>
+          {writingReply && (
+            <div>
+              <p>{`Reply to ${comment.username} as ${user.username}`}</p>
+              <textarea
+                className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-gray-600"
+                onChange={(e) => {
+                  e.preventDefault();
+                  setReplyComment(e.target.value);
+                }}
+                value={replyComment}
+                placeholder={'Say something'}
+              ></textarea>
+              <button
+                onClick={(e) => submitReply(e.nativeEvent, comment.identifier)}
+                className="px-3 py-1 blue button"
+                disabled={replyComment === ''}
+              >
+                Submit
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

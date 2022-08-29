@@ -25,7 +25,7 @@ const ThreadedComment: React.FC<CommentProps> = ({
 }) => {
   const router = useRouter();
 
-  console.log('threaded comments', comments);
+  const [showChildren, setShowChildren] = useState(true);
 
   return (
     <div>
@@ -39,14 +39,29 @@ const ThreadedComment: React.FC<CommentProps> = ({
               mutatePost={mutatePost}
             />
           </div>
-          <div className="ml-4">
+          {comment.children.length > 0 && (
+            <button onClick={() => setShowChildren(!showChildren)}>
+              Hide replies
+            </button>
+          )}
+          <div
+            className={classNames('ml-4 flex', {
+              hidden: !showChildren,
+            })}
+          >
             {comment.children.length > 0 && (
-              <ThreadedComment
-                post={post}
-                comments={comment.children}
-                mutateComment={mutateComment}
-                mutatePost={mutatePost}
-              />
+              <>
+                <div
+                  onClick={() => setShowChildren(!showChildren)}
+                  className="w-2 bg-slate-500"
+                ></div>
+                <ThreadedComment
+                  post={post}
+                  comments={comment.children}
+                  mutateComment={mutateComment}
+                  mutatePost={mutatePost}
+                />
+              </>
             )}
           </div>
         </div>
