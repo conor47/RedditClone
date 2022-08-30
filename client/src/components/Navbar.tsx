@@ -22,6 +22,7 @@ const Navbar: React.FC = () => {
   const { darkMode } = useGlobalStateContext();
   const authDispatch = useAuthDispatch();
   const globalStateDispatch = useGlobalStateDispatch();
+
   const router = useRouter();
   let htmlRef;
   let bodyRef;

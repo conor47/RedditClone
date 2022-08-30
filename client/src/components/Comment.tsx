@@ -93,7 +93,7 @@ const Comment: React.FC<CommentProps> = ({
   };
 
   return (
-    <div className="pl-10 pr-6 mb-4">
+    <div className="mb-4">
       <div key={comment.identifier} className="flex">
         <div className="flex flex-col items-center justify-start flex-shrink-0 w-10 rounded-l">
           <div
@@ -216,7 +216,7 @@ const Comment: React.FC<CommentProps> = ({
                   setReplyComment(e.target.value);
                 }}
                 value={replyComment}
-                placeholder={'Say something'}
+                placeholder={'What are your thoughts ?'}
               ></textarea>
               <button
                 onClick={(e) => submitReply(e.nativeEvent, comment.identifier)}

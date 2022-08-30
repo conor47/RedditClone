@@ -28,7 +28,7 @@ const ThreadedComment: React.FC<CommentProps> = ({
   const [showChildren, setShowChildren] = useState(true);
 
   return (
-    <div>
+    <div className="px-10">
       {comments.map((comment) => (
         <div key={comment.identifier}>
           <div>
@@ -40,8 +40,13 @@ const ThreadedComment: React.FC<CommentProps> = ({
             />
           </div>
           {comment.children.length > 0 && (
-            <button onClick={() => setShowChildren(!showChildren)}>
-              Hide replies
+            <button
+              onClick={() => setShowChildren(!showChildren)}
+              className="text-sm text-gray-500"
+            >
+              {showChildren
+                ? 'Hide replies'
+                : `Show ${comment.children.length} replies`}
             </button>
           )}
           <div
@@ -53,7 +58,7 @@ const ThreadedComment: React.FC<CommentProps> = ({
               <>
                 <div
                   onClick={() => setShowChildren(!showChildren)}
-                  className="w-2 bg-slate-500"
+                  className="w-1 bg-gray-100 cursor-pointer"
                 ></div>
                 <ThreadedComment
                   post={post}
