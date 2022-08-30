@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Children } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
@@ -30,8 +30,14 @@ const ThreadedComment: React.FC<CommentProps> = ({
   return (
     <div className="px-10">
       {comments.map((comment) => (
-        <div key={comment.identifier}>
-          <div>
+        <>
+          <div key={comment.identifier} className="relative">
+            {!showChildren && comment.children.length > 0 && (
+              <i
+                className="absolute text-sm text-gray-300 rotate-90 cursor-pointer fa-solid fa-up-right-and-down-left-from-center top-1/3 -left-5"
+                onClick={() => setShowChildren(!showChildren)}
+              ></i>
+            )}
             <CommentComponent
               comment={comment}
               post={post}
@@ -39,7 +45,7 @@ const ThreadedComment: React.FC<CommentProps> = ({
               mutatePost={mutatePost}
             />
           </div>
-          {comment.children.length > 0 && (
+          {/* {comment.children.length > 0 && (
             <button
               onClick={() => setShowChildren(!showChildren)}
               className="text-sm text-gray-500"
@@ -48,9 +54,9 @@ const ThreadedComment: React.FC<CommentProps> = ({
                 ? 'Hide replies'
                 : `Show ${comment.children.length} replies`}
             </button>
-          )}
+          )} */}
           <div
-            className={classNames('ml-4 flex', {
+            className={classNames('ml-1 flex transition-all', {
               hidden: !showChildren,
             })}
           >
@@ -58,7 +64,7 @@ const ThreadedComment: React.FC<CommentProps> = ({
               <>
                 <div
                   onClick={() => setShowChildren(!showChildren)}
-                  className="w-1 bg-gray-100 cursor-pointer"
+                  className="w-1 bg-gray-100 cursor-pointer dark:bg-gray-600"
                 ></div>
                 <ThreadedComment
                   post={post}
@@ -69,7 +75,7 @@ const ThreadedComment: React.FC<CommentProps> = ({
               </>
             )}
           </div>
-        </div>
+        </>
       ))}
     </div>
   );

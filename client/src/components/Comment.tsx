@@ -95,39 +95,6 @@ const Comment: React.FC<CommentProps> = ({
   return (
     <div className="mb-4">
       <div key={comment.identifier} className="flex">
-        <div className="flex flex-col items-center justify-start flex-shrink-0 w-10 rounded-l">
-          <div
-            className="w-6 mt-2 text-gray-400 transition-all translate-x-1 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500 hover:bg-transparent"
-            onClick={() => castVote(1)}
-          >
-            <i
-              className={classNames('icon-arrow-up', {
-                'text-red-500': comment.userVote === 1,
-              })}
-            ></i>
-          </div>
-          <p
-            className={classNames(
-              'text-xs font-bold dark:text-white transition-all',
-              {
-                'text-red-500': comment.userVote === 1,
-                'text-blue-500': comment.userVote === -1,
-              }
-            )}
-          >
-            {comment.voteScore}
-          </p>
-          <div
-            className="w-6 text-gray-400 transition-all translate-x-1 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500 hover:bg-transparent"
-            onClick={() => castVote(-1)}
-          >
-            <i
-              className={classNames('icon-arrow-down', {
-                'text-blue-600': comment.userVote === -1,
-              })}
-            ></i>
-          </div>
-        </div>
         <div className="py-2 pl-1">
           <p className="mb-1 text-xs leading-none">
             <Link href={`/u/${comment.username}`}>
@@ -160,6 +127,39 @@ const Comment: React.FC<CommentProps> = ({
             {user && user.username == comment.username && (
               <div>
                 <div className="flex">
+                  <div className="flex items-center justify-start flex-shrink-0 w-10 mt-2 mr-2 rounded-l">
+                    <div
+                      className="w-6 text-gray-400 transition-all rounded cursor-pointer hover:bg-gray-300 hover:text-red-500 hover:bg-transparent"
+                      onClick={() => castVote(1)}
+                    >
+                      <i
+                        className={classNames('icon-arrow-up', {
+                          'text-red-500': comment.userVote === 1,
+                        })}
+                      ></i>
+                    </div>
+                    <p
+                      className={classNames(
+                        'text-xs font-bold dark:text-white transition-all mx-1',
+                        {
+                          'text-red-500': comment.userVote === 1,
+                          'text-blue-500': comment.userVote === -1,
+                        }
+                      )}
+                    >
+                      {comment.voteScore}
+                    </p>
+                    <div
+                      className="w-6 text-gray-400 transition-all rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500 hover:bg-transparent"
+                      onClick={() => castVote(-1)}
+                    >
+                      <i
+                        className={classNames('icon-arrow-down', {
+                          'text-blue-600': comment.userVote === -1,
+                        })}
+                      ></i>
+                    </div>
+                  </div>
                   <div
                     className="flex"
                     onClick={() => {
