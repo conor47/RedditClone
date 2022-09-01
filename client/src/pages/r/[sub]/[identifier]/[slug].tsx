@@ -12,9 +12,11 @@ dayjs.extend(relativeTime);
 
 import { Post, Comment } from '../../../../../types';
 import SideBar from '../../../../components/SideBar';
+import CommentComponent from '../../../../components/Comment';
 import { useAuthState } from '../../../../context/Auth';
 import ActionButton from '../../../../components/ActionButton';
-import { FormEvent, useEffect, useState } from 'react';
+import { Children, FormEvent, useEffect, useState } from 'react';
+import ThreadedComment from '../../../../components/ThreadedComment';
 const PostPage: React.FC = () => {
   const router = useRouter();
   const { authenticated, user } = useAuthState();
@@ -26,7 +28,6 @@ const PostPage: React.FC = () => {
   const [editingComment, setEditingComment] = useState('');
   const [updatedComment, setUpdatedComment] = useState('');
   const { identifier, sub, slug } = router.query;
-
   // fetch post
   const {
     data: post,
@@ -42,8 +43,6 @@ const PostPage: React.FC = () => {
   } = useSWR<Comment[]>(
     identifier && slug ? `/comments/${identifier}/${slug}/comments` : null
   );
-
-  console.log('comments', comments);
 
   if (postError) {
     router.push('/');
@@ -112,18 +111,27 @@ const PostPage: React.FC = () => {
     }
   };
 
-  const updateComment = async (e: Event, identifier: String) => {
-    e.preventDefault();
-    try {
-      await axios.patch(`/comments/${identifier}`, {
-        body: updatedComment,
-      }),
-        setEditingComment('');
-      mutateComment();
-    } catch (err) {
-      console.log(err);
-    }
+  const commentsWithChildren = (comments: Comment[]) => {
+    const commentsWithChildren: Comment[] = comments.map((comment) => ({
+      ...comment,
+      children: [],
+    }));
+    console.log('comments', commentsWithChildren);
+
+    commentsWithChildren.forEach((childComment) => {
+      const { parentId } = childComment;
+
+      if (parentId) {
+        const parent = commentsWithChildren.find(
+          (comment) => parentId === comment.identifier
+        );
+        parent.children = parent.children.concat(childComment);
+      }
+    });
+
+    return commentsWithChildren.filter((comment) => comment.parentId === null);
   };
+
   return (
     <div>
       {post && (
@@ -154,7 +162,7 @@ const PostPage: React.FC = () => {
           {/* Post  */}
           <div className="container flex pt-5">
             <div className="w-160">
-              <div className="transition-all bg-white rounded dark:bg-slate-900">
+              <div className="transition-all bg-white rounded dark:bg-customDark">
                 {post && (
                   <>
                     <div className="flex">
@@ -172,7 +180,7 @@ const PostPage: React.FC = () => {
                         </div>
                         <p
                           className={classNames(
-                            'text-xs font-bold dark:text-white transition-all',
+                            'text-xs font-bold dark:text-slate-50 transition-all',
                             {
                               'text-red-500': post.userVote === 1,
                               'text-blue-500': post.userVote === -1,
@@ -212,7 +220,7 @@ const PostPage: React.FC = () => {
                           )}
                         </p>
                         {/* post title */}
-                        <h1 className="my-1 text-xl font-medium dark:text-white">
+                        <h1 className="my-1 text-xl font-medium dark:text-slate-50">
                           {post.title}
                         </h1>
                         {/* post body */}
@@ -224,7 +232,7 @@ const PostPage: React.FC = () => {
                             placeholder={post.body}
                           ></textarea>
                         ) : (
-                          <p className="my-3 text-sm dark:text-white">
+                          <p className="my-3 text-sm dark:text-slate-50">
                             {post.body}
                           </p>
                         )}
@@ -279,7 +287,7 @@ const PostPage: React.FC = () => {
                     <div className="pl-10 pr-6 mb-4">
                       {authenticated ? (
                         <div>
-                          <p className="mb-1 text-xs dark:text-white">
+                          <p className="mb-1 text-xs dark:text-slate-50">
                             Comment as{' '}
                             <Link href={`/r/${user.username}`}>
                               <a className="font-semibold text-blue-500">
@@ -325,123 +333,14 @@ const PostPage: React.FC = () => {
                     </div>
                     <hr />
                     {/* comments*/}
-                    {comments &&
-                      comments.map((comment) => (
-                        <div key={comment.identifier} className="flex">
-                          <div className="flex flex-col items-center justify-start flex-shrink-0 w-10 rounded-l">
-                            <div
-                              className="w-6 mt-2 text-gray-400 transition-all translate-x-1 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500 hover:bg-transparent"
-                              onClick={() => castVote(1, comment)}
-                            >
-                              <i
-                                className={classNames('icon-arrow-up', {
-                                  'text-red-500': comment.userVote === 1,
-                                })}
-                              ></i>
-                            </div>
-                            <p
-                              className={classNames(
-                                'text-xs font-bold dark:text-white transition-all',
-                                {
-                                  'text-red-500': comment.userVote === 1,
-                                  'text-blue-500': comment.userVote === -1,
-                                }
-                              )}
-                            >
-                              {comment.voteScore}
-                            </p>
-                            <div
-                              className="w-6 text-gray-400 transition-all translate-x-1 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500 hover:bg-transparent"
-                              onClick={() => castVote(-1, comment)}
-                            >
-                              <i
-                                className={classNames('icon-arrow-down', {
-                                  'text-blue-600': comment.userVote === -1,
-                                })}
-                              ></i>
-                            </div>
-                          </div>
-                          <div className="py-2 pl-1">
-                            <p className="mb-1 text-xs leading-none">
-                              <Link href={`/u/${comment.username}`}>
-                                <a className="mr-1 font-bold hover:underline dark:text-white">
-                                  {comment.username}
-                                </a>
-                              </Link>
-                              <span className="text-gray-600">{`${
-                                comment.voteScore
-                              } Points • ${dayjs(
-                                comment.createdAt
-                              ).fromNow()}`}</span>
-                              {comment.createdAt !== comment.updatedAt && (
-                                <span className="text-gray-600 dark:text-gray">
-                                  {` - last edit : ${dayjs(
-                                    comment.updatedAt
-                                  ).fromNow()}`}
-                                </span>
-                              )}
-                            </p>
-
-                            {editingComment === comment.identifier &&
-                            editingComment !== '' ? (
-                              <textarea
-                                className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-gray-600"
-                                onChange={(e) =>
-                                  setUpdatedComment(e.target.value)
-                                }
-                                value={updatedComment}
-                                placeholder={comment.body}
-                              ></textarea>
-                            ) : (
-                              <p className="dark:text-white">{comment.body}</p>
-                            )}
-                            <div className="flex">
-                              {/* if user is logged and and same user as comment owner then display edit button */}
-                              {user && user.username == comment.username && (
-                                <div
-                                  onClick={() => {
-                                    setUpdatedComment(comment.body);
-                                    if (editingComment === '') {
-                                      setEditingComment(comment.identifier);
-                                    } else if (
-                                      editingComment !== '' &&
-                                      comment.identifier !== editingComment
-                                    ) {
-                                      setEditingComment(comment.identifier);
-                                    } else {
-                                      setEditingComment('');
-                                    }
-                                  }}
-                                >
-                                  <div className="flex">
-                                    <ActionButton>
-                                      <i className="mr-1 fas fa-pen"></i>
-                                      <span className="font-medium">Edit</span>
-                                    </ActionButton>
-                                    {editingComment === comment.identifier && (
-                                      <button
-                                        onClick={(e) =>
-                                          updateComment(
-                                            e.nativeEvent,
-                                            comment.identifier
-                                          )
-                                        }
-                                        className="px-3 py-1 blue button"
-                                        disabled={
-                                          updatedComment === comment.body ||
-                                          updatedComment === ''
-                                        }
-                                      >
-                                        Save edits
-                                      </button>
-                                    )}
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+                    {comments && (
+                      <ThreadedComment
+                        comments={commentsWithChildren(comments)}
+                        post={post}
+                        mutateComment={mutateComment}
+                        mutatePost={mutatePost}
+                      />
+                    )}
                   </>
                 )}
               </div>

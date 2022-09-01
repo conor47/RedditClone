@@ -12,10 +12,13 @@ import user from '../Middleware/user';
 const commentOnPost = async (req: Request, res: Response) => {
   const { identifier, slug } = req.params;
   const body = req.body.body;
+  const parentId = req.body.parentId;
+  console.log('parentId', parentId);
+
   const user: User = res.locals.user;
   try {
     const post = await Post.findOneOrFail({ identifier, slug });
-    const comment = new Comment({ body, user, post });
+    const comment = new Comment({ body, user, post, parentId });
     await comment.save();
     return res.status(StatusCodes.CREATED).json(comment);
   } catch (error) {
@@ -83,17 +86,38 @@ const editComment = async (req: Request, res: Response) => {
 
   try {
     const comment = await Comment.findOneOrFail({ identifier });
-    comment.body = body;
 
     if (comment.username !== res.locals.user.username) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
         .send({ error: 'Unauthorized' });
     }
+    comment.body = body;
     await comment.save();
     return res.status(StatusCodes.OK).json(comment);
   } catch (err) {
     console.log(err);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: 'Something went wrong' });
+  }
+};
+
+const deleteComment = async (req: Request, res: Response) => {
+  const { identifier } = req.params;
+  const comment = await Comment.findOneOrFail({ identifier });
+
+  if (comment.username !== res.locals.user.username) {
+    return res.status(StatusCodes.UNAUTHORIZED).send({ error: 'Unauthorized' });
+  }
+
+  comment.body = null;
+  comment.username = null;
+  try {
+    await comment.save();
+    return res.status(StatusCodes.OK).json(comment);
+  } catch (error) {
+    console.log(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: 'Something went wrong' });
@@ -106,6 +130,7 @@ router.post('/:identifier/:slug', user, auth, commentOnPost);
 router.get('/', getAllComments);
 router.get('/:identifier', getSingleComment);
 router.patch('/:identifier', user, auth, editComment);
+router.delete('/:identifier', user, auth, deleteComment);
 router.get('/:identifier/:slug/comments', user, getPostComments);
 
 export default router;

@@ -44,11 +44,13 @@ export interface Comment {
   createdAt: string;
   updatedAt: string;
   identifier: string;
-  body: string;
-  username: string;
+  body: string | null;
+  username: string | null;
   userVote: number;
   voteScore: number;
   post?: Post;
+  parentId: string;
+  children?: Comment[];
 }
 
 export enum Filters {

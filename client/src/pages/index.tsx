@@ -36,7 +36,7 @@ const Home: React.FC = () => {
     setSize: setPage,
     isValidating,
   } = useSWRInfinite<Post[]>(
-    (index) => `/posts/homepage/?page=${index}&filter=${filter}`
+    (index) => `/posts/homepage?page=${index}&filter=${filter}`
   );
 
   const posts: Post[] = data ? [].concat(...data) : [];
@@ -64,7 +64,6 @@ const Home: React.FC = () => {
       const observer = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting === true) {
-            console.log('reached bottom of post');
             setPage(page + 1);
             observer.unobserve(element);
           }
@@ -118,7 +117,7 @@ const Home: React.FC = () => {
           {isLoadingInitialData && (
             <p className="text-lg text-center">Loading ...</p>
           )}
-          <div className="py-3 pl-2 mb-3 transition-all bg-white rounded-sm flexmax-w-full dark:bg-slate-900">
+          <div className="py-3 pl-2 mb-3 transition-all bg-white rounded-sm flexmax-w-full dark:bg-customDark">
             <div className="flex">
               <ActionButton
                 selected={filter == Filters.best}
@@ -234,9 +233,9 @@ const Home: React.FC = () => {
         </div>
         {/* Sidebar */}
         <div className="hidden ml-6 w-80 md:block">
-          <div className="transition-all bg-white rounded dark:bg-slate-900 dark:text-white">
+          <div className="transition-all bg-white rounded dark:bg-customDark dark:text-slate-50">
             <div className="p-4 transition-all border-b-2 dark:border-b-black">
-              <p className="text-lg font-semibold text-center transition-all dark:bg-slate-900">
+              <p className="text-lg font-semibold text-center transition-all dark:bg-customDark">
                 Top Communities
               </p>
             </div>

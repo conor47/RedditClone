@@ -22,9 +22,9 @@ export default class Vote extends Entity {
   @Column()
   username: string;
 
-  @ManyToOne(() => Post)
+  @ManyToOne(() => Post, { onDelete: 'CASCADE' })
   post: Post;
 
-  @ManyToOne(() => Comment)
+  @ManyToOne(() => Comment, { onDelete: 'CASCADE' })
   comment: Comment;
 }

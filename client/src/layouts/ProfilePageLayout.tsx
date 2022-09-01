@@ -11,14 +11,11 @@ const ProfilePageLayout: React.FC = ({ children }: ProfilePageLayoutProps) => {
   const { username } = router.query;
   const paths = router.asPath.split('/');
   const path = paths[paths.length - 1];
-  console.log('path', path);
-
-  console.log('name', username);
 
   return (
     <>
-      <div className="flex items-center justify-center w-full h-10 leading-9 transition-all bg-white border-gray-200 border-y dark:bg-slate-900 dark:border-black">
-        <div className="container flex h-full transition-all dark:text-white">
+      <div className="flex items-center justify-center w-full h-10 leading-9 transition-all bg-white border-gray-200 border-y dark:bg-customDark dark:border-black">
+        <div className="container flex h-full transition-all dark:text-slate-50">
           <Link href={`/u/${username}`}>
             <span
               className={classNames(

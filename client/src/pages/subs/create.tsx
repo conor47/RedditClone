@@ -32,14 +32,14 @@ const Create: React.FC = () => {
         className="h-screen bg-center bg-cover w-36"
         style={{ backgroundImage: "url('/images/pattern.jpeg')" }}
       ></div>
-      <div className="flex flex-col justify-center pl-6 transition-all dark:text-white">
+      <div className="flex flex-col justify-center pl-6 transition-all dark:text-slate-50">
         <div className="98">
           <h1 className="mb-2 text-lg font-medium">Create a Community</h1>
           <hr />
           <form onSubmit={(e) => submitForm(e)}>
             <div className="my-6">
               <p className="font-medium">Name</p>
-              <p className="mb-2 text-xs text-gray-500 dark:text-white">
+              <p className="mb-2 text-xs text-gray-500 dark:text-slate-50">
                 Community names including capitalization cannot be changed.
               </p>
               <input
@@ -56,7 +56,7 @@ const Create: React.FC = () => {
             </div>
             <div className="my-6">
               <p className="font-medium">Title</p>
-              <p className="mb-2 text-xs text-gray-500 dark:text-white">
+              <p className="mb-2 text-xs text-gray-500 dark:text-slate-50">
                 Give your community an interesting title. Can be changed at any
                 time.
               </p>
@@ -74,7 +74,7 @@ const Create: React.FC = () => {
             </div>
             <div className="my-6">
               <p className="font-medium">Description</p>
-              <p className="mb-2 text-xs text-gray-500 dark:text-white">
+              <p className="mb-2 text-xs text-gray-500 dark:text-slate-50">
                 This is how new members come to understand what your community
                 is about !
               </p>

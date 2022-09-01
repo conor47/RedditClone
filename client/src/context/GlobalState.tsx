@@ -1,7 +1,5 @@
-import axios from 'axios';
-import { createContext, useContext, useEffect, useReducer } from 'react';
+import { createContext, useContext, useReducer } from 'react';
 
-import { User } from '../../types';
 import { Actions } from '../reducers/globalStateReducer';
 import reducer from '../reducers/globalStateReducer';
 
