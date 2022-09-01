@@ -25,16 +25,18 @@ const ThreadedComment: React.FC<CommentProps> = ({
 }) => {
   const router = useRouter();
 
+  console.log('threaded', comments);
+
   const [showChildren, setShowChildren] = useState(true);
 
   return (
-    <div className="px-10">
+    <div className="px-10 py-2">
       {comments.map((comment) => (
         <>
           <div key={comment.identifier} className="relative">
             {!showChildren && comment.children.length > 0 && (
               <i
-                className="absolute text-sm text-gray-300 rotate-90 cursor-pointer fa-solid fa-up-right-and-down-left-from-center top-1/3 -left-5"
+                className="absolute text-sm text-gray-400 rotate-90 cursor-pointer fa-solid fa-up-right-and-down-left-from-center top-1/3 -left-5"
                 onClick={() => setShowChildren(!showChildren)}
               ></i>
             )}
@@ -64,7 +66,7 @@ const ThreadedComment: React.FC<CommentProps> = ({
               <>
                 <div
                   onClick={() => setShowChildren(!showChildren)}
-                  className="w-1 bg-gray-100 cursor-pointer dark:bg-gray-600"
+                  className="w-1 mb-2 ml-1 transition-all bg-gray-100 cursor-pointer dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500"
                 ></div>
                 <ThreadedComment
                   post={post}

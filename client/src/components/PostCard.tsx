@@ -66,11 +66,11 @@ const PostCard: React.FC<PostCardProps> = ({
   return (
     <div
       key={identifier}
-      className="flex mb-4 transition-all bg-white rounded dark:bg-slate-900"
+      className="flex mb-4 transition-all bg-white rounded dark:bg-customDark"
       id={identifier}
     >
       {/* vote section */}
-      <div className="flex flex-col items-center justify-start w-10 transition-all bg-gray-200 rounded-l dark:bg-slate-900">
+      <div className="flex flex-col items-center justify-start w-10 transition-all bg-gray-200 rounded-l dark:bg-customDark">
         <div
           className="w-6 mt-2 text-gray-400 transition-all translate-x-1 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500 hover:bg-transparent"
           onClick={() => castVote(1)}
@@ -83,7 +83,7 @@ const PostCard: React.FC<PostCardProps> = ({
         </div>
         <p
           className={classNames(
-            'text-xs font-bold dark:text-white transition-all',
+            'text-xs font-bold dark:text-slate-50 transition-all',
             {
               'text-red-500': userVote === 1,
               'text-blue-500': userVote === -1,
@@ -118,14 +118,14 @@ const PostCard: React.FC<PostCardProps> = ({
                 />
               </Link>
               <Link href={`/r/${subName}`}>
-                <a className="ml-1 text-xs font-semibold transition-all hover:underline dark:text-white">
+                <a className="ml-1 text-xs font-semibold transition-all hover:underline dark:text-slate-50">
                   /r/{subName}
                 </a>
               </Link>
-              <span className="mx-1 text-xs text-gray-500 transition-all dark:text-white">
+              <span className="mx-1 text-xs text-gray-500 transition-all dark:text-slate-50">
                 •
               </span>{' '}
-              <span className="text-xs transition-all dark:text-white">
+              <span className="text-xs transition-all dark:text-slate-50">
                 Posted by
               </span>
             </>
@@ -146,13 +146,13 @@ const PostCard: React.FC<PostCardProps> = ({
         <Link href={url}>
           <a
             href=""
-            className="my-1 text-lg font-medium transition-all dark:text-white"
+            className="my-1 text-lg font-medium transition-all dark:text-slate-50"
           >
             {title}
           </a>
         </Link>
         {body && (
-          <p className="my-1 text-sm transition-all dark:text-white">
+          <p className="my-1 text-sm transition-all dark:text-slate-50">
             {body.length < 100 ? body : body.substring(0, 150) + ' ...'}
           </p>
         )}

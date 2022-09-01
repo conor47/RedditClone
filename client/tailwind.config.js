@@ -28,6 +28,7 @@ module.exports = {
           800: '#003054',
           900: '#00182a',
         },
+        customDark: '#1A1A1B',
       },
       minWidth: {
         90: '23.75rem',

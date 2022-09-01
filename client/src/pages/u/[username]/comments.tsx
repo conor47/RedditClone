@@ -37,13 +37,13 @@ const Overview: React.FC = () => {
                 return (
                   <div
                     key={comment.identifier}
-                    className="flex my-4 transition-all bg-white rounded dark:bg-slate-900"
+                    className="flex my-4 transition-all bg-white rounded dark:bg-customDark"
                   >
-                    <div className="flex-shrink-0 w-10 py-4 text-center transition-all bg-gray-200 rounded-l dark:bg-slate-900">
-                      <i className="text-gray-500 fas fa-comment-alt fa-xs dark:text-white"></i>
+                    <div className="flex-shrink-0 w-10 py-4 text-center transition-all bg-gray-200 rounded-l dark:bg-customDark">
+                      <i className="text-gray-500 fas fa-comment-alt fa-xs dark:text-slate-50"></i>
                     </div>
                     <div className="w-full p-2">
-                      <p className="mb-2 text-xs text-gray-500 transition-all dark:text-white">
+                      <p className="mb-2 text-xs text-gray-500 transition-all dark:text-slate-50">
                         {comment.username}
                         <span> commented on </span>
                         <Link href={comment.post.url}>
@@ -53,13 +53,13 @@ const Overview: React.FC = () => {
                         </Link>
                         <span className="mx-1">•</span>
                         <Link href={`/r/${comment.post.subName}`}>
-                          <a className="text-black transition-all hover:underline cursor:pointer dark:text-white">
+                          <a className="text-black transition-all hover:underline cursor:pointer dark:text-slate-50">
                             /r/{comment.post.subName}
                           </a>
                         </Link>
                       </p>
                       <hr />
-                      <p className="transition-all dark:text-white">
+                      <p className="transition-all dark:text-slate-50">
                         {comment.body}
                       </p>
                     </div>

@@ -129,11 +129,7 @@ const PostPage: React.FC = () => {
       }
     });
 
-    return commentsWithChildren.filter(
-      (comment) =>
-        comment.parentId === null &&
-        (comment.body !== null || comment.children.length > 0)
-    );
+    return commentsWithChildren.filter((comment) => comment.parentId === null);
   };
 
   return (
@@ -166,7 +162,7 @@ const PostPage: React.FC = () => {
           {/* Post  */}
           <div className="container flex pt-5">
             <div className="w-160">
-              <div className="transition-all bg-white rounded dark:bg-slate-900">
+              <div className="transition-all bg-white rounded dark:bg-customDark">
                 {post && (
                   <>
                     <div className="flex">
@@ -184,7 +180,7 @@ const PostPage: React.FC = () => {
                         </div>
                         <p
                           className={classNames(
-                            'text-xs font-bold dark:text-white transition-all',
+                            'text-xs font-bold dark:text-slate-50 transition-all',
                             {
                               'text-red-500': post.userVote === 1,
                               'text-blue-500': post.userVote === -1,
@@ -224,7 +220,7 @@ const PostPage: React.FC = () => {
                           )}
                         </p>
                         {/* post title */}
-                        <h1 className="my-1 text-xl font-medium dark:text-white">
+                        <h1 className="my-1 text-xl font-medium dark:text-slate-50">
                           {post.title}
                         </h1>
                         {/* post body */}
@@ -236,7 +232,7 @@ const PostPage: React.FC = () => {
                             placeholder={post.body}
                           ></textarea>
                         ) : (
-                          <p className="my-3 text-sm dark:text-white">
+                          <p className="my-3 text-sm dark:text-slate-50">
                             {post.body}
                           </p>
                         )}
@@ -291,7 +287,7 @@ const PostPage: React.FC = () => {
                     <div className="pl-10 pr-6 mb-4">
                       {authenticated ? (
                         <div>
-                          <p className="mb-1 text-xs dark:text-white">
+                          <p className="mb-1 text-xs dark:text-slate-50">
                             Comment as{' '}
                             <Link href={`/r/${user.username}`}>
                               <a className="font-semibold text-blue-500">

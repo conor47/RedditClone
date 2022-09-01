@@ -26,18 +26,18 @@ export default class Comment extends Entity {
   @Column()
   identifier: string;
 
-  @Column()
-  body: string;
+  @Column({ nullable: true, type: 'text' })
+  body: string | null;
 
-  @Column({ nullable: true })
-  parentId: string;
+  @Column({ nullable: true, type: 'text' })
+  parentId: string | null;
 
-  @Column()
-  username: string;
+  @Column({ nullable: true, type: 'text' })
+  username: string | null;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { nullable: true })
   @JoinColumn({ name: 'username', referencedColumnName: 'username' })
-  user: User;
+  user: User | null;
 
   @ManyToOne(() => Post, (post) => post.comments, { nullable: false })
   @JoinColumn({ name: 'post', referencedColumnName: 'id' })

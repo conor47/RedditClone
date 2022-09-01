@@ -111,7 +111,7 @@ export default function SubPage() {
   } else {
     joinButtonMarkup = (
       <button
-        className="w-20 h-8 mt-2 ml-5 transition-all button dark:bg-black dark:text-white dark:border-white"
+        className="w-20 h-8 mt-2 ml-5 transition-all button dark:bg-black dark:text-slate-50 dark:border-white"
         onClick={(e) => deleteSubscription(e.nativeEvent)}
       >
         Leave
@@ -179,7 +179,7 @@ export default function SubPage() {
                 </div>
                 <div className="pt-1 pl-24">
                   <div className="flex items-center">
-                    <h1 className="mb-1 text-3xl font-bold dark:text-white">
+                    <h1 className="mb-1 text-3xl font-bold dark:text-slate-50">
                       {sub.title}
                     </h1>
                   </div>
