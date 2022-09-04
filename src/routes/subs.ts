@@ -1,9 +1,10 @@
-import { IsEmpty, isEmpty } from 'class-validator';
+import { isEmpty } from 'class-validator';
 import { Request, Response, Router } from 'express';
 import { getConnection, getRepository } from 'typeorm';
 import Post from '../entity/Post';
 import Sub from '../entity/Sub';
 import multer from 'multer';
+import cloudinary from '../Utils/cloudinary';
 import path from 'path';
 import fs from 'fs';
 
@@ -138,6 +139,12 @@ const upload = multer({
 
 // route for handling file upload
 const uploadSubImage = async (req: Request, res: Response) => {
+  const options = {
+    use_filename: true,
+    unique_filename: false,
+    overwrite: true,
+  };
+
   const sub: Sub = res.locals.sub;
   try {
     const type = req.body.type;
@@ -148,10 +155,12 @@ const uploadSubImage = async (req: Request, res: Response) => {
       fs.unlinkSync(req.file!.path!);
       return res.status(400).json({ error: 'Invalid type' });
     }
-    const urn = req.file!.filename;
+    const result = await cloudinary.uploader.upload(req.file!.path, options);
+    const urn = result.secure_url;
     // use the type key in the request object to determine whether the uploaded file is for the sub image or banner
     // use oldImageUrn store the old image urn if one exists
     let oldImageUrn: string = '';
+    let oldPublicId = sub.publicId;
     if (type === 'image') {
       oldImageUrn = sub.imageUrn || '';
       sub.imageUrn = urn;
@@ -159,12 +168,16 @@ const uploadSubImage = async (req: Request, res: Response) => {
       oldImageUrn = sub.bannerUrn || '';
       sub.bannerUrn = urn;
     }
+    sub.publicId = result.public_id;
     // if an old image urn exists delete it
     if (oldImageUrn !== '') {
-      fs.unlinkSync(`public/images/${oldImageUrn}`);
+      await cloudinary.uploader.destroy(oldPublicId);
     }
 
+    console.log('result ', result);
+
     await sub.save();
+
     return res.json(sub);
   } catch (error) {
     console.log(error);
@@ -174,7 +187,7 @@ const uploadSubImage = async (req: Request, res: Response) => {
 };
 
 const topSubs = async (req: Request, res: Response) => {
-  const imageUrlExp = `COALESCE('${process.env.APP_URL}/images/' || s."imageUrn" , 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y')`;
+  const imageUrlExp = `COALESCE(s."imageUrn" , 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y')`;
   try {
     const subs = await getConnection()
       .createQueryBuilder()

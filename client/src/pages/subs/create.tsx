@@ -30,7 +30,9 @@ const Create: React.FC = () => {
       </Head>
       <div
         className="h-screen bg-center bg-cover w-36"
-        style={{ backgroundImage: "url('/images/pattern.jpeg')" }}
+        style={{
+          backgroundImage: `url('${process.env.NEXT_PUBLIC_CLIENT_BASE_URL}/pattern.jpeg')`,
+        }}
       ></div>
       <div className="flex flex-col justify-center pl-6 transition-all dark:text-slate-50">
         <div className="98">

@@ -38,6 +38,9 @@ export default class Sub extends Entity {
   imageUrn: string;
 
   @Column({ nullable: true })
+  publicId: string;
+
+  @Column({ nullable: true })
   bannerUrn: string;
 
   @Column()
@@ -50,15 +53,13 @@ export default class Sub extends Entity {
   @Expose()
   get imageUrl(): string {
     return this.imageUrn
-      ? `${process.env.APP_URL}/images/${this.imageUrn}`
+      ? this.imageUrn
       : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
   }
 
   @Expose()
   get bannerUrl(): string | undefined {
-    return this.bannerUrn
-      ? `${process.env.APP_URL}/images/${this.bannerUrn}`
-      : undefined;
+    return this.bannerUrn ? this.bannerUrn : undefined;
   }
 
   @OneToMany(() => Post, (post) => post.sub)

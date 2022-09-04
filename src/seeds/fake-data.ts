@@ -9,7 +9,7 @@ import Comment from '../entity/Comment';
 import Vote from '../entity/Vote';
 
 function timePlus(duration = 0) {
-  const time = new Date('2020-11-07 07:01:43.18').getTime();
+  const time = new Date('2022-09-04 07:01:43.18').getTime();
 
   return new Date(time + duration).toISOString();
 }
