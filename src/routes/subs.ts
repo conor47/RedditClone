@@ -27,6 +27,8 @@ const getAllSubs = async (req: Request, res: Response) => {
 
 const createSub = async (req: Request, res: Response) => {
   const { name, title, description } = req.body;
+  console.log('name', name);
+  console.log('replaced', name.replace(' ', '_'));
 
   const user: User = res.locals.user;
 
@@ -38,7 +40,9 @@ const createSub = async (req: Request, res: Response) => {
 
     const sub = await getRepository(Sub)
       .createQueryBuilder('sub')
-      .where('lower(sub.name) = :name', { name: name.toLowerCase() })
+      .where('lower(sub.name) = :name', {
+        name: name.toLowerCase().replace(' ', '_'),
+      })
       .getOne();
 
     if (sub) errors.name = 'Sub exists already';
@@ -51,7 +55,12 @@ const createSub = async (req: Request, res: Response) => {
   }
 
   try {
-    const sub = new Sub({ name, description, title, user });
+    const sub = new Sub({
+      name: name.toLowerCase().replace(' ', '_'),
+      description,
+      title,
+      user,
+    });
     await sub.save();
     return res.json(sub);
   } catch (error) {
@@ -66,7 +75,7 @@ const getSub = async (req: Request, res: Response) => {
 
   try {
     const sub = await Sub.findOneOrFail({
-      where: { name },
+      where: { name: name.toLowerCase().replace(' ', '_') },
       relations: ['subscriptions', 'subscriptions.user', 'subscriptions.sub'],
     });
     const posts = await Post.find({

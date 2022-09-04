@@ -83,7 +83,11 @@ export default function SubPage() {
   if (!sub) {
     postsMarkup = <p className="text-lg text-center">Loading..</p>;
   } else if (sub.posts.length === 0) {
-    postsMarkup = <p className="text-lg text-center">No posts submitted yet</p>;
+    postsMarkup = (
+      <p className="text-lg text-center dark:text-white">
+        No posts submitted yet
+      </p>
+    );
   } else {
     postsMarkup = sub.posts.map((post) => (
       <PostCard key={post.identifier} post={post} revalidate={mutate} />
