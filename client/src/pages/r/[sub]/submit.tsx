@@ -1,9 +1,11 @@
 import axios from 'axios';
+import classNames from 'classnames';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ChangeEvent, createRef, FormEvent, useState } from 'react';
 import useSWR from 'swr';
+
 import { Post, Sub } from '../../../../types';
 import SideBar from '../../../components/SideBar';
 
@@ -88,16 +90,20 @@ const Submit: React.FC = () => {
         <title>Submit to Reddit</title>
       </Head>
       <div className="w-160">
-        <div className="flex">
+        <div className="flex p-2 mb-2 transition-all bg-white rounded dark:bg-customDark dark:text-white">
           <div
-            className="mr-4 cursor-pointer"
+            className={classNames('mr-4 cursor-pointer transition-all ', {
+              'text-blue-500': tab === 0,
+            })}
             onClick={(e) => changeTab(e.nativeEvent, 0)}
           >
             Text
           </div>
           <div
             onClick={(e) => changeTab(e.nativeEvent, 1)}
-            className="cursor-pointer"
+            className={classNames('mr-4 cursor-pointer transition-all ', {
+              'text-blue-500': tab === 1,
+            })}
           >
             Image
           </div>
