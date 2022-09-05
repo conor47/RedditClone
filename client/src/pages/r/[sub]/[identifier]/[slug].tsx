@@ -200,7 +200,7 @@ const PostPage: React.FC = () => {
                           ></i>
                         </div>
                       </div>
-                      <div className="py-2 pl-1">
+                      <div className="w-full py-2 pl-1">
                         <p className="text-xs text-gray-500">
                           Posted by
                           <Link href={`/u/user`}>
@@ -236,6 +236,19 @@ const PostPage: React.FC = () => {
                             {post.body}
                           </p>
                         )}
+                        {post.postUrn && (
+                          <div className="pr-10">
+                            <Image
+                              src={post.postUrn}
+                              width="100%"
+                              height="70%"
+                              objectFit="contain"
+                              layout="responsive"
+                              alt="post image"
+                            />
+                          </div>
+                        )}
+
                         {/* actions  */}
                         <div className="flex">
                           <Link href={post.url}>

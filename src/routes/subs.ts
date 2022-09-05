@@ -3,16 +3,14 @@ import { Request, Response, Router } from 'express';
 import { getConnection, getRepository } from 'typeorm';
 import Post from '../entity/Post';
 import Sub from '../entity/Sub';
-import multer from 'multer';
 import cloudinary from '../Utils/cloudinary';
-import path from 'path';
 import fs from 'fs';
 
+import uploadMiddleware from '../Middleware/multer';
 import User from '../entity/User';
 import { BadRequestError, NotFoundError } from '../errors';
 import auth from '../Middleware/auth';
 import user from '../Middleware/user';
-import { makeId } from '../Utils/helpers';
 import { NextFunction } from 'express-serve-static-core';
 import Unauthorized from '../errors/Unauthorized';
 
@@ -119,26 +117,10 @@ const ownSub = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// multer middleware for handling file uploads
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: 'public/images',
-    filename: (_, file, callback) => {
-      const name = makeId(15);
-      callback(null, name + path.extname(file.originalname));
-    },
-  }),
-  fileFilter: (_, file, callback) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-      callback(null, true);
-    } else {
-      callback(new Error('Not an image'));
-    }
-  },
-});
-
 // route for handling file upload
 const uploadSubImage = async (req: Request, res: Response) => {
+  console.log('request', req);
+
   const options = {
     use_filename: true,
     unique_filename: false,
@@ -156,6 +138,8 @@ const uploadSubImage = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Invalid type' });
     }
     const result = await cloudinary.uploader.upload(req.file!.path, options);
+    fs.unlinkSync(req.file!.path!);
+
     const urn = result.secure_url;
     // use the type key in the request object to determine whether the uploaded file is for the sub image or banner
     // use oldImageUrn store the old image urn if one exists
@@ -240,7 +224,7 @@ router.post(
   user,
   auth,
   ownSub,
-  upload.single('file'),
+  uploadMiddleware.single('file'),
   uploadSubImage
 );
 

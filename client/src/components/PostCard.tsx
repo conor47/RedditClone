@@ -32,6 +32,7 @@ const PostCard: React.FC<PostCardProps> = ({
     url,
     commentCount,
     sub,
+    postUrn,
   },
   revalidate,
 }) => {
@@ -155,6 +156,18 @@ const PostCard: React.FC<PostCardProps> = ({
           <p className="my-1 text-sm transition-all dark:text-slate-50">
             {body.length < 100 ? body : body.substring(0, 150) + ' ...'}
           </p>
+        )}
+        {postUrn && (
+          <div className="px-5">
+            <Image
+              src={postUrn}
+              width="100%"
+              height="70%"
+              objectFit="contain"
+              layout="responsive"
+              alt="post image"
+            />
+          </div>
         )}
         <div className="flex">
           <Link href={url}>

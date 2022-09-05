@@ -84,13 +84,13 @@ const Navbar: React.FC = () => {
     <nav className="fixed inset-x-0 top-0 z-10 flex items-center justify-between h-12 px-5 transition-all bg-white dark:bg-customDark">
       {/* Logo and Title */}
       <div className="flex items-center">
-        <Link href="/">
+        <Link href="/r/all">
           <a>
             <RedditLogo className="w-8 h-8 mr-2" />
           </a>
         </Link>
         <span className="hidden text-2xl font-semibold transition-all lg:block dark:text-slate-50">
-          <Link href="/">Reddit</Link>
+          <Link href="/r/all">Reddit</Link>
         </span>
       </div>
       {/* Search input */}

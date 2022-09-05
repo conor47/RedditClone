@@ -55,12 +55,18 @@ const Submit: React.FC = () => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('type', fileInputRef.current.name);
+    formData.append('title', imageTitle);
+    formData.append('sub', subName as string);
 
     try {
-      await axios.post<Sub>(`/subs/${sub.name}/image`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      mutate();
+      const { data: post } = await axios.post<Post>(
+        `/posts/imagePost`,
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
+      );
+      router.push(`/r/${sub.name}/${post.identifier}/${post.slug}`);
     } catch (err) {
       console.log(err);
     }
@@ -160,7 +166,7 @@ const Submit: React.FC = () => {
               <button
                 className="px-3 py-1 blue button"
                 type="submit"
-                disabled={textTitle.trim() === ''}
+                disabled={imageTitle.trim() === ''}
               >
                 Submit
               </button>
