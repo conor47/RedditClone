@@ -6,8 +6,13 @@ import PostCard from '../../components/PostCard';
 import Image from 'next/image';
 import classNames from 'classnames';
 
+import Popup from '../../components/popup';
 import { Sub } from '../../../types';
 import { useAuthState } from '../../context/Auth';
+import {
+  useGlobalStateDispatch,
+  useGlobalStateContext,
+} from '../../context/GlobalState';
 import Axios from 'axios';
 import Sidebar from '../../components/SideBar';
 import Link from 'next/link';
@@ -18,6 +23,8 @@ export default function SubPage() {
   const [ownSub, setOwnSub] = useState(false);
   // Global state
   const { authenticated, user } = useAuthState();
+  const { showPopup, popup, popupMessage } = useGlobalStateContext();
+  const globalDispatch = useGlobalStateDispatch();
   // Utils
   const router = useRouter();
   const fileInputRef = createRef<HTMLInputElement>();
@@ -34,6 +41,8 @@ export default function SubPage() {
     if (!sub) return;
     setOwnSub(authenticated && user.username === sub.username);
   }, [sub]);
+
+  console.log('show popup', popup);
 
   const openFileInput = (type: string) => {
     if (!ownSub) return;
@@ -66,6 +75,7 @@ export default function SubPage() {
 
     await axios.post(`/subscriptions/${sub.name}`);
     mutate();
+    showPopup(`Successfully joined r/${sub.name}`);
   };
 
   const deleteSubscription = async (event: Event) => {
@@ -75,6 +85,7 @@ export default function SubPage() {
 
     await axios.delete(`/subscriptions/${sub.name}`);
     mutate();
+    showPopup(`Successfully left r/${sub.name}`);
   };
 
   if (error) router.push('/');
@@ -202,6 +213,7 @@ export default function SubPage() {
           </div>
         </Fragment>
       )}
+      <Popup message={popupMessage} showPopup={popup} />
     </div>
   );
 }
