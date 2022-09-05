@@ -161,7 +161,7 @@ const PostPage: React.FC = () => {
           </Link>
           {/* Post  */}
           <div className="container flex pt-5">
-            <div className="w-160">
+            <div className="mb-8 w-160">
               <div className="transition-all bg-white rounded dark:bg-customDark">
                 {post && (
                   <>
@@ -200,10 +200,10 @@ const PostPage: React.FC = () => {
                           ></i>
                         </div>
                       </div>
-                      <div className="py-2 pl-1">
+                      <div className="w-full py-2 pl-1">
                         <p className="text-xs text-gray-500">
                           Posted by
-                          <Link href={`/u/user`}>
+                          <Link href={`/u/${post.username}`}>
                             <a href="" className="mx-1 hover:underline">
                               {post.username}
                             </a>
@@ -236,6 +236,19 @@ const PostPage: React.FC = () => {
                             {post.body}
                           </p>
                         )}
+                        {post.postUrn && (
+                          <div className="pr-10">
+                            <Image
+                              src={post.postUrn}
+                              width="100%"
+                              height="70%"
+                              objectFit="contain"
+                              layout="responsive"
+                              alt="post image"
+                            />
+                          </div>
+                        )}
+
                         {/* actions  */}
                         <div className="flex">
                           <Link href={post.url}>

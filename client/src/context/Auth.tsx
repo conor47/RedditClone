@@ -9,14 +9,12 @@ export interface State {
   authenticated: boolean;
   user: User | undefined;
   loading: boolean;
-  wsConnection: WebSocket;
 }
 
 const StateContext = createContext<State>({
   authenticated: false,
   user: null,
   loading: true,
-  wsConnection: null,
 });
 
 const DispatchContext = createContext(null);
@@ -31,7 +29,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     user: null,
     authenticated: false,
     loading: true,
-    wsConnection: null,
   });
 
   useEffect(() => {

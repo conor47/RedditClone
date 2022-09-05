@@ -1,17 +1,16 @@
-import { IsEmpty, isEmpty } from 'class-validator';
+import { isEmpty } from 'class-validator';
 import { Request, Response, Router } from 'express';
 import { getConnection, getRepository } from 'typeorm';
 import Post from '../entity/Post';
 import Sub from '../entity/Sub';
-import multer from 'multer';
-import path from 'path';
+import cloudinary from '../Utils/cloudinary';
 import fs from 'fs';
 
+import uploadMiddleware from '../Middleware/multer';
 import User from '../entity/User';
 import { BadRequestError, NotFoundError } from '../errors';
 import auth from '../Middleware/auth';
 import user from '../Middleware/user';
-import { makeId } from '../Utils/helpers';
 import { NextFunction } from 'express-serve-static-core';
 import Unauthorized from '../errors/Unauthorized';
 
@@ -27,6 +26,8 @@ const getAllSubs = async (req: Request, res: Response) => {
 
 const createSub = async (req: Request, res: Response) => {
   const { name, title, description } = req.body;
+  console.log('name', name);
+  console.log('replaced', name.replace(' ', '_'));
 
   const user: User = res.locals.user;
 
@@ -38,7 +39,9 @@ const createSub = async (req: Request, res: Response) => {
 
     const sub = await getRepository(Sub)
       .createQueryBuilder('sub')
-      .where('lower(sub.name) = :name', { name: name.toLowerCase() })
+      .where('lower(sub.name) = :name', {
+        name: name.toLowerCase().replace(' ', '_'),
+      })
       .getOne();
 
     if (sub) errors.name = 'Sub exists already';
@@ -51,7 +54,12 @@ const createSub = async (req: Request, res: Response) => {
   }
 
   try {
-    const sub = new Sub({ name, description, title, user });
+    const sub = new Sub({
+      name: name.toLowerCase().replace(' ', '_'),
+      description,
+      title,
+      user,
+    });
     await sub.save();
     return res.json(sub);
   } catch (error) {
@@ -66,7 +74,7 @@ const getSub = async (req: Request, res: Response) => {
 
   try {
     const sub = await Sub.findOneOrFail({
-      where: { name },
+      where: { name: name.toLowerCase().replace(' ', '_') },
       relations: ['subscriptions', 'subscriptions.user', 'subscriptions.sub'],
     });
     const posts = await Post.find({
@@ -109,26 +117,16 @@ const ownSub = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// multer middleware for handling file uploads
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: 'public/images',
-    filename: (_, file, callback) => {
-      const name = makeId(15);
-      callback(null, name + path.extname(file.originalname));
-    },
-  }),
-  fileFilter: (_, file, callback) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-      callback(null, true);
-    } else {
-      callback(new Error('Not an image'));
-    }
-  },
-});
-
 // route for handling file upload
 const uploadSubImage = async (req: Request, res: Response) => {
+  console.log('request', req);
+
+  const options = {
+    use_filename: true,
+    unique_filename: false,
+    overwrite: true,
+  };
+
   const sub: Sub = res.locals.sub;
   try {
     const type = req.body.type;
@@ -139,10 +137,14 @@ const uploadSubImage = async (req: Request, res: Response) => {
       fs.unlinkSync(req.file!.path!);
       return res.status(400).json({ error: 'Invalid type' });
     }
-    const urn = req.file!.filename;
+    const result = await cloudinary.uploader.upload(req.file!.path, options);
+    fs.unlinkSync(req.file!.path!);
+
+    const urn = result.secure_url;
     // use the type key in the request object to determine whether the uploaded file is for the sub image or banner
     // use oldImageUrn store the old image urn if one exists
     let oldImageUrn: string = '';
+    let oldPublicId = sub.publicId;
     if (type === 'image') {
       oldImageUrn = sub.imageUrn || '';
       sub.imageUrn = urn;
@@ -150,12 +152,16 @@ const uploadSubImage = async (req: Request, res: Response) => {
       oldImageUrn = sub.bannerUrn || '';
       sub.bannerUrn = urn;
     }
+    sub.publicId = result.public_id;
     // if an old image urn exists delete it
     if (oldImageUrn !== '') {
-      fs.unlinkSync(`public/images/${oldImageUrn}`);
+      await cloudinary.uploader.destroy(oldPublicId);
     }
 
+    console.log('result ', result);
+
     await sub.save();
+
     return res.json(sub);
   } catch (error) {
     console.log(error);
@@ -165,7 +171,7 @@ const uploadSubImage = async (req: Request, res: Response) => {
 };
 
 const topSubs = async (req: Request, res: Response) => {
-  const imageUrlExp = `COALESCE('${process.env.APP_URL}/images/' || s."imageUrn" , 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y')`;
+  const imageUrlExp = `COALESCE(s."imageUrn" , 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y')`;
   try {
     const subs = await getConnection()
       .createQueryBuilder()
@@ -218,7 +224,7 @@ router.post(
   user,
   auth,
   ownSub,
-  upload.single('file'),
+  uploadMiddleware.single('file'),
   uploadSubImage
 );
 

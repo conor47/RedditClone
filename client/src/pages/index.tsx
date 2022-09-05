@@ -241,6 +241,8 @@ const Home: React.FC = () => {
             </div>
             <div>
               {topSubs?.map((sub) => {
+                console.log('top sub', sub.imageUrl);
+
                 return (
                   <div
                     key={sub.name}

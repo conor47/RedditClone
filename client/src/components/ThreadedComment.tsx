@@ -36,7 +36,7 @@ const ThreadedComment: React.FC<CommentProps> = ({
           <div key={comment.identifier} className="relative">
             {!showChildren && comment.children.length > 0 && (
               <i
-                className="absolute text-sm text-gray-400 rotate-90 cursor-pointer fa-solid fa-up-right-and-down-left-from-center top-1/3 -left-5"
+                className="absolute text-sm text-gray-400 rotate-90 cursor-pointer fa-solid fa-up-right-and-down-left-from-center top-1/4 -left-5"
                 onClick={() => setShowChildren(!showChildren)}
               ></i>
             )}

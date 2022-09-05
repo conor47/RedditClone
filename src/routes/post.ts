@@ -1,14 +1,17 @@
 import { Request, Response, Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import fs from 'fs';
 
 import Post from '../entity/Post';
 import Sub from '../entity/Sub';
 import auth from '../Middleware/auth';
 import user from '../Middleware/user';
+import uploadMiddleware from '../Middleware/multer';
 
 import sub from 'date-fns/sub';
-import { Between, In } from 'typeorm';
+import { Between, In, TreeRepositoryNotSupportedError } from 'typeorm';
 import Subscription from '../entity/Subscriptions';
+import cloudinary from '../Utils/cloudinary';
 
 const paginatePosts = (
   page: number,
@@ -41,6 +44,42 @@ const createPost = async (req: Request, res: Response) => {
   }
 };
 
+const createImagePost = async (req: Request, res: Response) => {
+  console.log('request', req);
+
+  const options = {
+    use_filename: true,
+    unique_filename: false,
+    overwrite: true,
+  };
+
+  const { title, sub } = req.body;
+  if (title === '') {
+    return res.status(400).json({ title: 'Title must not be empty' });
+  }
+  const user = res.locals.user;
+  const result = await cloudinary.uploader.upload(req.file!.path, options);
+  fs.unlinkSync(req.file!.path!);
+  const urn = result.secure_url;
+  const publicId = result.public_id;
+
+  try {
+    const subRecord = await Sub.findOneOrFail({ name: sub });
+    const post = new Post({
+      title,
+      postUrn: urn,
+      publicId,
+      user,
+      sub: subRecord,
+    });
+    await post.save();
+    return res.json(post);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: 'Something went wrong' });
+  }
+};
+
 const getPosts = async (req: Request, res: Response) => {
   console.log('getting all posts');
 
@@ -54,9 +93,8 @@ const getPosts = async (req: Request, res: Response) => {
       posts = await Post.find({
         order: { createdAt: 'DESC' },
         relations: ['comments', 'votes', 'sub'],
-        skip: currentPage * postsPerPage,
-        take: postsPerPage,
       });
+      posts = paginatePosts(currentPage, postsPerPage, posts);
     } else if (filter == 'TOP_DAY') {
       posts = await Post.find({
         // order: { createdAt: 'DESC' },
@@ -262,7 +300,14 @@ const getHomepagePosts = async (req: Request, res: Response) => {
 };
 
 const router = Router();
-router.post('/', user, auth, createPost);
+router.post('/textPost', user, auth, createPost);
+router.post(
+  '/imagePost',
+  user,
+  auth,
+  uploadMiddleware.single('file'),
+  createImagePost
+);
 router.get('/', user, getPosts);
 router.get('/homepage', user, auth, getHomepagePosts);
 router.get('/:identifier/:slug', user, getPost);

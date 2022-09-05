@@ -43,6 +43,12 @@ export default class Post extends Entity {
   @Column()
   username: string;
 
+  @Column({ nullable: true })
+  postUrn: string;
+
+  @Column({ nullable: true })
+  publicId: string;
+
   @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn({ name: 'username', referencedColumnName: 'username' })
   user: User;

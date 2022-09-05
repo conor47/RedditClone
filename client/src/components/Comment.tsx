@@ -140,98 +140,100 @@ const Comment: React.FC<CommentProps> = ({
             )}
             <div className="flex">
               {/* if user is logged and and same user as comment owner then display edit button */}
-              {user && user.username == comment.username && (
-                <div>
-                  <div className="flex">
-                    <div className="flex items-center justify-start flex-shrink-0 w-10 mt-2 mr-2 rounded-l">
-                      <div
-                        className="w-6 text-gray-400 transition-all rounded cursor-pointer hover:bg-gray-300 hover:text-red-500 hover:bg-transparent"
-                        onClick={() => castVote(1)}
-                      >
-                        <i
-                          className={classNames('icon-arrow-up', {
-                            'text-red-500': comment.userVote === 1,
-                          })}
-                        ></i>
-                      </div>
-                      <p
-                        className={classNames(
-                          'text-xs font-bold dark:text-slate-50 transition-all mx-1',
-                          {
-                            'text-red-500': comment.userVote === 1,
-                            'text-blue-500': comment.userVote === -1,
-                          }
-                        )}
-                      >
-                        {comment.voteScore}
-                      </p>
-                      <div
-                        className="w-6 text-gray-400 transition-all rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500 hover:bg-transparent"
-                        onClick={() => castVote(-1)}
-                      >
-                        <i
-                          className={classNames('icon-arrow-down', {
-                            'text-blue-600': comment.userVote === -1,
-                          })}
-                        ></i>
-                      </div>
-                    </div>
+              <div>
+                <div className="flex">
+                  <div className="flex items-center justify-start flex-shrink-0 w-10 mt-2 mr-2 rounded-l">
                     <div
-                      className="flex"
-                      onClick={() => {
-                        setUpdatedComment(comment.body);
-                        if (editingComment === '') {
-                          setEditingComment(comment.identifier);
-                        } else if (
-                          editingComment !== '' &&
-                          comment.identifier !== editingComment
-                        ) {
-                          setEditingComment(comment.identifier);
-                        } else {
-                          setEditingComment('');
-                        }
-                      }}
+                      className="w-6 text-gray-400 transition-all rounded cursor-pointer hover:bg-gray-300 hover:text-red-500 hover:bg-transparent"
+                      onClick={() => castVote(1)}
                     >
+                      <i
+                        className={classNames('icon-arrow-up', {
+                          'text-red-500': comment.userVote === 1,
+                        })}
+                      ></i>
+                    </div>
+                    <p
+                      className={classNames(
+                        'text-xs font-bold dark:text-slate-50 transition-all mx-1',
+                        {
+                          'text-red-500': comment.userVote === 1,
+                          'text-blue-500': comment.userVote === -1,
+                        }
+                      )}
+                    >
+                      {comment.voteScore}
+                    </p>
+                    <div
+                      className="w-6 text-gray-400 transition-all rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500 hover:bg-transparent"
+                      onClick={() => castVote(-1)}
+                    >
+                      <i
+                        className={classNames('icon-arrow-down', {
+                          'text-blue-600': comment.userVote === -1,
+                        })}
+                      ></i>
+                    </div>
+                  </div>
+                  <div
+                    className="flex"
+                    onClick={() => {
+                      setUpdatedComment(comment.body);
+                      if (editingComment === '') {
+                        setEditingComment(comment.identifier);
+                      } else if (
+                        editingComment !== '' &&
+                        comment.identifier !== editingComment
+                      ) {
+                        setEditingComment(comment.identifier);
+                      } else {
+                        setEditingComment('');
+                      }
+                    }}
+                  >
+                    {user && user.username === comment.username && (
                       <ActionButton>
                         <i className="mr-1 fas fa-pen"></i>
                         <span className="font-medium">Edit</span>
                       </ActionButton>
-                      {editingComment === comment.identifier && (
-                        <button
-                          onClick={(e) => updateComment(e.nativeEvent)}
-                          className="px-3 py-1 blue button"
-                          disabled={
-                            updatedComment === comment.body ||
-                            updatedComment === ''
-                          }
-                        >
-                          Save edits
-                        </button>
-                      )}
-                    </div>
-                    <div
-                      className="flex"
-                      onClick={() => setWritingReply(!writingReply)}
-                    >
-                      <ActionButton>
-                        <i className="mr-1 fas fa-message"></i>
-                        <span className="font-medium">Reply</span>
-                      </ActionButton>
-                    </div>
-                    <div
-                      className="flex"
-                      onClick={(e) =>
-                        deleteComment(e.nativeEvent, comment.identifier)
-                      }
-                    >
+                    )}
+                    {editingComment === comment.identifier && (
+                      <button
+                        onClick={(e) => updateComment(e.nativeEvent)}
+                        className="px-3 py-1 blue button"
+                        disabled={
+                          updatedComment === comment.body ||
+                          updatedComment === ''
+                        }
+                      >
+                        Save edits
+                      </button>
+                    )}
+                  </div>
+                  <div
+                    className="flex"
+                    onClick={() => setWritingReply(!writingReply)}
+                  >
+                    <ActionButton>
+                      <i className="mr-1 fas fa-message"></i>
+                      <span className="font-medium">Reply</span>
+                    </ActionButton>
+                  </div>
+                  <div
+                    className="flex"
+                    onClick={(e) =>
+                      deleteComment(e.nativeEvent, comment.identifier)
+                    }
+                  >
+                    {user && user.username === post.username && (
                       <ActionButton>
                         <i className="mr-1 fas fa-message"></i>
                         <span className="font-medium">Delete</span>
                       </ActionButton>
-                    </div>
+                    )}
                   </div>
                 </div>
-              )}
+              </div>
             </div>
             {writingReply && (
               <div>

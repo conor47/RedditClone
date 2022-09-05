@@ -8,6 +8,7 @@ export interface Post {
   createdAt: string;
   updatedAt: string;
   sub: Sub;
+  postUrn: string | undefined;
 
   // virtual fields
   voteScore?: number;
