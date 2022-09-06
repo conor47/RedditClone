@@ -9,7 +9,12 @@ import user from '../Middleware/user';
 import uploadMiddleware from '../Middleware/multer';
 
 import sub from 'date-fns/sub';
-import { Between, In, TreeRepositoryNotSupportedError } from 'typeorm';
+import {
+  Between,
+  In,
+  PrimaryColumnCannotBeNullableError,
+  TreeRepositoryNotSupportedError,
+} from 'typeorm';
 import Subscription from '../entity/Subscriptions';
 import cloudinary from '../Utils/cloudinary';
 
@@ -51,6 +56,10 @@ const createImagePost = async (req: Request, res: Response) => {
     use_filename: true,
     unique_filename: false,
     overwrite: true,
+    folder:
+      process.env.NODE_ENV === 'development'
+        ? process.env.CLOUDINARY_FOLDER_DEV
+        : process.env.CLOUDINARY_FOLDER_PROD,
   };
 
   const { title, sub } = req.body;

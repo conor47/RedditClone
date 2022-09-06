@@ -9,7 +9,7 @@ import {
 import { Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Actions as authActions } from '../reducers/authReducer';
-import { Actions as globalActions } from '../reducers/globalStateReducer';
+import { ActionTypes as globalActions } from '../reducers/globalStateReducer';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Sub } from '../../types';

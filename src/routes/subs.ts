@@ -117,58 +117,58 @@ const ownSub = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// route for handling file upload
-const uploadSubImage = async (req: Request, res: Response) => {
-  console.log('request', req);
+// // route for handling file upload
+// const uploadSubImage = async (req: Request, res: Response) => {
+//   console.log('request', req);
 
-  const options = {
-    use_filename: true,
-    unique_filename: false,
-    overwrite: true,
-  };
+//   const options = {
+//     use_filename: true,
+//     unique_filename: false,
+//     overwrite: true,
+//   };
 
-  const sub: Sub = res.locals.sub;
-  try {
-    const type = req.body.type;
+//   const sub: Sub = res.locals.sub;
+//   try {
+//     const type = req.body.type;
 
-    // handle invalid file types
-    if (type !== 'image' && type !== 'banner') {
-      // delete the uploaded file
-      fs.unlinkSync(req.file!.path!);
-      return res.status(400).json({ error: 'Invalid type' });
-    }
-    const result = await cloudinary.uploader.upload(req.file!.path, options);
-    fs.unlinkSync(req.file!.path!);
+//     // handle invalid file types
+//     if (type !== 'image' && type !== 'banner') {
+//       // delete the uploaded file
+//       fs.unlinkSync(req.file!.path!);
+//       return res.status(400).json({ error: 'Invalid type' });
+//     }
+//     const result = await cloudinary.uploader.upload(req.file!.path, options);
+//     fs.unlinkSync(req.file!.path!);
 
-    const urn = result.secure_url;
-    // use the type key in the request object to determine whether the uploaded file is for the sub image or banner
-    // use oldImageUrn store the old image urn if one exists
-    let oldImageUrn: string = '';
-    let oldPublicId = sub.publicId;
-    if (type === 'image') {
-      oldImageUrn = sub.imageUrn || '';
-      sub.imageUrn = urn;
-    } else {
-      oldImageUrn = sub.bannerUrn || '';
-      sub.bannerUrn = urn;
-    }
-    sub.publicId = result.public_id;
-    // if an old image urn exists delete it
-    if (oldImageUrn !== '') {
-      await cloudinary.uploader.destroy(oldPublicId);
-    }
+//     const urn = result.secure_url;
+//     // use the type key in the request object to determine whether the uploaded file is for the sub image or banner
+//     // use oldImageUrn store the old image urn if one exists
+//     let oldImageUrn: string = '';
+//     let oldPublicId = sub.publicId;
+//     if (type === 'image') {
+//       oldImageUrn = sub.imageUrn || '';
+//       sub.imageUrn = urn;
+//     } else {
+//       oldImageUrn = sub.bannerUrn || '';
+//       sub.bannerUrn = urn;
+//     }
+//     sub.publicId = result.public_id;
+//     // if an old image urn exists delete it
+//     if (oldImageUrn !== '') {
+//       await cloudinary.uploader.destroy(oldPublicId);
+//     }
 
-    console.log('result ', result);
+//     console.log('result ', result);
 
-    await sub.save();
+//     await sub.save();
 
-    return res.json(sub);
-  } catch (error) {
-    console.log(error);
+//     return res.json(sub);
+//   } catch (error) {
+//     console.log(error);
 
-    throw new BadRequestError('something went wrong');
-  }
-};
+//     throw new BadRequestError('something went wrong');
+//   }
+// };
 
 const topSubs = async (req: Request, res: Response) => {
   const imageUrlExp = `COALESCE(s."imageUrn" , 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y')`;
@@ -224,8 +224,8 @@ router.post(
   user,
   auth,
   ownSub,
-  uploadMiddleware.single('file'),
-  uploadSubImage
+  uploadMiddleware.single('file')
+  // uploadSubImage
 );
 
 export default router;

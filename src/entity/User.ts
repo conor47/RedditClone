@@ -44,6 +44,12 @@ export default class User extends Entity {
   @OneToMany(() => Subscription, (subscription) => subscription.user)
   subscriptions: Subscription[];
 
+  @Column({ nullable: true })
+  imageUrn: string;
+
+  @Column({ nullable: true })
+  imagePublicId: string;
+
   @ManyToOne(() => Vote)
   @BeforeInsert()
   async hashPassword() {

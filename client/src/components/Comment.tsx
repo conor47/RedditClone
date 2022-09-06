@@ -105,7 +105,7 @@ const Comment: React.FC<CommentProps> = ({
 
   return (
     <div className="mb-4">
-      {comment.body === null && comment.children.length > 0 ? (
+      {comment.body === null ? (
         <div className="text-sm dark:text-slate-50">{`Comment deleted by user • ${dayjs(
           comment.updatedAt
         ).fromNow()}`}</div>
