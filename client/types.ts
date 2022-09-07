@@ -15,6 +15,7 @@ export interface Post {
   url: string;
   commentCount?: number;
   userVote?: number;
+  ownsPost?: boolean;
 }
 
 export interface User {

@@ -9,10 +9,11 @@ import {
 import { Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Actions as authActions } from '../reducers/authReducer';
-import { Actions as globalActions } from '../reducers/globalStateReducer';
+import { ActionTypes as globalActions } from '../reducers/globalStateReducer';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Sub } from '../../types';
+import { useSWRConfig } from 'swr';
 
 const Navbar: React.FC = () => {
   const [name, setName] = useState('');
@@ -22,6 +23,8 @@ const Navbar: React.FC = () => {
   const { darkMode } = useGlobalStateContext();
   const authDispatch = useAuthDispatch();
   const globalStateDispatch = useGlobalStateDispatch();
+  //@ts-ignore
+  const { cache } = useSWRConfig();
 
   const router = useRouter();
   let htmlRef;
@@ -30,6 +33,8 @@ const Navbar: React.FC = () => {
   // function which posts a logout request for the currently logged in user
   const logout = async (): Promise<void> => {
     await axios.get('/auth/logout');
+    //@ts-ignore
+    cache.clear();
     authDispatch({ type: authActions.logout });
     window.location.reload();
   };

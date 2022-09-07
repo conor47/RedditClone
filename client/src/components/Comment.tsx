@@ -105,7 +105,7 @@ const Comment: React.FC<CommentProps> = ({
 
   return (
     <div className="mb-4">
-      {comment.body === null && comment.children.length > 0 ? (
+      {comment.body === null ? (
         <div className="text-sm dark:text-slate-50">{`Comment deleted by user • ${dayjs(
           comment.updatedAt
         ).fromNow()}`}</div>
@@ -225,7 +225,7 @@ const Comment: React.FC<CommentProps> = ({
                       deleteComment(e.nativeEvent, comment.identifier)
                     }
                   >
-                    {user && user.username === post.username && (
+                    {user && user.username === comment.username && (
                       <ActionButton>
                         <i className="mr-1 fas fa-message"></i>
                         <span className="font-medium">Delete</span>

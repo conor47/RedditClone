@@ -15,6 +15,7 @@ const Submit: React.FC = () => {
   const [tab, setTab] = useState(0);
   const [body, setBody] = useState('');
   const [file, setFile] = useState(null);
+  const [disableSubmit, setDisableSubmit] = useState(false);
   const fileInputRef = createRef<HTMLInputElement>();
 
   const router = useRouter();
@@ -50,7 +51,7 @@ const Submit: React.FC = () => {
 
   const submitImagePost = async (e: FormEvent) => {
     e.preventDefault();
-
+    setDisableSubmit(true);
     if (imageTitle.trim() === '') {
       return;
     }
@@ -68,6 +69,7 @@ const Submit: React.FC = () => {
           headers: { 'Content-Type': 'multipart/form-data' },
         }
       );
+      setDisableSubmit(false);
       router.push(`/r/${sub.name}/${post.identifier}/${post.slug}`);
     } catch (err) {
       console.log(err);
@@ -139,7 +141,7 @@ const Submit: React.FC = () => {
               <button
                 className="px-3 py-1 blue button"
                 type="submit"
-                disabled={textTitle.trim() === ''}
+                disabled={textTitle.trim() === '' || disableSubmit}
               >
                 Submit
               </button>
@@ -172,7 +174,7 @@ const Submit: React.FC = () => {
               <button
                 className="px-3 py-1 blue button"
                 type="submit"
-                disabled={imageTitle.trim() === ''}
+                disabled={imageTitle.trim() === '' || disableSubmit}
               >
                 Submit
               </button>

@@ -85,6 +85,13 @@ export default class Post extends Entity {
     this.userVote = index > -1 ? this.votes[index].value : 0;
   }
 
+  protected ownsPost: boolean;
+  setOwnsPost(user: User) {
+    console.log('checking owns post', user.username === this.username);
+
+    this.ownsPost = user.username === this.username;
+  }
+
   @BeforeInsert()
   makeIdAndSlug() {
     this.identifier = makeId(7);

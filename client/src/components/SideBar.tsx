@@ -35,7 +35,7 @@ const SideBar: React.FC<SideBarProps> = ({ sub }) => {
           <p className="my-3 dark:text-slate-50">
             <i className="mr-2 fas fa-user"></i>
             <Link href={`/u/${sub.username}`}>
-              <a className="">Owned by /u{sub.username}</a>
+              <a className="">Owned by /u/{sub.username}</a>
             </Link>
           </p>
           {authenticated ? (

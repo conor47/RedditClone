@@ -119,12 +119,11 @@ const ownSub = async (req: Request, res: Response, next: NextFunction) => {
 
 // route for handling file upload
 const uploadSubImage = async (req: Request, res: Response) => {
-  console.log('request', req);
-
   const options = {
     use_filename: true,
     unique_filename: false,
     overwrite: true,
+    folder: process.env.CLOUDINARY_FOLDER,
   };
 
   const sub: Sub = res.locals.sub;
@@ -144,18 +143,31 @@ const uploadSubImage = async (req: Request, res: Response) => {
     // use the type key in the request object to determine whether the uploaded file is for the sub image or banner
     // use oldImageUrn store the old image urn if one exists
     let oldImageUrn: string = '';
-    let oldPublicId = sub.publicId;
+    let oldImagePublicId: string = '';
+    let oldBannerUrn: string = '';
+    let oldBannerPublicId: string = '';
+    console.log('sub', sub);
+    console.log('result', result);
+
     if (type === 'image') {
       oldImageUrn = sub.imageUrn || '';
+      oldImagePublicId = sub.imagePublicId || '';
       sub.imageUrn = urn;
+      sub.imagePublicId = result.public_id;
     } else {
-      oldImageUrn = sub.bannerUrn || '';
+      oldBannerUrn = sub.bannerUrn || '';
+      oldBannerPublicId = sub.bannerPublicId;
       sub.bannerUrn = urn;
+      sub.bannerPublicId = result.public_id;
     }
-    sub.publicId = result.public_id;
     // if an old image urn exists delete it
-    if (oldImageUrn !== '') {
-      await cloudinary.uploader.destroy(oldPublicId);
+    if (oldBannerPublicId) {
+      console.log('old banner', oldBannerPublicId);
+
+      await cloudinary.uploader.destroy(oldBannerPublicId);
+    } else if (oldImagePublicId) {
+      console.log('old image', oldImagePublicId);
+      await cloudinary.uploader.destroy(oldImagePublicId);
     }
 
     console.log('result ', result);
