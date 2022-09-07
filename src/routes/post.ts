@@ -56,10 +56,7 @@ const createImagePost = async (req: Request, res: Response) => {
     use_filename: true,
     unique_filename: false,
     overwrite: true,
-    folder:
-      process.env.NODE_ENV === 'development'
-        ? process.env.CLOUDINARY_FOLDER_DEV
-        : process.env.CLOUDINARY_FOLDER_PROD,
+    folder: process.env.CLOUDINARY_FOLDER,
   };
 
   const { title, sub } = req.body;
@@ -176,6 +173,7 @@ const getPost = async (req: Request, res: Response) => {
 
     if (res.locals.user) {
       post.setUserVote(res.locals.user);
+      post.setOwnsPost(res.locals.user);
     }
 
     return res.json(post);

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FormEvent, useState } from 'react';
 import InputGroup from '../components/InputGroup';
 import { useRouter } from 'next/router';
+import { useSWRConfig } from 'swr';
 
 import { useAuthDispatch, useAuthState } from '../context/Auth';
 import { Actions } from '../reducers/authReducer';
@@ -21,6 +22,7 @@ const Login: React.FC = () => {
   const { authenticated } = useAuthState();
 
   const router = useRouter();
+  const { cache } = useSWRConfig();
 
   if (authenticated) {
     router.push('/');
@@ -34,6 +36,8 @@ const Login: React.FC = () => {
         username,
       });
       dispatch({ type: Actions.login, payload: res.data });
+      //@ts-ignore
+      cache.clear();
       router.back();
     } catch (error) {
       if (error instanceof AxiosError) {

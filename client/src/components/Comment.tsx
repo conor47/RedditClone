@@ -225,7 +225,7 @@ const Comment: React.FC<CommentProps> = ({
                       deleteComment(e.nativeEvent, comment.identifier)
                     }
                   >
-                    {user && user.username === post.username && (
+                    {user && user.username === comment.username && (
                       <ActionButton>
                         <i className="mr-1 fas fa-message"></i>
                         <span className="font-medium">Delete</span>

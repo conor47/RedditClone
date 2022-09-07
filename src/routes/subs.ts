@@ -117,58 +117,70 @@ const ownSub = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// // route for handling file upload
-// const uploadSubImage = async (req: Request, res: Response) => {
-//   console.log('request', req);
+// route for handling file upload
+const uploadSubImage = async (req: Request, res: Response) => {
+  const options = {
+    use_filename: true,
+    unique_filename: false,
+    overwrite: true,
+    folder: process.env.CLOUDINARY_FOLDER,
+  };
 
-//   const options = {
-//     use_filename: true,
-//     unique_filename: false,
-//     overwrite: true,
-//   };
+  const sub: Sub = res.locals.sub;
+  try {
+    const type = req.body.type;
 
-//   const sub: Sub = res.locals.sub;
-//   try {
-//     const type = req.body.type;
+    // handle invalid file types
+    if (type !== 'image' && type !== 'banner') {
+      // delete the uploaded file
+      fs.unlinkSync(req.file!.path!);
+      return res.status(400).json({ error: 'Invalid type' });
+    }
+    const result = await cloudinary.uploader.upload(req.file!.path, options);
+    fs.unlinkSync(req.file!.path!);
 
-//     // handle invalid file types
-//     if (type !== 'image' && type !== 'banner') {
-//       // delete the uploaded file
-//       fs.unlinkSync(req.file!.path!);
-//       return res.status(400).json({ error: 'Invalid type' });
-//     }
-//     const result = await cloudinary.uploader.upload(req.file!.path, options);
-//     fs.unlinkSync(req.file!.path!);
+    const urn = result.secure_url;
+    // use the type key in the request object to determine whether the uploaded file is for the sub image or banner
+    // use oldImageUrn store the old image urn if one exists
+    let oldImageUrn: string = '';
+    let oldImagePublicId: string = '';
+    let oldBannerUrn: string = '';
+    let oldBannerPublicId: string = '';
+    console.log('sub', sub);
+    console.log('result', result);
 
-//     const urn = result.secure_url;
-//     // use the type key in the request object to determine whether the uploaded file is for the sub image or banner
-//     // use oldImageUrn store the old image urn if one exists
-//     let oldImageUrn: string = '';
-//     let oldPublicId = sub.publicId;
-//     if (type === 'image') {
-//       oldImageUrn = sub.imageUrn || '';
-//       sub.imageUrn = urn;
-//     } else {
-//       oldImageUrn = sub.bannerUrn || '';
-//       sub.bannerUrn = urn;
-//     }
-//     sub.publicId = result.public_id;
-//     // if an old image urn exists delete it
-//     if (oldImageUrn !== '') {
-//       await cloudinary.uploader.destroy(oldPublicId);
-//     }
+    if (type === 'image') {
+      oldImageUrn = sub.imageUrn || '';
+      oldImagePublicId = sub.imagePublicId || '';
+      sub.imageUrn = urn;
+      sub.imagePublicId = result.public_id;
+    } else {
+      oldBannerUrn = sub.bannerUrn || '';
+      oldBannerPublicId = sub.bannerPublicId;
+      sub.bannerUrn = urn;
+      sub.bannerPublicId = result.public_id;
+    }
+    // if an old image urn exists delete it
+    if (oldBannerPublicId) {
+      console.log('old banner', oldBannerPublicId);
 
-//     console.log('result ', result);
+      await cloudinary.uploader.destroy(oldBannerPublicId);
+    } else if (oldImagePublicId) {
+      console.log('old image', oldImagePublicId);
+      await cloudinary.uploader.destroy(oldImagePublicId);
+    }
 
-//     await sub.save();
+    console.log('result ', result);
 
-//     return res.json(sub);
-//   } catch (error) {
-//     console.log(error);
+    await sub.save();
 
-//     throw new BadRequestError('something went wrong');
-//   }
-// };
+    return res.json(sub);
+  } catch (error) {
+    console.log(error);
+
+    throw new BadRequestError('something went wrong');
+  }
+};
 
 const topSubs = async (req: Request, res: Response) => {
   const imageUrlExp = `COALESCE(s."imageUrn" , 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y')`;
@@ -224,8 +236,8 @@ router.post(
   user,
   auth,
   ownSub,
-  uploadMiddleware.single('file')
-  // uploadSubImage
+  uploadMiddleware.single('file'),
+  uploadSubImage
 );
 
 export default router;
