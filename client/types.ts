@@ -53,6 +53,7 @@ export interface Comment {
   post?: Post;
   parentId: string;
   children?: Comment[];
+  ownsComment?: boolean;
 }
 
 export enum Filters {
