@@ -31,11 +31,39 @@ const content: page[] = [
       'https://media0.giphy.com/media/TEPuQo5xl2Mptvj4vW/giphy.gif?cid=790b761194513c1c1b6fc6c5dfc92a2dc8a1662d1bbf5273&rid=giphy.gif&ct=g',
   },
   {
-    title: 'Welcome to my clone of Reddit',
+    title: 'Joining communities',
     text1:
-      'This project is intended to be a faithful clone of the socail media site Reddit.com',
+      'Join your favourite communities so that you will not miss any of their posts',
     text2:
-      'Continue ahead if you would like to learn about some of this sites features or exit above to jump right in !',
+      'Posts from communities you have joined will show on your personalised homepage',
+    image:
+      'https://media2.giphy.com/media/6g8yYksVkOwBQdHaXo/giphy.gif?cid=790b7611f4d1c7dadcaa8d49af12a3e0897c8ef5f45215f5&rid=giphy.gif&ct=g',
+  },
+  {
+    title: 'Creating posts',
+    text1:
+      'Have something you find interesting ? Create a post and show / tell others !',
+    text2: 'Posts can be either textual or image based',
+    image:
+      'https://media2.giphy.com/media/6g8yYksVkOwBQdHaXo/giphy.gif?cid=790b7611f4d1c7dadcaa8d49af12a3e0897c8ef5f45215f5&rid=giphy.gif&ct=g',
+  },
+  {
+    title: 'Joining communities',
+    text1:
+      'Join your favourite communities so that you will not miss any of their posts',
+    text2:
+      'Posts from communities you have joined will show on your personalised homepage',
+    image:
+      'https://media2.giphy.com/media/6g8yYksVkOwBQdHaXo/giphy.gif?cid=790b7611f4d1c7dadcaa8d49af12a3e0897c8ef5f45215f5&rid=giphy.gif&ct=g',
+  },
+  {
+    title: 'Joining communities',
+    text1:
+      'Join your favourite communities so that you will not miss any of their posts',
+    text2:
+      'Posts from communities you have joined will show on your personalised homepage',
+    image:
+      'https://media2.giphy.com/media/6g8yYksVkOwBQdHaXo/giphy.gif?cid=790b7611f4d1c7dadcaa8d49af12a3e0897c8ef5f45215f5&rid=giphy.gif&ct=g',
   },
 ];
 

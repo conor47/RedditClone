@@ -10,6 +10,7 @@ module.exports = {
       'res.cloudinary.com',
       'media3.giphy.com',
       'media0.giphy.com',
+      'media3.giphy.com',
     ],
   },
 
