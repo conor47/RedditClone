@@ -31,6 +31,13 @@ const content: page[] = [
       'https://media0.giphy.com/media/TEPuQo5xl2Mptvj4vW/giphy.gif?cid=790b761194513c1c1b6fc6c5dfc92a2dc8a1662d1bbf5273&rid=giphy.gif&ct=g',
   },
   {
+    title: 'Filter posts',
+    text1: 'Sort posts by latest or by most highly voted',
+    text2: 'Cast your vote to contribute to post scores',
+    image:
+      'https://media3.giphy.com/media/jbMzMQmeKKddywzlwI/giphy.gif?cid=790b76118548788cf07bb6e90c1221049bd7e0c3bcf0d869&rid=giphy.gif&ct=g',
+  },
+  {
     title: 'Joining communities',
     text1:
       'Join your favourite communities so that you will not miss any of their posts',
@@ -38,6 +45,14 @@ const content: page[] = [
       'Posts from communities you have joined will show on your personalised homepage',
     image:
       'https://media2.giphy.com/media/6g8yYksVkOwBQdHaXo/giphy.gif?cid=790b7611f4d1c7dadcaa8d49af12a3e0897c8ef5f45215f5&rid=giphy.gif&ct=g',
+  },
+  {
+    title: 'Creating communities',
+    text1:
+      'Have something you are passionate about ? Create a community and find like minded people',
+    text2: 'Give your community a name, title, description and an image',
+    image:
+      'https://media1.giphy.com/media/YYM6Q1eiEVYavO9mad/giphy.gif?cid=790b7611a9eb60a54484de4a18eb7a8e7d28dccb3ddd8312&rid=giphy.gif&ct=g',
   },
   {
     title: 'Creating posts',
@@ -45,25 +60,32 @@ const content: page[] = [
       'Have something you find interesting ? Create a post and show / tell others !',
     text2: 'Posts can be either textual or image based',
     image:
-      'https://media2.giphy.com/media/6g8yYksVkOwBQdHaXo/giphy.gif?cid=790b7611f4d1c7dadcaa8d49af12a3e0897c8ef5f45215f5&rid=giphy.gif&ct=g',
+      'https://media3.giphy.com/media/fAikd8JFoVidS8VPTq/giphy.gif?cid=790b7611a742d00359f6c5fe1d715a027ae90fb44c8cefe8&rid=giphy.gif&ct=g',
   },
   {
-    title: 'Joining communities',
+    title: 'Casting votes',
     text1:
-      'Join your favourite communities so that you will not miss any of their posts',
+      'Let others know what you think of their posts / comments by leaving a vote',
     text2:
-      'Posts from communities you have joined will show on your personalised homepage',
+      'Your vote contributes to the post / comment score and affects it in the overall ranking',
     image:
-      'https://media2.giphy.com/media/6g8yYksVkOwBQdHaXo/giphy.gif?cid=790b7611f4d1c7dadcaa8d49af12a3e0897c8ef5f45215f5&rid=giphy.gif&ct=g',
+      'https://media3.giphy.com/media/P8S3kbYsP9QC05GeLU/giphy.gif?cid=790b7611e11920b56713470cf5124d8d52a9c6023bb6de52&rid=giphy.gif&ct=g',
   },
   {
-    title: 'Joining communities',
+    title: 'Leaving comments',
     text1:
-      'Join your favourite communities so that you will not miss any of their posts',
-    text2:
-      'Posts from communities you have joined will show on your personalised homepage',
+      'Leave comments and engage in discussion on posts. Reply to comments and participate in comment threads.',
+    text2: 'You can edit and delete your previously posted comments',
     image:
-      'https://media2.giphy.com/media/6g8yYksVkOwBQdHaXo/giphy.gif?cid=790b7611f4d1c7dadcaa8d49af12a3e0897c8ef5f45215f5&rid=giphy.gif&ct=g',
+      'https://media4.giphy.com/media/u76jmnLbt64FdNggYr/giphy.gif?cid=790b7611b5cb530085b00d183085aeff95feccb0c86541dc&rid=giphy.gif&ct=g',
+  },
+  {
+    title: 'View profiles',
+    text1:
+      'View your own profile or others profiles to see a history or their activity',
+    text2: 'You can see a history or that users posts and comments',
+    image:
+      'https://media2.giphy.com/media/6Zyc6XV8kMzYPW8gYh/giphy.gif?cid=790b761152996db5d6678769cc4a828530d7695372f39476&rid=giphy.gif&ct=g',
   },
 ];
 
