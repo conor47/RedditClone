@@ -235,8 +235,6 @@ const Home: React.FC = () => {
             </div>
             <div>
               {topSubs?.map((sub) => {
-                console.log('top sub', sub.imageUrl);
-
                 return (
                   <div
                     key={sub.name}
@@ -278,28 +276,5 @@ const Home: React.FC = () => {
     </Fragment>
   );
 };
-
-// server side rendering. Fetching posts server side
-// export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-//   try {
-// we must explicitly include the cookies since this request is made on the server where cookies are not automatically passed
-
-//     const res = await axios.get('/posts', {
-//       withCredentials: true,
-//       headers: {
-//         Cookie: req.headers.cookie ? req.headers.cookie : '',
-//       },
-//     });
-
-//     return {
-//       props: { posts: res.data }, // will be passed to the page component as props
-//     };
-//   } catch (error) {
-//     return {
-//       props: { error: 'something went wrong' },
-//     };
-//   }
-// };
-//
 
 export default Home;

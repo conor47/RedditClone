@@ -25,8 +25,6 @@ const ThreadedComment: React.FC<CommentProps> = ({
 }) => {
   const router = useRouter();
 
-  console.log('threaded', comments);
-
   const [showChildren, setShowChildren] = useState(true);
 
   return (

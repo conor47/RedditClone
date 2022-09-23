@@ -68,9 +68,7 @@ const Comment: React.FC<CommentProps> = ({
       }),
         setEditingComment('');
       mutateComment();
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   const submitReply = async (e: Event, parentId: string) => {

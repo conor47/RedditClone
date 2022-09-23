@@ -31,6 +31,7 @@ const reducer = (state: State, { type, payload }: Action) => {
         ...state,
         popup: false,
       };
+
     default:
       throw new Error(`Unknown action type : ${type}`);
   }

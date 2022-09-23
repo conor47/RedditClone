@@ -37,9 +37,6 @@ const PostPage: React.FC = () => {
     mutate: mutatePost,
   } = useSWR<Post>(identifier && slug ? `/posts/${identifier}/${slug}` : null);
 
-  console.log('user', user);
-  console.log('post', post);
-
   // fetch comments
   const {
     data: comments,
@@ -121,7 +118,6 @@ const PostPage: React.FC = () => {
       ...comment,
       children: [],
     }));
-    console.log('comments', commentsWithChildren);
 
     commentsWithChildren.forEach((childComment) => {
       const { parentId } = childComment;
