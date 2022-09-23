@@ -59,6 +59,11 @@ export default class Comment extends Entity {
     this.userVote = index > -1 ? this.votes[index].value : 0;
   }
 
+  protected ownsComment: boolean;
+  setOwnsComment(user: User) {
+    this.ownsComment = user.username === this.username;
+  }
+
   @BeforeInsert()
   makeIdAndSlug() {
     this.identifier = makeId(8);

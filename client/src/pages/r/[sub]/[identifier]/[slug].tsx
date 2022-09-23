@@ -284,20 +284,30 @@ const PostPage: React.FC = () => {
                                   setEditingPost(!editingPost);
                                 }}
                               >
-                                <ActionButton>
-                                  <i className="mr-1 fas fa-pen"></i>
-                                  <span className="font-medium">Edit</span>
-                                </ActionButton>
+                                {!editingPost && (
+                                  <ActionButton>
+                                    <i className="mr-1 fas fa-pen"></i>
+                                    <span className="font-medium">Edit</span>
+                                  </ActionButton>
+                                )}
                               </div>
                             )}
                             {editingPost && (
-                              <button
-                                onClick={(e) => updatePost(e.nativeEvent)}
-                                className="px-3 py-1 blue button"
-                                disabled={updatedPost === post.body}
-                              >
-                                Save edits
-                              </button>
+                              <>
+                                <button
+                                  onClick={(e) => updatePost(e.nativeEvent)}
+                                  className="px-3 py-1 mr-2 cursor-pointer blue button"
+                                  disabled={updatedPost === post.body}
+                                >
+                                  Save edits
+                                </button>
+                                <button
+                                  onClick={() => setEditingPost(!editingPost)}
+                                  className="px-3 py-1 cursor-pointer blue button"
+                                >
+                                  Cancel
+                                </button>
+                              </>
                             )}
                           </div>
                         </div>

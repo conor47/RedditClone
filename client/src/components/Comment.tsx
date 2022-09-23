@@ -191,7 +191,7 @@ const Comment: React.FC<CommentProps> = ({
                       }
                     }}
                   >
-                    {user && user.username === comment.username && (
+                    {comment.ownsComment && (
                       <ActionButton>
                         <i className="mr-1 fas fa-pen"></i>
                         <span className="font-medium">Edit</span>
@@ -225,7 +225,7 @@ const Comment: React.FC<CommentProps> = ({
                       deleteComment(e.nativeEvent, comment.identifier)
                     }
                   >
-                    {user && user.username === comment.username && (
+                    {comment.ownsComment && (
                       <ActionButton>
                         <i className="mr-1 fas fa-message"></i>
                         <span className="font-medium">Delete</span>

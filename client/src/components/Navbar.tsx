@@ -45,7 +45,8 @@ const Navbar: React.FC = () => {
     setTimer(
       setTimeout(async () => {
         try {
-          const { data } = await axios.get<Sub[]>(`/subs/search/${name}`);
+          const search = name.replace(' ', '');
+          const { data } = await axios.get<Sub[]>(`/subs/search/${search}`);
           setSubs(data);
         } catch (error) {
           console.log(error);
@@ -106,7 +107,7 @@ const Navbar: React.FC = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             type="text"
-            placeholder="Search Reddit"
+            placeholder="Search for a subreddit ... "
             className="py-1 pr-3 text-sm font-light bg-transparent rounded focus:outline-none"
           ></input>
           <div className="absolute inset-x-0 bg-white" style={{ top: '100%' }}>
