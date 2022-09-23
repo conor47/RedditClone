@@ -36,7 +36,9 @@ const Modal: React.FC = () => {
             className="absolute w-8 text-lg text-center bg-white rounded-full cursor-pointer -left-2 fa-solid fa-arrow-left top-1/2"
             onClick={() => updateIndex(-1)}
           ></i>
-          <span className="absolute bottom-0">{index + 1}</span>
+          <span className="absolute bottom-0">
+            {index + 1}/{content.length}
+          </span>
           <div className="flex-col items-center justify-center text-center">
             <h1 className="mb-4 text-4xl">{content[index].title}</h1>
             <p>{content[index].text1}</p>

@@ -31,6 +31,13 @@ const content: page[] = [
       'https://media0.giphy.com/media/TEPuQo5xl2Mptvj4vW/giphy.gif?cid=790b761194513c1c1b6fc6c5dfc92a2dc8a1662d1bbf5273&rid=giphy.gif&ct=g',
   },
   {
+    title: 'Filter posts',
+    text1: 'Sort posts by latest or by most highly voted',
+    text2: 'Cast your vote to contribute to post scores',
+    image:
+      'https://media3.giphy.com/media/jbMzMQmeKKddywzlwI/giphy.gif?cid=790b76118548788cf07bb6e90c1221049bd7e0c3bcf0d869&rid=giphy.gif&ct=g',
+  },
+  {
     title: 'Joining communities',
     text1:
       'Join your favourite communities so that you will not miss any of their posts',
@@ -71,6 +78,14 @@ const content: page[] = [
     text2: 'You can edit and delete your previously posted comments',
     image:
       'https://media4.giphy.com/media/u76jmnLbt64FdNggYr/giphy.gif?cid=790b7611b5cb530085b00d183085aeff95feccb0c86541dc&rid=giphy.gif&ct=g',
+  },
+  {
+    title: 'View profiles',
+    text1:
+      'View your own profile or others profiles to see a history or their activity',
+    text2: 'You can see a history or that users posts and comments',
+    image:
+      'https://media2.giphy.com/media/6Zyc6XV8kMzYPW8gYh/giphy.gif?cid=790b761152996db5d6678769cc4a828530d7695372f39476&rid=giphy.gif&ct=g',
   },
 ];
 
