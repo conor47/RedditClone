@@ -8,7 +8,8 @@ module.exports = {
       process.env.APP_DOMAIN,
       'www.gravatar.com',
       'res.cloudinary.com',
-      'media1.giphy.com',
+      'media3.giphy.com',
+      'media0.giphy.com',
     ],
   },
 

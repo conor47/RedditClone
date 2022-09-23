@@ -39,7 +39,7 @@ const Modal: React.FC = () => {
               <div className="my-6">
                 <Image
                   src={content[index].image}
-                  width="200"
+                  width="400"
                   height="200"
                 ></Image>
               </div>
