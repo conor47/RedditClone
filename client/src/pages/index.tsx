@@ -8,6 +8,7 @@ import Link from 'next/link';
 
 import { Post, Sub } from '../../types';
 import PostCard from '../components/PostCard';
+import Modal from '../components/modal/Modal';
 import { useAuthState } from '../context/Auth';
 import ActionButton from '../components/ActionButton';
 import { Filters } from '../../types';
@@ -111,6 +112,7 @@ const Home: React.FC = () => {
           content="Reddit is a network of communities based on peoples interests. Find communities you are interested in, and become part of an online community"
         />
       </Head>
+      <Modal />
       <div className="container flex pt-4">
         {/* Posts feed */}
         <div className="px-4 md:w-160 w-fill md:p-0">
@@ -119,14 +121,6 @@ const Home: React.FC = () => {
           )}
           <div className="py-3 pl-2 mb-3 transition-all bg-white rounded-sm flexmax-w-full dark:bg-customDark">
             <div className="flex">
-              <ActionButton
-                selected={filter == Filters.best}
-                type={Filters.best}
-                clickHandler={updateFilteredPosts}
-              >
-                <i className="mr-1 fas fa-rocket"></i>
-                <span className="font-bold">Best</span>
-              </ActionButton>
               <ActionButton
                 selected={filter == Filters.new}
                 type={Filters.new}

@@ -151,21 +151,18 @@ export default function SubPage() {
           <div>
             {/* Banner image */}
             <div
-              className={classNames('bg-blue-500', {
+              className={classNames('bg-blue-500 h-40 relative w-screen', {
                 'cursor-pointer': ownSub,
               })}
               onClick={() => openFileInput('banner')}
             >
               {sub.bannerUrl ? (
-                <div
-                  className="h-56 bg-blue-500 "
-                  style={{
-                    backgroundImage: `url(${sub.bannerUrl})`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                  }}
-                ></div>
+                <Image
+                  src={sub.bannerUrl}
+                  layout="fill"
+                  objectFit="cover"
+                  alt="sub image"
+                />
               ) : (
                 <div className="h-20 bg-blue-500 dark:bg-black"></div>
               )}

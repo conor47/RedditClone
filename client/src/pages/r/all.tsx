@@ -121,14 +121,6 @@ const Home: React.FC = () => {
           <div className="py-3 pl-2 mb-3 transition-all bg-white rounded-sm flexmax-w-full dark:bg-customDark">
             <div className="flex">
               <ActionButton
-                selected={filter == Filters.best}
-                type={Filters.best}
-                clickHandler={updateFilteredPosts}
-              >
-                <i className="mr-1 fas fa-rocket"></i>
-                <span className="font-bold">Best</span>
-              </ActionButton>
-              <ActionButton
                 selected={filter == Filters.new}
                 type={Filters.new}
                 clickHandler={updateFilteredPosts}

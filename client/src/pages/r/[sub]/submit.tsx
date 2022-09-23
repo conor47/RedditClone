@@ -38,7 +38,7 @@ const Submit: React.FC = () => {
       return;
     }
     try {
-      const { data: post } = await axios.post<Post>('/posts', {
+      const { data: post } = await axios.post<Post>('/posts/textPost', {
         title: textTitle.trim(),
         body,
         sub: subName,

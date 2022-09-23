@@ -4,7 +4,14 @@ module.exports = {
   reactStrictMode: true,
   // next.config.js
   images: {
-    domains: [process.env.APP_DOMAIN, 'www.gravatar.com', 'res.cloudinary.com'],
+    domains: [
+      process.env.APP_DOMAIN,
+      'www.gravatar.com',
+      'res.cloudinary.com',
+      'media3.giphy.com',
+      'media0.giphy.com',
+      'media3.giphy.com',
+    ],
   },
 
   webpack(config) {

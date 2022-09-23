@@ -9,12 +9,7 @@ import user from '../Middleware/user';
 import uploadMiddleware from '../Middleware/multer';
 
 import sub from 'date-fns/sub';
-import {
-  Between,
-  In,
-  PrimaryColumnCannotBeNullableError,
-  TreeRepositoryNotSupportedError,
-} from 'typeorm';
+import { Between, In } from 'typeorm';
 import Subscription from '../entity/Subscriptions';
 import cloudinary from '../Utils/cloudinary';
 
