@@ -40,30 +40,37 @@ const content: page[] = [
       'https://media2.giphy.com/media/6g8yYksVkOwBQdHaXo/giphy.gif?cid=790b7611f4d1c7dadcaa8d49af12a3e0897c8ef5f45215f5&rid=giphy.gif&ct=g',
   },
   {
+    title: 'Creating communities',
+    text1:
+      'Have something you are passionate about ? Create a community and find like minded people',
+    text2: 'Give your community a name, title, description and an image',
+    image:
+      'https://media1.giphy.com/media/YYM6Q1eiEVYavO9mad/giphy.gif?cid=790b7611a9eb60a54484de4a18eb7a8e7d28dccb3ddd8312&rid=giphy.gif&ct=g',
+  },
+  {
     title: 'Creating posts',
     text1:
       'Have something you find interesting ? Create a post and show / tell others !',
     text2: 'Posts can be either textual or image based',
     image:
-      'https://media2.giphy.com/media/6g8yYksVkOwBQdHaXo/giphy.gif?cid=790b7611f4d1c7dadcaa8d49af12a3e0897c8ef5f45215f5&rid=giphy.gif&ct=g',
+      'https://media3.giphy.com/media/fAikd8JFoVidS8VPTq/giphy.gif?cid=790b7611a742d00359f6c5fe1d715a027ae90fb44c8cefe8&rid=giphy.gif&ct=g',
   },
   {
-    title: 'Joining communities',
+    title: 'Casting votes',
     text1:
-      'Join your favourite communities so that you will not miss any of their posts',
+      'Let others know what you think of their posts / comments by leaving a vote',
     text2:
-      'Posts from communities you have joined will show on your personalised homepage',
+      'Your vote contributes to the post / comment score and affects it in the overall ranking',
     image:
-      'https://media2.giphy.com/media/6g8yYksVkOwBQdHaXo/giphy.gif?cid=790b7611f4d1c7dadcaa8d49af12a3e0897c8ef5f45215f5&rid=giphy.gif&ct=g',
+      'https://media3.giphy.com/media/P8S3kbYsP9QC05GeLU/giphy.gif?cid=790b7611e11920b56713470cf5124d8d52a9c6023bb6de52&rid=giphy.gif&ct=g',
   },
   {
-    title: 'Joining communities',
+    title: 'Leaving comments',
     text1:
-      'Join your favourite communities so that you will not miss any of their posts',
-    text2:
-      'Posts from communities you have joined will show on your personalised homepage',
+      'Leave comments and engage in discussion on posts. Reply to comments and participate in comment threads.',
+    text2: 'You can edit and delete your previously posted comments',
     image:
-      'https://media2.giphy.com/media/6g8yYksVkOwBQdHaXo/giphy.gif?cid=790b7611f4d1c7dadcaa8d49af12a3e0897c8ef5f45215f5&rid=giphy.gif&ct=g',
+      'https://media4.giphy.com/media/u76jmnLbt64FdNggYr/giphy.gif?cid=790b7611b5cb530085b00d183085aeff95feccb0c86541dc&rid=giphy.gif&ct=g',
   },
 ];
 

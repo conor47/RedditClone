@@ -8,7 +8,12 @@ const Modal: React.FC = () => {
   const [index, setIndex] = useState(0);
 
   const updateIndex = (update: number) => {
-    setIndex((index + update) % content.length);
+    let newIndex = index + update;
+    if (newIndex == -1) {
+      newIndex = content.length - 1;
+    }
+
+    setIndex(newIndex % content.length);
   };
 
   const closeModal = () => {
@@ -31,7 +36,7 @@ const Modal: React.FC = () => {
             className="absolute w-8 text-lg text-center bg-white rounded-full cursor-pointer -left-2 fa-solid fa-arrow-left top-1/2"
             onClick={() => updateIndex(-1)}
           ></i>
-          <span className="absolute bottom-0">{index}</span>
+          <span className="absolute bottom-0">{index + 1}</span>
           <div className="flex-col items-center justify-center text-center">
             <h1 className="mb-4 text-4xl">{content[index].title}</h1>
             <p>{content[index].text1}</p>
