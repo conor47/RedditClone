@@ -232,7 +232,7 @@ const PostPage: React.FC = () => {
                           {/* post body */}
                           {editingPost ? (
                             <textarea
-                              className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-gray-600"
+                              className="w-full p-3 mb-2 border border-gray-300 rounded focus:outline-none focus:border-gray-600"
                               onChange={(e) => setUpdatedPost(e.target.value)}
                               value={updatedPost}
                               placeholder={post.body}
