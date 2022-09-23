@@ -1,11 +1,12 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import content from '../../content/tutorial';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 const Modal: React.FC = () => {
-  const [showModal, setShowModal] = useState(true);
   const [index, setIndex] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   const updateIndex = (update: number) => {
     let newIndex = index + update;
@@ -16,8 +17,16 @@ const Modal: React.FC = () => {
     setIndex(newIndex % content.length);
   };
 
+  useEffect(() => {
+    const item = localStorage.getItem('showModal');
+    if (!item) {
+      setShowModal(true);
+    }
+  }, []);
+
   const closeModal = () => {
-    setShowModal(!showModal);
+    setShowModal(false);
+    localStorage.setItem('showModal', 'false');
   };
 
   if (showModal) {
@@ -48,6 +57,7 @@ const Modal: React.FC = () => {
                   src={content[index].image}
                   width="400"
                   height="200"
+                  alt="placeholder"
                 ></Image>
               </div>
             )}
@@ -57,7 +67,7 @@ const Modal: React.FC = () => {
       </div>
     );
   } else {
-    return <></>;
+    return <div></div>;
   }
 };
 

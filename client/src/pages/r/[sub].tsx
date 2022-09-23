@@ -42,13 +42,10 @@ export default function SubPage() {
     setOwnSub(authenticated && user.username === sub.username);
   }, [sub]);
 
-  console.log('show popup', popup);
-
   const openFileInput = (type: string) => {
     if (!ownSub) return;
     fileInputRef.current.name = type;
     fileInputRef.current.click();
-    console.log('file ref');
   };
 
   const uploadImage = async (event: ChangeEvent<HTMLInputElement>) => {

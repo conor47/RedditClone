@@ -7,8 +7,6 @@ interface PopupProps {
 }
 
 const Popup: React.FC<PopupProps> = ({ message, showPopup }) => {
-  console.log('showing popup component', showPopup);
-
   return (
     <div
       //   hidden={!showPopup}

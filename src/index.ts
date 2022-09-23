@@ -1,6 +1,5 @@
 import app from './server';
 import { createTypeormConnection } from './Utils/createTypeormConnection';
-import { parse } from 'url';
 
 const server = app.listen(process.env.PORT, async () => {
   console.log(`Server running at http://localhost:5000`);
