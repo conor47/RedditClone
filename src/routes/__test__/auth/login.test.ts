@@ -3,7 +3,7 @@ import request from 'supertest';
 import app from '../../../server';
 
 it('fails when password is not supplied', async () => {
-  await request(app)
+  const res = await request(app)
     .post('/api/auth/register')
     .send({ username: 'alice', email: 'alice@mail.com', password: '123456' })
     .expect(200);
@@ -17,7 +17,7 @@ it('fails when password is not supplied', async () => {
 it('fails when username is not supplied', async () => {
   await request(app)
     .post('/api/auth/register')
-    .send({ username: 'alice', email: 'alice@mail.com', password: '123456' })
+    .send({ email: 'alice@mail.com', password: '123456' })
     .expect(400);
 
   await request(app)

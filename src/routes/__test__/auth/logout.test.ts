@@ -8,7 +8,6 @@ it('fails when not logged in', async () => {
 
 it('succeeds when logged in. Cookie is expired', async () => {
   const cookie = await global.signin();
-  console.log('cookie', cookie);
 
   const res = await request(app)
     .get('/api/auth/logout')
