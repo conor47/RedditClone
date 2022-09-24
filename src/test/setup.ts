@@ -3,6 +3,10 @@ import app from '../server';
 import request from 'supertest';
 import { createTypeormConnection } from '../Utils/createTypeormConnection';
 
+declare global {
+  var signin: () => Promise<string[]>;
+}
+
 beforeAll(async () => {
   await createTypeormConnection();
 });
