@@ -1,4 +1,5 @@
-const rootDir = process.env.NODE_ENV === 'development' ? 'src' : 'build';
+const rootDir =
+  process.env.NODE_ENV === 'development' || 'test' ? 'src' : 'build';
 
 module.exports = [
   {
@@ -50,9 +51,9 @@ module.exports = [
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE_TEST,
     dropSchema: true,
-    synchronize: false,
+    synchronize: true,
     logging: false,
-    entities: [rootDir + '/entity/**/*{.ts,.js}'],
+    entities: [rootDir + '/entity/**/*.ts'],
     migrations: [rootDir + '/migration/**/*{.ts,.js}'],
     subscribers: [rootDir + '/subscriber/**/*{.ts,.js}'],
     cli: {

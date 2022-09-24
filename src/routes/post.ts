@@ -29,12 +29,18 @@ const createPost = async (req: Request, res: Response) => {
 
   const user = res.locals.user;
 
-  if (title === '') {
+  if (!title || title === '') {
     return res.status(400).json({ title: 'Title must not be empty' });
+  }
+  if (!sub || title === '') {
+    return res.status(400).json({ sub: 'Sub must not be empty' });
   }
 
   try {
-    const subRecord = await Sub.findOneOrFail({ name: sub });
+    const subRecord = await Sub.findOne({ name: sub });
+    if (!subRecord) {
+      return res.status(400).json({ sub: 'Sub does not exist' });
+    }
     const post = new Post({ title, body, user, sub: subRecord });
     await post.save();
     return res.json(post);

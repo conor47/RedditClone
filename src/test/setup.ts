@@ -3,11 +3,23 @@ import app from '../server';
 import request from 'supertest';
 import { createTypeormConnection } from '../Utils/createTypeormConnection';
 
+declare global {
+  var signin: () => Promise<string[]>;
+}
+
 beforeAll(async () => {
   await createTypeormConnection();
 });
 
-beforeEach(async () => {});
+beforeEach(async () => {
+  const entities = getConnection().entityMetadatas;
+  for (const entity of entities) {
+    const repository = getConnection().getRepository(entity.name); // Get repository
+    await repository.query(
+      `TRUNCATE ${entity.tableName} RESTART IDENTITY CASCADE;`
+    );
+  }
+});
 
 afterAll(async () => {
   await getConnection().close();

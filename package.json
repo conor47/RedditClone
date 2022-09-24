@@ -51,7 +51,7 @@
     "start": "NODE_ENV=production node build/index.js",
     "dev": "NODE_ENV=development nodemon --exec ts-node src",
     "test-server": "NODE_ENV=test ts-node src",
-    "test": "jest --runInBand",
+    "test": "jest --runInBand --verbose ./src",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
     "seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
   }
