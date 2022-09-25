@@ -1,4 +1,5 @@
 import request from 'supertest';
+import Post from '../../../entity/Post';
 
 import app from '../../../server';
 
@@ -42,4 +43,7 @@ it('Succeeds with valid data', async () => {
     .set('Cookie', cookie)
     .send({ title: 'test', body: 'test', sub: 'test' })
     .expect(200);
+
+  const post = await Post.findOne({ where: { title: 'test', body: 'test' } });
+  expect(post).toBeDefined();
 });
