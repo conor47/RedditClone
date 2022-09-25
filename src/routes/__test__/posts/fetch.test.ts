@@ -36,3 +36,32 @@ it('fails in fetching an non existing post', async () => {
     .send()
     .expect(404);
 });
+
+it('Successfully fetches all posts', async () => {
+  const cookie = await global.signin();
+
+  await request(app)
+    .post('/api/subs/')
+    .set('Cookie', cookie)
+    .send({ name: 'test', title: 'test', description: 'test' })
+    .expect(200);
+
+  await request(app)
+    .post('/api/posts/textPost')
+    .set('Cookie', cookie)
+    .send({ sub: 'test', body: 'test', title: 'test' })
+    .expect(200);
+
+  await request(app)
+    .post('/api/posts/textPost')
+    .set('Cookie', cookie)
+    .send({ sub: 'test', body: 'test1', title: 'test1' })
+    .expect(200);
+
+  const res = await request(app)
+    .get('/api/posts?filter=NEW')
+    .send()
+    .expect(200);
+
+  expect(res.body).toHaveLength(2);
+});

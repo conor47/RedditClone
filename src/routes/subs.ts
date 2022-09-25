@@ -27,7 +27,6 @@ const getAllSubs = async (req: Request, res: Response) => {
 const createSub = async (req: Request, res: Response) => {
   const { name, title, description } = req.body;
   console.log('name', name);
-  console.log('replaced', name.replace(' ', '_'));
 
   const user: User = res.locals.user;
 
