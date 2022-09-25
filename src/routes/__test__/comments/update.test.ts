@@ -3,40 +3,36 @@ import Comment from '../../../entity/Comment';
 
 import app from '../../../server';
 
-it('fails when not authenticated', async () => {
+it('it fails when not authenticated', async () => {
   const cookie = await global.signin();
 
   await request(app)
-    .post('/api/subs/')
-    .set('Cookie', cookie)
+    .patch('/api/comments/asdas')
     .send({ name: 'test', title: 'test', description: 'test' })
-    .expect(200);
-
-  const res = await request(app)
-    .post('/api/posts/textPost')
-    .set('Cookie', cookie)
-    .send({ title: 'test', body: 'test', sub: 'test' })
-    .expect(200);
-
-  const { identifier, slug } = res.body;
-
-  await request(app)
-    .post(`/api/comments/${identifier}/${slug}`)
-    .send({ body: 'test' })
     .expect(401);
 });
 
-it('fails when post does not exist', async () => {
+it('fails when comments does not exist', async () => {
   const cookie = await global.signin();
 
   await request(app)
-    .post(`/api/comments/asda/asdas`)
+    .patch(`/api/comments/asdsa`)
     .set('Cookie', cookie)
     .send({ body: 'test' })
-    .expect(404);
+    .expect(500);
 });
 
-it('succeeds with valid data', async () => {
+it('fails when comments does not exist', async () => {
+  const cookie = await global.signin();
+
+  await request(app)
+    .patch(`/api/comments/asdsa`)
+    .set('Cookie', cookie)
+    .send({ body: 'test' })
+    .expect(500);
+});
+
+it('succeeds when the comment exists', async () => {
   const cookie = await global.signin();
 
   await request(app)
@@ -51,14 +47,22 @@ it('succeeds with valid data', async () => {
     .send({ title: 'test', body: 'test', sub: 'test' })
     .expect(200);
 
-  const { identifier, slug } = res.body;
+  const { identifier: postIdentifier, slug } = res.body;
 
-  await request(app)
-    .post(`/api/comments/${identifier}/${slug}`)
+  const res2 = await request(app)
+    .post(`/api/comments/${postIdentifier}/${slug}`)
     .set('Cookie', cookie)
     .send({ body: 'test' })
     .expect(201);
 
-  const comment = Comment.findOne({ where: { body: 'test' } });
+  const { identifier: commentIdentifier } = res2.body;
+
+  await request(app)
+    .patch(`/api/comments/${commentIdentifier}`)
+    .set('Cookie', cookie)
+    .send({ body: 'update' })
+    .expect(200);
+
+  const comment = await Comment.findOne({ where: { body: 'update' } });
   expect(comment).toBeDefined();
 });
