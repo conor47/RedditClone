@@ -85,9 +85,7 @@ const Comment: React.FC<CommentProps> = ({
       });
       mutateComment();
       setWritingReply(false);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const deleteComment = async (e: Event, identifier: string) => {
@@ -96,9 +94,7 @@ const Comment: React.FC<CommentProps> = ({
     try {
       await axios.delete(`/comments/${identifier}`);
       mutateComment();
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return (

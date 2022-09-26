@@ -19,7 +19,6 @@ const Overview: React.FC = () => {
   }
 
   if (data) {
-    console.log(data);
   }
   return (
     <div className="container flex pt-5">

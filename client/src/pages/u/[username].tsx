@@ -25,7 +25,6 @@ const User: React.FC = () => {
   }
 
   if (data) {
-    console.log(data);
   }
 
   return (

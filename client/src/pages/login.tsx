@@ -43,7 +43,6 @@ const Login: React.FC = () => {
       if (error instanceof AxiosError) {
         setErrors(error.response.data);
       }
-      console.log(error);
     }
   };
 
