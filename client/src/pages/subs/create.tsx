@@ -18,7 +18,6 @@ const Create: React.FC = () => {
       const res = await axios.post('/subs', { name, title, description });
       router.push(`/r/${res.data.name}`);
     } catch (error) {
-      console.log(error);
       setErrors(error.response.data);
     }
   };
@@ -114,7 +113,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     await axios.get('/auth/me', { headers: { cookie } });
     return { props: {} };
   } catch (error) {
-    console.log(error);
     // we return a 307 and perform a redirect to the login page
     res.writeHead(307, { location: '/login' }).end();
   }

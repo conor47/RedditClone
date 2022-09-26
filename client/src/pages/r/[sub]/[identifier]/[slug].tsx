@@ -95,9 +95,7 @@ const PostPage: React.FC = () => {
       });
       mutateComment();
       setNewComment('');
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const updatePost = async (e: Event) => {
@@ -108,9 +106,7 @@ const PostPage: React.FC = () => {
       }),
         setEditingPost(false);
       mutatePost();
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   const commentsWithChildren = (comments: Comment[]) => {

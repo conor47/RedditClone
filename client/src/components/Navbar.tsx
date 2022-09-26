@@ -48,9 +48,7 @@ const Navbar: React.FC = () => {
           const search = name.replace(' ', '');
           const { data } = await axios.get<Sub[]>(`/subs/search/${search}`);
           setSubs(data);
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
       }, 250)
     );
   };

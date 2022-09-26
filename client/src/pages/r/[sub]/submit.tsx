@@ -44,9 +44,7 @@ const Submit: React.FC = () => {
         sub: subName,
       });
       router.push(`/r/${sub.name}/${post.identifier}/${post.slug}`);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const submitImagePost = async (e: FormEvent) => {
@@ -71,9 +69,7 @@ const Submit: React.FC = () => {
       );
       setDisableSubmit(false);
       router.push(`/r/${sub.name}/${post.identifier}/${post.slug}`);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   const changeTab = (e: Event, newTab) => {
@@ -199,7 +195,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     await axios.get('/auth/me', { headers: { cookie } });
     return { props: {} };
   } catch (error) {
-    console.log(error);
     // we return a 307 and perform a redirect to the login page
     res.writeHead(307, { location: '/login' }).end();
   }

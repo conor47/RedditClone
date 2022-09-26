@@ -60,9 +60,7 @@ export default function SubPage() {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       mutate();
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   const createSubscription = async (event: Event) => {
