@@ -55,9 +55,7 @@ const Comment: React.FC<CommentProps> = ({
       if (comment) {
         mutateComment();
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const updateComment = async (e: Event) => {
@@ -231,7 +229,7 @@ const Comment: React.FC<CommentProps> = ({
             </div>
             {writingReply && (
               <div>
-                <p>{`Reply to ${comment.username} as ${user.username}`}</p>
+                <p className="dark:text-slate-50">{`Reply to ${comment.username} as ${user.username}`}</p>
                 <textarea
                   className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-gray-600"
                   onChange={(e) => {

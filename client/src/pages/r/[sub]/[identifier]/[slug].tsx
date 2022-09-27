@@ -77,9 +77,7 @@ const PostPage: React.FC = () => {
       } else {
         mutatePost();
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const submitComment = async (e: FormEvent) => {

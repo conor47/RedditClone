@@ -5,6 +5,7 @@ import useSWR from 'swr';
 import PostCard from '../../components/PostCard';
 import Image from 'next/image';
 import classNames from 'classnames';
+import dayjs from 'dayjs';
 
 import Popup from '../../components/popup';
 import { Sub } from '../../../types';
@@ -104,7 +105,7 @@ export default function SubPage() {
   if (!authenticated) {
     joinButtonMarkup = (
       <Link href={'/login'}>
-        <button className="w-20 h-8 mt-2 ml-5 button black dark:bg-white dark:text-black transistion-all">
+        <button className="w-20 h-8 mt-5 ml-5 mr-5 sm:mr-0 sm:mt-2 button black dark:bg-white dark:text-black transistion-all">
           Join
         </button>
       </Link>
@@ -190,7 +191,7 @@ export default function SubPage() {
                       {sub.title}
                     </h1>
                   </div>
-                  <p className="text-sm font-bold text-gray-500">
+                  <p className="hidden text-sm font-bold text-gray-500 sm:block">
                     /r/{sub.name}
                   </p>
                 </div>
@@ -199,8 +200,53 @@ export default function SubPage() {
             </div>
           </div>
           {/* Posts & Sidebar */}
+          <div className="px-2 mt-3 sm:hidden">
+            <div className="transition-all bg-white rounded dark:bg-customDark">
+              <div className="p-3 transition-all bg-blue-500 rounded-t dark:bg-customDark">
+                <p className="font-semibold text-white ">About Community</p>
+              </div>
+              <div className="p-3">
+                <p className="mb-3 text-base dark:text-slate-50">
+                  {sub.description}
+                </p>
+                <div className="flex mb-3 text-sm font-medium">
+                  <div className="w-1/2 dark:text-slate-50">
+                    <p>{sub.subCount}</p>
+                    <p>Members</p>
+                  </div>
+                  <div className="w-1/2 dark:text-slate-50">
+                    <p>100</p>
+                    <p>Online</p>
+                  </div>
+                </div>
+                <p className="my-3 dark:text-slate-50">
+                  <i className="mr-2 fas fa-birthday-cake"></i>
+                  Created {dayjs(sub.createdAt).format('D MMM YYYY')}
+                </p>
+                <p className="my-3 dark:text-slate-50">
+                  <i className="mr-2 fas fa-user"></i>
+                  <Link href={`/u/${sub.username}`}>
+                    <a className="">Owned by /u/{sub.username}</a>
+                  </Link>
+                </p>
+                {authenticated ? (
+                  <Link href={`/r/${sub.name}/submit`}>
+                    <a className="w-full px-2 py-1 text-sm button blue">
+                      Create Post
+                    </a>
+                  </Link>
+                ) : (
+                  <Link href={`/login`}>
+                    <a className="w-full px-2 py-1 text-sm button blue">
+                      Create Post
+                    </a>
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
           <div className="container flex pt-5">
-            <div className="w-160">{postsMarkup}</div>
+            <div className="px-2 w-160 sm:px-0">{postsMarkup}</div>
             <Sidebar sub={sub} />
           </div>
         </Fragment>
