@@ -11,7 +11,7 @@ const SideBar: React.FC<SideBarProps> = ({ sub }) => {
   const { authenticated } = useAuthState();
 
   return (
-    <div className="ml-6 w-80">
+    <div className="hidden ml-6 w-80 sm:block">
       <div className="transition-all bg-white rounded dark:bg-customDark">
         <div className="p-3 transition-all bg-blue-500 rounded-t dark:bg-customDark">
           <p className="font-semibold text-white ">About Community</p>
