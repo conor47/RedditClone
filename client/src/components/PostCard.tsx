@@ -59,9 +59,7 @@ const PostCard: React.FC<PostCardProps> = ({
       if (revalidate) {
         revalidate();
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   return (

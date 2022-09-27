@@ -55,9 +55,7 @@ const Comment: React.FC<CommentProps> = ({
       if (comment) {
         mutateComment();
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const updateComment = async (e: Event) => {
